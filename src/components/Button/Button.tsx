@@ -13,6 +13,7 @@ export interface ButtonProps {
  * Reusable Button component with primary and secondary variants
  * Designed for mobile-first responsive design
  */
+
 const Button: React.FC<ButtonProps> = ({
   variant,
   text,
