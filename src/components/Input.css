@@ -1,0 +1,47 @@
+/* Input component styles - Mobile first approach */
+.input-container {
+  margin: 16px 0;
+  width: 100%;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  font-size: 16px;
+  background: white;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  min-height: 56px;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.input-field::placeholder {
+  color: #9ca3af;
+}
+
+.input-field:invalid {
+  border-color: #ef4444;
+}
+
+/* Tablet and desktop styles */
+@media (min-width: 768px) {
+  .input-container {
+    max-width: 400px;
+    margin: 20px auto;
+  }
+}
