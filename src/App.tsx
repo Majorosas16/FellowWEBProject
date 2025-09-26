@@ -1,6 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Home, Auth, PetTypePage, PetRegistration, Success, Dashboard } from './pages';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import {
+  Home,
+  Auth,
+  PetTypePage,
+  PetRegistration,
+  Success,
+  Dashboard,
+  Profile,
+} from './pages'
+import './App.css'
 
 /**
  * Main App component with routing setup
@@ -17,10 +25,11 @@ function App() {
           <Route path="/pet-registration" element={<PetRegistration />} />
           <Route path="/success" element={<Success />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App

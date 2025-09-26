@@ -1,0 +1,51 @@
+/* Home page styles - Mobile first approach */
+.home-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.home-content {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.home-header {
+  margin-bottom: 48px;
+}
+
+.home-title {
+  font-size: 48px;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 16px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.home-subtitle {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  font-weight: 400;
+}
+
+.home-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Tablet and desktop styles */
+@media (min-width: 768px) {
+  .home-title {
+    font-size: 64px;
+  }
+  
+  .home-subtitle {
+    font-size: 20px;
+  }
+}
