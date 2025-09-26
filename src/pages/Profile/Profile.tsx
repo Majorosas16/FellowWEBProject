@@ -21,12 +21,19 @@ const Profile: React.FC = () => {
 
           <div className="profile-sections">
             <div className="section">
-              <ProfileCard
-                userName={userProfile.userName}
-                userImage={userProfile.userImage}
-                userMail={userProfile.userMail}
-              />
-              <p>holi</p>
+              <div className="section-profile-card">
+                <ProfileCard
+                  userName={userProfile.userName}
+                  userImage={userProfile.userImage}
+                  userMail={userProfile.userMail}
+                />
+              </div>
+            </div>
+            <div className="section">
+              <div className="section-buttons"></div>
+            </div>
+            <div className="section">
+              <div className="section-config"></div>
             </div>
           </div>
         </div>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import Button from '../components/Button'
-import Input from '../components/Input/Input'
-import PetPhoto from '../components/PetPhoto/PetPhoto'
+import Button from '../../components/Button'
+import Input from '../../components/Input/Input'
+import PetPhoto from '../../components/PetPhoto/PetPhoto'
 import './PetRegistration.css'
 
 /**

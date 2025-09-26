@@ -1,14 +1,14 @@
-import React from 'react';
-import Button from './Button';
-import './MedicationCard.css';
+import React from 'react'
+import Button from '../Button'
+import './MedicationCard.css'
 
 export interface MedicationCardProps {
-  petName: string;
-  petImage: string;
-  medication: string;
-  onSkip: () => void;
-  onTaken: () => void;
-  className?: string;
+  petName: string
+  petImage: string
+  medication: string
+  onSkip: () => void
+  onTaken: () => void
+  className?: string
 }
 
 /**
@@ -21,7 +21,7 @@ const MedicationCard: React.FC<MedicationCardProps> = ({
   medication,
   onSkip,
   onTaken,
-  className = ''
+  className = '',
 }) => {
   return (
     <div className={`medication-card ${className}`}>
@@ -40,7 +40,7 @@ const MedicationCard: React.FC<MedicationCardProps> = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MedicationCard;
+export default MedicationCard

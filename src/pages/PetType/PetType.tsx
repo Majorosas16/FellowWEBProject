@@ -1,33 +1,33 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Button from '../components/Button';
-import './PetType.css';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Button from '../../components/Button'
+import './PetType.css'
 
-export type PetType = 'cat' | 'dog' | 'skip';
+export type PetType = 'cat' | 'dog' | 'skip'
 
 /**
  * Pet type selection page component
  * Allows users to choose between Cat and Dog
  */
 const PetType: React.FC = () => {
-  const navigate = useNavigate();
-  const [selectedType, setSelectedType] = useState<PetType | null>(null);
+  const navigate = useNavigate()
+  const [selectedType, setSelectedType] = useState<PetType | null>(null)
 
   const handleTypeSelect = (type: PetType) => {
-    setSelectedType(type);
-  };
+    setSelectedType(type)
+  }
 
   const handleContinue = () => {
     if (selectedType === 'skip') {
-      navigate('/dashboard');
+      navigate('/dashboard')
     } else if (selectedType) {
-      navigate(`/pet-registration?type=${selectedType}`);
+      navigate(`/pet-registration?type=${selectedType}`)
     }
-  };
+  }
 
   const handleBackClick = () => {
-    navigate('/auth');
-  };
+    navigate('/auth')
+  }
 
   return (
     <div className="pet-type-container">
@@ -45,7 +45,11 @@ const PetType: React.FC = () => {
             onClick={() => handleTypeSelect('cat')}
           >
             <div className="pet-option-image cat-image">
-              <img src="/images/cat-default.webp" alt="Cat" className="pet-type-image" />
+              <img
+                src="/images/cat-default.webp"
+                alt="Cat"
+                className="pet-type-image"
+              />
             </div>
             <h3 className="pet-option-title">Cat</h3>
           </div>
@@ -55,14 +59,20 @@ const PetType: React.FC = () => {
             onClick={() => handleTypeSelect('dog')}
           >
             <div className="pet-option-image dog-image">
-              <img src="/images/dog-default.webp" alt="Dog" className="pet-type-image" />
+              <img
+                src="/images/dog-default.webp"
+                alt="Dog"
+                className="pet-type-image"
+              />
             </div>
             <h3 className="pet-option-title">Dog</h3>
           </div>
 
           <div className="skip-text-container">
             <button
-              className={`skip-text ${selectedType === 'skip' ? 'selected' : ''}`}
+              className={`skip-text ${
+                selectedType === 'skip' ? 'selected' : ''
+              }`}
               onClick={() => handleTypeSelect('skip')}
             >
               Do it later
@@ -80,7 +90,7 @@ const PetType: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PetType;
+export default PetType
