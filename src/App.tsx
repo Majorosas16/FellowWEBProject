@@ -17,6 +17,7 @@ function App() {
     <Router>
       <div className="app">
         <Routes>
+          
           {/* Rutas SIN navegación */}
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Auth />} />
