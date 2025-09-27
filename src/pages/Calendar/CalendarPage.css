@@ -1,0 +1,123 @@
+.calendar-page {
+  width: 390px;
+  height: 844px;
+  background: #f8f9fa;
+  padding: 15px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.calendar-section {
+  margin-bottom: 15px;
+  flex-shrink: 0;
+  max-height: 350px; /* Limitar altura del calendario */
+}
+
+.appointments-section {
+  background: #c8c9ca;
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 400px; /* Asegurar altura mínima */
+}
+
+.appointments-header {
+  text-align: center;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #adb5bd;
+  flex-shrink: 0;
+}
+
+.appointments-header h3 {
+  margin: 0;
+  color: #495057;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 5px;
+}
+
+/* Scroll personalizado */
+.appointments-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.appointments-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.appointments-list::-webkit-scrollbar-thumb {
+  background: #adb5bd;
+  border-radius: 4px;
+}
+
+.appointments-list::-webkit-scrollbar-thumb:hover {
+  background: #6c757d;
+}
+
+.appointment-item {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 8px 0;
+}
+
+.appointment-time {
+  font-weight: 600;
+  color: #000;
+  min-width: 45px;
+  margin-right: 15px;
+  font-size: 14px;
+}
+
+.appointment-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.appointment-person {
+  font-weight: 600;
+  color: #000;
+  margin-right: 5px;
+}
+
+.appointment-description {
+  color: #495057;
+}
+
+.no-appointments {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px; /* Asegurar que ocupe espacio */
+}
+
+.no-appointments p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Eliminar responsive ya que tenemos dimensiones fijas */
