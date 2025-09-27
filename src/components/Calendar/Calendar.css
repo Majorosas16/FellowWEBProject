@@ -1,0 +1,130 @@
+.calendar-container {
+  width: 100%;
+  max-width: 400px;
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.nav-button:hover {
+  background-color: #f5f5f5;
+}
+
+.nav-arrow {
+  font-size: 24px;
+  color: #333;
+  font-weight: bold;
+}
+
+.month-year {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #6366f1;
+  padding-bottom: 8px;
+}
+
+.weekday {
+  text-align: center;
+  font-weight: 600;
+  color: #6366f1;
+  font-size: 12px;
+  padding: 3px 0;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.day-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: #e5e5e5;
+  color: #666;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 30px;
+}
+
+.day-cell:not(.empty):hover {
+  background-color: #d1d5db;
+  transform: translateY(-1px);
+}
+
+.day-cell.empty {
+  cursor: default;
+  background: transparent;
+}
+
+.day-cell.today {
+  background-color: #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+  border: 2px solid #6366f1;
+}
+
+.day-cell.selected {
+  background-color: #6366f1;
+  color: white;
+  font-weight: 600;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
+}
+
+.day-cell.selected:hover {
+  background-color: #5856eb;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .calendar-container {
+    padding: 12px;
+  }
+  
+  .day-cell {
+    min-height: 28px;
+    font-size: 11px;
+  }
+  
+  .month-year {
+    font-size: 16px;
+  }
+  
+  .weekday {
+    font-size: 11px;
+  }
+}

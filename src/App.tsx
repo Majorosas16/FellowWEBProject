@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   Home,
   Auth,
@@ -7,8 +7,9 @@ import {
   Success,
   Dashboard,
   Profile,
-} from './pages'
-import './App.css'
+} from "./pages";
+import "./App.css";
+import CalendarPage from "./pages/Calendar/CalendarPage";
 
 /**
  * Main App component with routing setup
@@ -26,10 +27,11 @@ function App() {
           <Route path="/success" element={<Success />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/calendar" element={<CalendarPage />} />
         </Routes>
       </div>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;
