@@ -1,12 +1,12 @@
-import React from 'react'
-import Button from '../Button'
-import './SuccessModal.css'
+import React from "react";
+import Button from "../ButtonCopy";
+import "./SuccessModal.css";
 
 export interface SuccessModalProps {
-  petName: string
-  petImage?: string
-  petType: 'cat' | 'dog'
-  onContinue: () => void
+  petName: string;
+  petImage?: string;
+  petType: "cat" | "dog";
+  onContinue: () => void;
 }
 
 /**
@@ -49,7 +49,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SuccessModal
+export default SuccessModal;

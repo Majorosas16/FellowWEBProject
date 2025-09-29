@@ -1,6 +1,6 @@
-import React from 'react';
-import Button from './Button';
-import './MedicationCard.css';
+import React from "react";
+import Button from "./ButtonCopy";
+import "./MedicationCard.css";
 
 export interface MedicationCardProps {
   petName: string;
@@ -21,7 +21,7 @@ const MedicationCard: React.FC<MedicationCardProps> = ({
   medication,
   onSkip,
   onTaken,
-  className = ''
+  className = "",
 }) => {
   return (
     <div className={`medication-card ${className}`}>

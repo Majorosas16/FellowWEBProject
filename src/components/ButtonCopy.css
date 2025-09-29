@@ -1,14 +1,14 @@
-/* Button component styles - Mobile first approach */
 .btn {
   width: 100%;
   padding: 16px 24px;
   border: none;
-  border-radius: 12px;
+  border-radius: 999px; /* pill shape */
+  font-family: 'Poppins', sans-serif;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin: 8px 0;
+  margin: 12px 0;
   min-height: 56px;
   display: flex;
   align-items: center;
@@ -16,35 +16,39 @@
   text-align: center;
 }
 
+/* Estado deshabilitado */
 .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
+/* Botón principal */
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #1A1A2E; /* fondo oscuro */
   color: white;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
+/* Hover */
 .btn-primary:hover:not(:disabled) {
+  background: #111122; /* un poco más oscuro al pasar */
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
+/* Variante secundaria */
 .btn-secondary {
   background: transparent;
-  color: #667eea;
-  border: 2px solid #667eea;
+  color: #1A1A2E;
+  border: 2px solid #1A1A2E;
+  border-radius: 999px;
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: #667eea;
+  background: #1A1A2E;
   color: white;
   transform: translateY(-2px);
 }
 
-/* Tablet and desktop styles */
+/* Tablet y desktop */
 @media (min-width: 768px) {
   .btn {
     max-width: 300px;

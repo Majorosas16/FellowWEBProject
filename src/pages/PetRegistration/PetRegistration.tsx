@@ -1,49 +1,49 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import Button from '../../components/Button'
-import Input from '../../components/Input/Input'
-import PetPhoto from '../../components/PetPhoto/PetPhoto'
-import './PetRegistration.css'
+import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import Button from "../../components/ButtonCopy";
+import Input from "../../components/Input/Input";
+import PetPhoto from "../../components/PetPhoto/PetPhoto";
+import "./PetRegistration.css";
 
 /**
  * Pet registration page component
  * Handles pet information form with photo upload
  */
 const PetRegistration: React.FC = () => {
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
-  const [petType, setPetType] = useState<'cat' | 'dog'>('cat')
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [petType, setPetType] = useState<"cat" | "dog">("cat");
 
   // Form states
-  const [petImage, setPetImage] = useState<string>('')
-  const [name, setName] = useState('')
-  const [breed, setBreed] = useState('')
-  const [gender, setGender] = useState('')
-  const [age, setAge] = useState('')
-  const [birthDate, setBirthDate] = useState('')
-  const [weight, setWeight] = useState('')
+  const [petImage, setPetImage] = useState<string>("");
+  const [name, setName] = useState("");
+  const [breed, setBreed] = useState("");
+  const [gender, setGender] = useState("");
+  const [age, setAge] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [weight, setWeight] = useState("");
 
   useEffect(() => {
-    const type = searchParams.get('type') as 'cat' | 'dog'
+    const type = searchParams.get("type") as "cat" | "dog";
     if (type) {
-      setPetType(type)
+      setPetType(type);
     }
-  }, [searchParams])
+  }, [searchParams]);
 
   const handleImageChange = (file: File | null) => {
     if (file) {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onload = (e) => {
-        setPetImage(e.target?.result as string)
-      }
-      reader.readAsDataURL(file)
+        setPetImage(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
     } else {
-      setPetImage('')
+      setPetImage("");
     }
-  }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     const petData = {
       type: petType,
@@ -54,23 +54,23 @@ const PetRegistration: React.FC = () => {
       birthDate,
       weight,
       image: petImage,
-    }
+    };
 
-    console.log('Pet registration:', petData)
+    console.log("Pet registration:", petData);
 
     // Navigate to success modal
-    navigate('/success', {
+    navigate("/success", {
       state: {
         petName: name,
         petImage: petImage,
         petType: petType,
       },
-    })
-  }
+    });
+  };
 
   const handleBackClick = () => {
-    navigate('/pet-type')
-  }
+    navigate("/pet-type");
+  };
 
   return (
     <div className="pet-registration-container">
@@ -147,7 +147,7 @@ const PetRegistration: React.FC = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PetRegistration
+export default PetRegistration;

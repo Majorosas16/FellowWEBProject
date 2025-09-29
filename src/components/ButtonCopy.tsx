@@ -1,5 +1,5 @@
 import React from 'react';
-import './Button.css';
+import './ButtonCopy.css';
 
 export interface ButtonProps {
   variant: 'primary' | 'secondary';
