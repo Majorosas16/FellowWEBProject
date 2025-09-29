@@ -15,6 +15,10 @@ const PetType: React.FC = () => {
 
   const handleTypeSelect = (type: PetType) => {
     setSelectedType(type)
+    // If user selects "skip", redirect immediately to dashboard
+    if (type === 'skip') {
+      navigate('/dashboard')
+    }
   }
 
   const handleContinue = () => {

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Calendar from "../../components/Calendar/Calendar";
+import NotificationButton from "../../components/NotificationButton/NotificationButton";
 import "./CalendarPage.css";
 
 // Definición de tipos
@@ -132,6 +133,8 @@ const CalendarPage: React.FC = () => {
           )}
         </div>
       </div>
+      
+      <NotificationButton />
     </div>
   );
 };

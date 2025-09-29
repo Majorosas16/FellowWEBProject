@@ -22,8 +22,11 @@ const Home: React.FC = () => {
     <div className="home-container">
       <div className="home-content">
         <div className="home-header">
-          <h1 className="home-title">FELLOW</h1>
-          <p className="home-subtitle">Your pet's best friend</p>
+          <img 
+            src="/images/Logo-1.png" 
+            alt="Fellow Logo" 
+            className="home-logo"
+          />
         </div>
 
         <div className="home-buttons">

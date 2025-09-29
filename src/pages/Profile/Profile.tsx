@@ -1,5 +1,6 @@
 import ProfileCard from '../../components/ProfileCard/ProfileCard'
 import BottomNavigation from '../../components/BottomNavigation/BottomNavigation'
+import NotificationButton from '../../components/NotificationButton/NotificationButton'
 
 const Profile: React.FC = () => {
   // For demo purposes, using a default username
@@ -39,6 +40,7 @@ const Profile: React.FC = () => {
         </div>
       </div>
 
+      <NotificationButton />
       <BottomNavigation />
     </>
   )

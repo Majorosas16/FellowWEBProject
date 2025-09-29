@@ -10,6 +10,11 @@ import {
 } from "./pages";
 import "./App.css";
 import CalendarPage from "./pages/Calendar/CalendarPage";
+import PetSelection from "./pages/PetSelection/PetSelection";
+import EventType from "./pages/EventType/EventType";
+import MedicineEvent from "./pages/MedicineEvent/MedicineEvent";
+import GenericEvent from "./pages/GenericEvent/GenericEvent";
+import SuccessEvent from "./pages/SuccessEvent/SuccessEvent";
 import LayoutWithNavigation from "./components/LayoutWithNavigation/LayoutWithNavigation";
 
 function App() {
@@ -24,6 +29,13 @@ function App() {
           <Route path="/pet-type" element={<PetTypePage />} />
           <Route path="/pet-registration" element={<PetRegistration />} />
           <Route path="/success" element={<Success />} />
+          
+          {/* Event creation flow routes */}
+          <Route path="/pet-selection" element={<PetSelection />} />
+          <Route path="/event-type" element={<EventType />} />
+          <Route path="/medicine-event" element={<MedicineEvent />} />
+          <Route path="/generic-event" element={<GenericEvent />} />
+          <Route path="/success-event" element={<SuccessEvent />} />
           
           {/* Rutas CON navegación - todo después de /success */}
           <Route path="/dashboard" element={
@@ -42,11 +54,9 @@ function App() {
             </LayoutWithNavigation>
           } />
           
-          {/* Si tienes la ruta /pets que aparece en tu navigation */}
           <Route path="/pets" element={
             <LayoutWithNavigation>
-              {/* Aquí deberías tener un componente PetsPage */}
-              <div>Pets Page - Crea este componente</div>
+              <div>Pets Page</div>
             </LayoutWithNavigation>
           } />
         </Routes>
