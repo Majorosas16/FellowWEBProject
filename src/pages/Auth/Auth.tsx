@@ -59,13 +59,18 @@ const Auth: React.FC = () => {
   return (
     <div className="auth-container">
       <div className="auth-content">
+        <div className="auth-logo">
+          <img 
+            src="/images/Logo.png" 
+            alt="Fellow Logo" 
+            className="auth-logo-img"
+          />
+        </div>
+        
         <div className="auth-header">
           <button className="back-button" onClick={handleBackClick}>
             ← Back
           </button>
-          <h1 className="auth-title">
-            {mode === 'login' ? 'Welcome Back' : 'Create Account'}
-          </h1>
         </div>
 
         <div className="auth-toggle">
@@ -84,6 +89,9 @@ const Auth: React.FC = () => {
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
+          <h1 className="auth-title">
+            {mode === 'login' ? 'Welcome Back' : 'Welcome to Fellow'}
+          </h1>
           {mode === 'signup' && (
             <>
               <Input
