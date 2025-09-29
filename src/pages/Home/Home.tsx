@@ -7,6 +7,7 @@ import "./Home.css";
  * Home page component with Login and Register buttons
  * Entry point of the application
  */
+
 const Home: React.FC = () => {
   const navigate = useNavigate();
 
