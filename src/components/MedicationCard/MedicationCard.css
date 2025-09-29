@@ -16,7 +16,7 @@
   height: 60px;
   border-radius: 50%;
   overflow: hidden;
-  background: #667eea;
+  background: #4B1CB3;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,9 +50,9 @@
 .skip-button {
   flex: 1;
   padding: 8px 12px;
-  border: 2px solid #667eea;
+  border: 2px solid #4B1CB3;
   background: transparent;
-  color: #667eea;
+  color: #4B1CB3;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
@@ -61,7 +61,7 @@
 }
 
 .skip-button:hover {
-  background: #667eea;
+  background: #4B1CB3;
   color: white;
 }
 
@@ -69,7 +69,7 @@
   flex: 1;
   padding: 8px 12px;
   border: none;
-  background: #667eea;
+  background: #4B1CB3;
   color: white;
   border-radius: 8px;
   font-size: 14px;
@@ -79,6 +79,6 @@
 }
 
 .taken-button:hover {
-  background: #5a67d8;
+  background: #2c077d;
   transform: translateY(-1px);
 }

@@ -44,14 +44,14 @@
   grid-template-columns: repeat(7, 1fr);
   gap: 3px;
   margin-bottom: 8px;
-  border-bottom: 2px solid #6366f1;
+  border-bottom: 2px solid #4B1CB3;
   padding-bottom: 6px;
 }
 
 .weekday {
   text-align: center;
   font-weight: 600;
-  color: #6366f1;
+  color: #4B1CB3;
   font-size: 11px;
   padding: 2px 0;
 }
@@ -93,11 +93,11 @@
   background-color: #f3f4f6;
   color: #374151;
   font-weight: 600;
-  border: 2px solid #6366f1;
+  border: 2px solid #4B1CB3;
 }
 
 .day-cell.selected {
-  background-color: #6366f1;
+  background-color: #4B1CB3;
   color: white;
   font-weight: 600;
   transform: translateY(-1px);
@@ -105,5 +105,5 @@
 }
 
 .day-cell.selected:hover {
-  background-color: #5856eb;
+  background-color: #4B1CB3;
 }

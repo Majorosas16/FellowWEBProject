@@ -6,7 +6,7 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: #667eea;
+  background: #4B1CB3;
   border: none;
   color: white;
   cursor: pointer;
@@ -19,7 +19,7 @@
 }
 
 .notification-button:hover {
-  background: #5a67d8;
+  background: #200757;
   transform: scale(1.1);
   box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
 }
