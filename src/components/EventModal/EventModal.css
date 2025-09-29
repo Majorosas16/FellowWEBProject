@@ -68,7 +68,7 @@
 }
 
 .create-event-button {
-  background: #667eea;
+  background: #4B1CB3;
   color: white;
   border: none;
   border-radius: 12px;
@@ -81,7 +81,7 @@
 }
 
 .create-event-button:hover {
-  background: #5a67d8;
+  background: #310e7c;
   transform: translateY(-1px);
 }
 

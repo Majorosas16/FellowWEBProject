@@ -51,7 +51,7 @@
 }
 
 .event-option.selected {
-  border-color: #667eea;
+  border-color: #4B1CB3;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
@@ -123,5 +123,5 @@
 }
 
 .cancel-button:hover {
-  color: #5a67d8;
+  color: #4B1CB3;
 }

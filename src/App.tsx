@@ -57,6 +57,7 @@ function App() {
           <Route path="/pets" element={
             <LayoutWithNavigation>
               <div>Pets Page</div>
+              
             </LayoutWithNavigation>
           } />
         </Routes>
