@@ -1,0 +1,82 @@
+/* SuccessEvent page styles */
+.success-event-container {
+  min-height: 100vh;
+  background: #1a202c;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.success-event-content {
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.success-event-header {
+  margin-bottom: 40px;
+}
+
+.success-event-title {
+  color: white;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.success-event-subtitle {
+  color: white;
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.success-event-image {
+  margin-bottom: 40px;
+}
+
+.pet-image-circle {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: #fbbf24;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.success-pet-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.success-event-actions {
+  margin-bottom: 24px;
+}
+
+.continue-button {
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.continue-button:hover {
+  background: #5a67d8;
+  transform: translateY(-1px);
+}
+
+.continue-button:active {
+  transform: translateY(0);
+}

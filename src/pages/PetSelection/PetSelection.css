@@ -1,0 +1,130 @@
+/* PetSelection page styles */
+.pet-selection-container {
+  min-height: 100vh;
+  background: #1a202c;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pet-selection-content {
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.pet-selection-header {
+  margin-bottom: 40px;
+}
+
+.pet-selection-title {
+  color: white;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.pet-selection-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.pet-option {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+}
+
+.pet-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.pet-option.selected {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.pet-option-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cat-image {
+  background: #667eea;
+}
+
+.dog-image {
+  background: #fbbf24;
+}
+
+.pet-selection-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.pet-option-name {
+  color: #667eea;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.pet-selection-actions {
+  margin-bottom: 24px;
+}
+
+.continue-button {
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.continue-button:hover:not(:disabled) {
+  background: #5a67d8;
+  transform: translateY(-1px);
+}
+
+.continue-button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.cancel-link {
+  text-align: center;
+}
+
+.cancel-button {
+  background: none;
+  border: none;
+  color: #667eea;
+  text-decoration: underline;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.cancel-button:hover {
+  color: #5a67d8;
+}

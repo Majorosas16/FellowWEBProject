@@ -1,0 +1,122 @@
+/* GenericEvent page styles */
+.generic-event-container {
+  min-height: 100vh;
+  background: #1a202c;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.generic-event-content {
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.generic-event-header {
+  margin-bottom: 32px;
+}
+
+.generic-event-title {
+  color: white;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.generic-event-icon {
+  margin-bottom: 32px;
+}
+
+.generic-icon-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #fbbf24;
+  color: #1a202c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.generic-event-form {
+  margin-bottom: 24px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 2px solid #374151;
+  background: transparent;
+  color: white;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-bottom-color: #667eea;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.form-actions {
+  margin-top: 32px;
+}
+
+.submit-button {
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.submit-button:hover {
+  background: #5a67d8;
+  transform: translateY(-1px);
+}
+
+.submit-button:active {
+  transform: translateY(0);
+}
+
+.cancel-link {
+  text-align: center;
+}
+
+.cancel-button {
+  background: none;
+  border: none;
+  color: #667eea;
+  text-decoration: underline;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.cancel-button:hover {
+  color: #5a67d8;
+}
