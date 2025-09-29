@@ -7,15 +7,17 @@ import {
   Success,
   Dashboard,
   Profile,
+  CalendarPage,
+  PetSelection,
+  EventType,
+  MedicineEvent,
+  GenericEvent,
+  SuccessEvent,
+  LayoutWithNavigation,
+
 } from "./pages";
+
 import "./App.css";
-import CalendarPage from "./pages/Calendar/CalendarPage";
-import PetSelection from "./pages/PetSelection/PetSelection";
-import EventType from "./pages/EventType/EventType";
-import MedicineEvent from "./pages/MedicineEvent/MedicineEvent";
-import GenericEvent from "./pages/GenericEvent/GenericEvent";
-import SuccessEvent from "./pages/SuccessEvent/SuccessEvent";
-import LayoutWithNavigation from "./components/LayoutWithNavigation/LayoutWithNavigation";
 
 function App() {
   return (
@@ -23,7 +25,7 @@ function App() {
       <div className="app">
         <Routes>
           
-          {/* Rutas SIN navegación */}
+          {/* Routes without Bottom Navigation */}
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/pet-type" element={<PetTypePage />} />
@@ -57,7 +59,7 @@ function App() {
           <Route path="/pets" element={
             <LayoutWithNavigation>
               <div>Pets Page</div>
-              
+
             </LayoutWithNavigation>
           } />
         </Routes>
