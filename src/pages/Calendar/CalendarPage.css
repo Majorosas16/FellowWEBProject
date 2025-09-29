@@ -1,6 +1,4 @@
 .calendar-page {
-  width: 390px;
-  height: 844px;
   background: #f8f9fa;
   padding: 15px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -119,5 +117,3 @@
   margin: 0;
   font-size: 14px;
 }
-
-/* Eliminar responsive ya que tenemos dimensiones fijas */

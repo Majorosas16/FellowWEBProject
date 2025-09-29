@@ -2,10 +2,6 @@ import React, { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import './MedicineEvent.css'
 
-/**
- * MedicineEvent page component
- * Form for creating medicine-related events
- */
 const MedicineEvent: React.FC = () => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()

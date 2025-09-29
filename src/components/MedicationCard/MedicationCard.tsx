@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from '../Button'
+// import Button from '../Button'
 import './MedicationCard.css'
 
 export interface MedicationCardProps {
@@ -10,11 +10,6 @@ export interface MedicationCardProps {
   onTaken: () => void
   className?: string
 }
-
-/**
- * Medication card component for displaying pet medications
- * Shows pet image, medication name, and action buttons
- */
 const MedicationCard: React.FC<MedicationCardProps> = ({
   petName,
   petImage,
