@@ -8,7 +8,7 @@ import "./Home.css";
  * Entry point of the application
  */
 
-const Home: React.FC = () => {
+const Home: React.FC = () => {  
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
