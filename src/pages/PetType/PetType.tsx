@@ -71,17 +71,15 @@ const PetType: React.FC = () => {
             </div>
             <h3 className="pet-option-title">Dog</h3>
           </div>
+        </div>
 
-          <div className="skip-text-container">
-            <button
-              className={`skip-text ${
-                selectedType === "skip" ? "selected" : ""
-              }`}
-              onClick={() => handleTypeSelect("skip")}
-            >
-              Do it later
-            </button>
-          </div>
+        <div className="skip-text-container">
+          <button
+            className={`skip-text ${selectedType === "skip" ? "selected" : ""}`}
+            onClick={() => handleTypeSelect("skip")}
+          >
+            Do it later
+          </button>
         </div>
 
         <div className="pet-type-actions">
