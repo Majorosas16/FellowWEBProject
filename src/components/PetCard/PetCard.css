@@ -1,0 +1,62 @@
+/* ADD PET CARD STYLING */
+.add-pet-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.add-pet-card:hover {
+  transform: scale(1.02);
+}
+
+.add-pet-left {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+}
+
+.add-icon {
+  font-size: 40px;
+  color: #7e57c2; /* tono violeta igual al de los iconos */
+  font-weight: 300;
+  line-height: 1;
+}
+
+.add-pet-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.add-pet-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2c2c2c;
+  margin-bottom: 10px;
+}
+
+.add-pet-silhouettes {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.cat-sil {
+  width: 40px;
+  filter: brightness(0) saturate(100%); /* negro */
+}
+
+.dog-sil {
+  width: 45px;
+  filter: invert(34%) sepia(83%) saturate(450%) hue-rotate(230deg)
+    brightness(100%) contrast(95%); /* violeta */
+}

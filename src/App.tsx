@@ -8,6 +8,7 @@ import {
   Dashboard,
   Profile,
   CalendarPage,
+  PetsPage,
   PetSelection,
   EventType,
   MedicineEvent,
@@ -67,7 +68,7 @@ function App() {
             path="/pets"
             element={
               <LayoutWithNavigation>
-                <div>Pets Page</div>
+                <PetsPage />
               </LayoutWithNavigation>
             }
           />

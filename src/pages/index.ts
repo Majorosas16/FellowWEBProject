@@ -13,6 +13,7 @@ export { default as MedicineEvent } from "./MedicineEvent/MedicineEvent";
 export { default as GenericEvent } from "./GenericEvent/GenericEvent";
 export { default as SuccessEvent } from "./SuccessEvent/SuccessEvent";
 export { default as LayoutWithNavigation } from "../components/LayoutWithNavigation/LayoutWithNavigation";
+export { default as PetsPage } from "./Pets/PetsPage";
 
 // Export types
 export type { PetType } from "./PetType/PetType";

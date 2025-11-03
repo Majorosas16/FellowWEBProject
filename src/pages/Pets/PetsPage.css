@@ -1,0 +1,74 @@
+.pet-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 14px 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.add-pet-icons {
+  display: flex;
+  flex-direction: row;
+}
+
+.pet-avatar {
+  border-radius: 50%;
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pet-photo {
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.pet-info {
+  flex: 1;
+  margin-left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pet-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #333;
+}
+
+.pet-age {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.pet-vaccines {
+  color: #7e57c2;
+  font-size: 0.85rem;
+}
+
+.pet-medicines {
+  color: #3e9a5b;
+  font-size: 0.85rem;
+}
+
+.pet-medicines.no-meds {
+  color: #c62828;
+  font-weight: 500;
+}
+
+.pet-alert {
+  background: #f3e8ff;
+  border-radius: 50%;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
