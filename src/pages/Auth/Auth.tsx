@@ -69,7 +69,7 @@ const Auth: React.FC = () => {
     setIsSubmitting(true);
 
     if (!isPasswordValid) {
-      setErrorMessage("Contraseña debe tener al menos 6 caracteres.");
+      setErrorMessage("Password must be at least 6 characters long.");
       setIsSubmitting(false);
       return;
     }
@@ -97,7 +97,7 @@ const Auth: React.FC = () => {
           );
           setModalVisible(true);
         } else {
-          setErrorMessage(err.message || "Error en login.");
+          setErrorMessage(err.message || "Login Error.");
         }
         console.error(err);
       }
@@ -115,7 +115,7 @@ const Auth: React.FC = () => {
         navigate("/pet-type");
       } catch (error) {
         const err = error as FirebaseError;
-        setErrorMessage(err.message || "Error en registro.");
+        setErrorMessage(err.message || "Registration Error.");
         console.error(err);
       }
     }
@@ -206,7 +206,7 @@ const Auth: React.FC = () => {
           />
           {!meetsMinPasswordLength && password.length > 0 && (
             <p style={{ color: "red", marginTop: "5px" }}>
-              Contraseña insuficiente
+              Insufficient password (min 6 characters).
             </p>
           )}
 
