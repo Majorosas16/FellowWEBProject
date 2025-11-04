@@ -1,3 +1,4 @@
+import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   Home,
@@ -16,60 +17,147 @@ import {
   SuccessEvent,
   LayoutWithNavigation,
 } from "./pages";
-
-import "./App.css";
+import { ProtectedRoutes } from "./components/ProtectedRoutes";
+import { auth } from "./services/firebaseConfig";
+import { db } from "./services/firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { clearUser, setUser } from "./redux/slices/authSlice";
+import { useEffect } from "react";
+import { setDoc, doc } from "firebase/firestore";
 
 function App() {
+  const dispatch = useDispatch();
+
+  // Mantiene el usuario en el Redux y la base de datos cuando inicia/cierra sesión
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        dispatch(setUser(user.uid));
+        // Registrar en Firestore si lo deseas
+        await setDoc(doc(db, "users", user.uid), {
+          createdAt: String(new Date()),
+        });
+      } else {
+        dispatch(clearUser());
+      }
+    });
+    return () => unsubscribe();
+  }, [dispatch]);
+
   return (
     <Router>
       <div className="app">
         <Routes>
-          {/* Routes without Bottom Navigation */}
+          {/* Rutas públicas: solo Home y Auth */}
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/pet-type" element={<PetTypePage />} />
-          <Route path="/pet-registration" element={<PetRegistration />} />
-          <Route path="/success" element={<Success />} />
 
-          {/* Event creation */}
-          <Route path="/pet-selection" element={<PetSelection />} />
-          <Route path="/event-type" element={<EventType />} />
-          <Route path="/medicine-event" element={<MedicineEvent />} />
-          <Route path="/generic-event" element={<GenericEvent />} />
-          <Route path="/success-event" element={<SuccessEvent />} />
+          {/* Todas las demás rutas protegidas */}
+          <Route
+            path="/pet-type"
+            element={
+              <ProtectedRoutes>
+                <PetTypePage />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/pet-registration"
+            element={
+              <ProtectedRoutes>
+                <PetRegistration />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/success"
+            element={
+              <ProtectedRoutes>
+                <Success />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/pet-selection"
+            element={
+              <ProtectedRoutes>
+                <PetSelection />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/event-type"
+            element={
+              <ProtectedRoutes>
+                <EventType />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/medicine-event"
+            element={
+              <ProtectedRoutes>
+                <MedicineEvent />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/generic-event"
+            element={
+              <ProtectedRoutes>
+                <GenericEvent />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/success-event"
+            element={
+              <ProtectedRoutes>
+                <SuccessEvent />
+              </ProtectedRoutes>
+            }
+          />
 
-          {/* Routes with Bottom Navigation */}
+          {/* Rutas con navegación inferior protegidas */}
           <Route
             path="/dashboard"
             element={
-              <LayoutWithNavigation>
-                <Dashboard />
-              </LayoutWithNavigation>
+              <ProtectedRoutes>
+                <LayoutWithNavigation>
+                  <Dashboard />
+                </LayoutWithNavigation>
+              </ProtectedRoutes>
             }
           />
           <Route
             path="/profile"
             element={
-              <LayoutWithNavigation>
-                <Profile />
-              </LayoutWithNavigation>
+              <ProtectedRoutes>
+                <LayoutWithNavigation>
+                  <Profile />
+                </LayoutWithNavigation>
+              </ProtectedRoutes>
             }
           />
           <Route
             path="/calendar"
             element={
-              <LayoutWithNavigation>
-                <CalendarPage />
-              </LayoutWithNavigation>
+              <ProtectedRoutes>
+                <LayoutWithNavigation>
+                  <CalendarPage />
+                </LayoutWithNavigation>
+              </ProtectedRoutes>
             }
           />
-
           <Route
             path="/pets"
             element={
-              <LayoutWithNavigation>
-                <PetsPage />
-              </LayoutWithNavigation>
+              <ProtectedRoutes>
+                <LayoutWithNavigation>
+                  <PetsPage />
+                </LayoutWithNavigation>
+              </ProtectedRoutes>
             }
           />
         </Routes>
