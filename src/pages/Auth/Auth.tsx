@@ -3,8 +3,11 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import Button from "../../components/ButtonCopy";
 import Input from "../../components/Input/Input";
 import ModalError from "../../components/ModalErrorAuth/ModalError";
-import LoadingScreen from "../../components/LoadingScreen/LoadingScreen"; // nuevo loader
+import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import "./Auth.css";
+
+// Importa tu tipo UserType
+import type { UserType } from "../../types/userType";
 
 import { auth } from "../../services/firebaseConfig";
 import { db } from "../../services/firebaseConfig";
@@ -96,9 +99,7 @@ const Auth: React.FC = () => {
           err.code === "auth/wrong-password" ||
           err.code === "auth/invalid-credential"
         ) {
-          setModalMessage(
-            "Ops! User and password don't match."
-          );
+          setModalMessage("Ops! User and password don't match.");
           setModalVisible(true);
         } else {
           setErrorMessage(err.message || "Login Error.");
@@ -115,14 +116,18 @@ const Auth: React.FC = () => {
         );
         const userID = userCredential.user.uid;
         dispatch(setUser(userID));
-        // Guardar en Firestore los datos del registro
-        await setDoc(doc(db, "users", userID), {
+
+        // Define el usuario conforme a UserType (sin password para BD)
+        const newUser: Omit<UserType, "password"> = {
+          id: userID,
           name,
-          phone,
+          phoneNumber: phone,
           email,
-          createdAt: String(new Date()),
-        });
-        // Aquí guardar name y phone en perfil o BD si se requiere
+        };
+
+        // Guardar en Firestore los datos del registro (sin password)
+        await setDoc(doc(db, "users", userID), newUser);
+
         navigate("/pet-type");
       } catch (error) {
         const err = error as FirebaseError;
