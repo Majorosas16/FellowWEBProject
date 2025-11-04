@@ -34,7 +34,7 @@ function App() {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         dispatch(setUser(user.uid));
-        // Registrar en Firestore si lo deseas
+        // Registrar en Firestore si es un nuevo usuario
         await setDoc(doc(db, "users", user.uid), {
           createdAt: String(new Date()),
         });

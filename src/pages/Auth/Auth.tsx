@@ -6,12 +6,14 @@ import ModalError from "../../components/ModalErrorAuth/ModalError";
 import "./Auth.css";
 
 import { auth } from "../../services/firebaseConfig";
+import { db } from "../../services/firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   validatePassword,
 } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
+import { setDoc, doc } from "firebase/firestore";
 
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/slices/authSlice";
@@ -63,6 +65,7 @@ const Auth: React.FC = () => {
 
   const isPasswordValid = meetsMinPasswordLength === true;
 
+  // Función que maneja el registro/login y está en el botón de enviar
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
@@ -111,6 +114,13 @@ const Auth: React.FC = () => {
         );
         const userID = userCredential.user.uid;
         dispatch(setUser(userID));
+        // Guardar en Firestore los datos del registro
+        await setDoc(doc(db, "users", userID), {
+          name,
+          phone,
+          email,
+          createdAt: String(new Date()),
+        });
         // Aquí guardar name y phone en perfil o BD si se requiere
         navigate("/pet-type");
       } catch (error) {
