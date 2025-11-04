@@ -93,7 +93,7 @@ const Auth: React.FC = () => {
           err.code === "auth/invalid-credential"
         ) {
           setModalMessage(
-            "Usuario y contraseña no coinciden. Vuelve a intentarlo."
+            "Ops! User and password don't match."
           );
           setModalVisible(true);
         } else {

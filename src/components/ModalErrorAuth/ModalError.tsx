@@ -15,7 +15,7 @@ const ModalError: React.FC<ModalErrorProps> = ({ open, message, onClose }) => {
       <div className="modal-error-content">
         <p>{message}</p>
         <button className="modal-error-close-btn" onClick={onClose}>
-          Cerrar
+          Try Again
         </button>
       </div>
     </div>
