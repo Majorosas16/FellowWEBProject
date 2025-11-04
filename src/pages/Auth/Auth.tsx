@@ -65,7 +65,6 @@ const Auth: React.FC = () => {
 
   const isPasswordValid = meetsMinPasswordLength === true;
 
-  // Función que maneja el registro/login y está en el botón de enviar
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");

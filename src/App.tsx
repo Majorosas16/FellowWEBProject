@@ -19,25 +19,19 @@ import {
 } from "./pages";
 import { ProtectedRoutes } from "./components/ProtectedRoutes";
 import { auth } from "./services/firebaseConfig";
-import { db } from "./services/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { clearUser, setUser } from "./redux/slices/authSlice";
 import { useEffect } from "react";
-import { setDoc, doc } from "firebase/firestore";
 
 function App() {
   const dispatch = useDispatch();
 
   // Mantiene el usuario en el Redux y la base de datos cuando inicia/cierra sesión
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         dispatch(setUser(user.uid));
-        // Registrar en Firestore si es un nuevo usuario
-        await setDoc(doc(db, "users", user.uid), {
-          createdAt: String(new Date()),
-        });
       } else {
         dispatch(clearUser());
       }
