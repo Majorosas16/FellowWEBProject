@@ -12,10 +12,6 @@ export interface InputProps {
   disabled?: boolean;
 }
 
-/**
- * Reusable Input component for forms
- * Designed for mobile-first responsive design
- */
 const Input: React.FC<InputProps> = ({
   type,
   placeholder,

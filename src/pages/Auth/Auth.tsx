@@ -8,6 +8,7 @@ import { auth } from "../../services/firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  validatePassword,
 } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 
@@ -28,6 +29,11 @@ const Auth: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Validación de contraseña con Firebase
+  const [meetsMinPasswordLength, setMeetsMinPasswordLength] = useState<
+    boolean | undefined
+  >(false);
+
   useEffect(() => {
     const urlMode = searchParams.get("mode");
     if (urlMode === "login" || urlMode === "signup") {
@@ -35,7 +41,24 @@ const Auth: React.FC = () => {
     }
   }, [searchParams]);
 
-  const isPasswordValid = password.length >= 6; // Validación mínima para Firebase
+  // Validar contraseña cada vez que cambia
+  useEffect(() => {
+    if (password === "") {
+      setMeetsMinPasswordLength(false);
+      return;
+    }
+    const checkPassword = async () => {
+      try {
+        const status = await validatePassword(auth, password);
+        setMeetsMinPasswordLength(status.meetsMinPasswordLength);
+      } catch {
+        setMeetsMinPasswordLength(false);
+      }
+    };
+    checkPassword();
+  }, [password]);
+
+  const isPasswordValid = meetsMinPasswordLength === true;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,7 +97,7 @@ const Auth: React.FC = () => {
         );
         const userID = userCredential.user.uid;
         dispatch(setUser(userID));
-        // Aquí podrías guardar name y phone en el perfil o BD si quieres
+        // Aquí guardar name y phone en perfil o BD si se requiere
         navigate("/pet-type");
       } catch (error) {
         const err = error as FirebaseError;
@@ -167,6 +190,11 @@ const Auth: React.FC = () => {
             required
             disabled={isSubmitting}
           />
+          {!meetsMinPasswordLength && password.length > 0 && (
+            <p style={{ color: "red", marginTop: "5px" }}>
+              Contraseña insuficiente
+            </p>
+          )}
 
           {errorMessage && (
             <p className="auth-error" style={{ color: "red" }}>
