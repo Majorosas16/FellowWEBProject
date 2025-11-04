@@ -4,12 +4,19 @@ import Button from "../../components/ButtonCopy";
 import Input from "../../components/Input/Input";
 import "./Auth.css";
 
-/**
- * Authentication page component with Login/Signup toggle
- * Handles both login and registration forms
- */
+import { auth } from "../../services/firebaseConfig";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { FirebaseError } from "firebase/app";
+
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/slices/authSlice";
+
 const Auth: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const [mode, setMode] = useState<"login" | "signup">("login");
 
@@ -18,6 +25,8 @@ const Auth: React.FC = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const urlMode = searchParams.get("mode");
@@ -26,30 +35,55 @@ const Auth: React.FC = () => {
     }
   }, [searchParams]);
 
-  // const handleModeToggle = () => {
-  //   const newMode = mode === 'login' ? 'signup' : 'login';
-  //   setMode(newMode);
-  //   // Clear form when switching modes
-  //   setName('');
-  //   setPhone('');
-  //   setEmail('');
-  //   setPassword('');
-  // };
+  const isPasswordValid = password.length >= 6; // Validación mínima para Firebase
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage("");
+    setIsSubmitting(true);
+
+    if (!isPasswordValid) {
+      setErrorMessage("Contraseña debe tener al menos 6 caracteres.");
+      setIsSubmitting(false);
+      return;
+    }
 
     if (mode === "login") {
-      // Handle login logic
-      console.log("Login:", { email, password });
-      // For demo purposes, navigate to pet type selection
-      navigate("/pet-type");
+      // Login
+      try {
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const userID = userCredential.user.uid;
+        dispatch(setUser(userID));
+        navigate("/pet-type");
+      } catch (error) {
+        const err = error as FirebaseError;
+        setErrorMessage(err.message || "Error en login.");
+        console.error(err);
+      }
     } else {
-      // Handle signup logic
-      console.log("Signup:", { name, phone, email, password });
-      // For demo purposes, navigate to pet type selection
-      navigate("/pet-type");
+      // Signup
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const userID = userCredential.user.uid;
+        dispatch(setUser(userID));
+        // Aquí podrías guardar name y phone en el perfil o BD si quieres
+        navigate("/pet-type");
+      } catch (error) {
+        const err = error as FirebaseError;
+        setErrorMessage(err.message || "Error en registro.");
+        console.error(err);
+      }
     }
+
+    setIsSubmitting(false);
   };
 
   const handleBackClick = () => {
@@ -77,12 +111,14 @@ const Auth: React.FC = () => {
           <button
             className={`toggle-button ${mode === "login" ? "active" : ""}`}
             onClick={() => setMode("login")}
+            disabled={isSubmitting}
           >
             Login
           </button>
           <button
             className={`toggle-button ${mode === "signup" ? "active" : ""}`}
             onClick={() => setMode("signup")}
+            disabled={isSubmitting}
           >
             Sign Up
           </button>
@@ -92,6 +128,7 @@ const Auth: React.FC = () => {
           <h1 className="auth-title">
             {mode === "login" ? "Welcome Back" : "Welcome to Fellow"}
           </h1>
+
           {mode === "signup" && (
             <>
               <Input
@@ -100,6 +137,7 @@ const Auth: React.FC = () => {
                 value={name}
                 onChange={setName}
                 required
+                disabled={isSubmitting}
               />
               <Input
                 type="tel"
@@ -107,6 +145,7 @@ const Auth: React.FC = () => {
                 value={phone}
                 onChange={setPhone}
                 required
+                disabled={isSubmitting}
               />
             </>
           )}
@@ -117,6 +156,7 @@ const Auth: React.FC = () => {
             value={email}
             onChange={setEmail}
             required
+            disabled={isSubmitting}
           />
 
           <Input
@@ -125,12 +165,20 @@ const Auth: React.FC = () => {
             value={password}
             onChange={setPassword}
             required
+            disabled={isSubmitting}
           />
+
+          {errorMessage && (
+            <p className="auth-error" style={{ color: "red" }}>
+              {errorMessage}
+            </p>
+          )}
 
           <Button
             variant="primary"
             text={mode === "login" ? "Login" : "Register"}
             onClick={() => {}}
+            disabled={isSubmitting}
           />
         </form>
       </div>
