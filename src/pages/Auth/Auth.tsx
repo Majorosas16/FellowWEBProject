@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import Button from "../../components/ButtonCopy";
 import Input from "../../components/Input/Input";
 import ModalError from "../../components/ModalErrorAuth/ModalError";
+import LoadingScreen from "../../components/LoadingScreen/LoadingScreen"; // nuevo loader
 import "./Auth.css";
 
 import { auth } from "../../services/firebaseConfig";
@@ -65,6 +66,7 @@ const Auth: React.FC = () => {
 
   const isPasswordValid = meetsMinPasswordLength === true;
 
+  // Función que maneja el registro/login y está en el botón de enviar
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
@@ -137,109 +139,120 @@ const Auth: React.FC = () => {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-content">
-        <div className="auth-logo">
-          <img
-            src="/images/Logo.png"
-            alt="Fellow Logo"
-            className="auth-logo-img"
-          />
-        </div>
-
-        <div className="auth-header">
-          <button className="back-button" onClick={handleBackClick}>
-            ← Back
-          </button>
-        </div>
-
-        <div className="auth-toggle">
-          <button
-            className={`toggle-button ${mode === "login" ? "active" : ""}`}
-            onClick={() => setMode("login")}
-            disabled={isSubmitting}
-          >
-            Login
-          </button>
-          <button
-            className={`toggle-button ${mode === "signup" ? "active" : ""}`}
-            onClick={() => setMode("signup")}
-            disabled={isSubmitting}
-          >
-            Sign Up
-          </button>
-        </div>
-
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <h1 className="auth-title">
-            {mode === "login" ? "Welcome Back" : "Welcome to Fellow"}
-          </h1>
-
-          {mode === "signup" && (
-            <>
-              <Input
-                type="text"
-                placeholder="Full Name"
-                value={name}
-                onChange={setName}
-                required
-                disabled={isSubmitting}
-              />
-              <Input
-                type="tel"
-                placeholder="Phone Number"
-                value={phone}
-                onChange={setPhone}
-                required
-                disabled={isSubmitting}
-              />
-            </>
-          )}
-
-          <Input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={setEmail}
-            required
-            disabled={isSubmitting}
-          />
-
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={setPassword}
-            required
-            disabled={isSubmitting}
-          />
-          {!meetsMinPasswordLength && password.length > 0 && (
-            <p style={{ color: "red", marginTop: "5px" }}>
-              Insufficient password (min 6 characters).
-            </p>
-          )}
-
-          {errorMessage && (
-            <p className="auth-error" style={{ color: "red" }}>
-              {errorMessage}
-            </p>
-          )}
-
-          <Button
-            variant="primary"
-            text={mode === "login" ? "Login" : "Register"}
-            onClick={() => {}}
-            disabled={isSubmitting}
-          />
-        </form>
-
-        <ModalError
-          open={modalVisible}
-          message={modalMessage}
-          onClose={() => setModalVisible(false)}
+    <>
+      {isSubmitting && (
+        <LoadingScreen
+          text={
+            mode === "login"
+              ? "Iniciando sesión..."
+              : "Registrando y creando tu cuenta..."
+          }
         />
+      )}
+      <div className="auth-container">
+        <div className="auth-content">
+          <div className="auth-logo">
+            <img
+              src="/images/Logo.png"
+              alt="Fellow Logo"
+              className="auth-logo-img"
+            />
+          </div>
+
+          <div className="auth-header">
+            <button className="back-button" onClick={handleBackClick}>
+              ← Back
+            </button>
+          </div>
+
+          <div className="auth-toggle">
+            <button
+              className={`toggle-button ${mode === "login" ? "active" : ""}`}
+              onClick={() => setMode("login")}
+              disabled={isSubmitting}
+            >
+              Login
+            </button>
+            <button
+              className={`toggle-button ${mode === "signup" ? "active" : ""}`}
+              onClick={() => setMode("signup")}
+              disabled={isSubmitting}
+            >
+              Sign Up
+            </button>
+          </div>
+
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <h1 className="auth-title">
+              {mode === "login" ? "Welcome Back" : "Welcome to Fellow"}
+            </h1>
+
+            {mode === "signup" && (
+              <>
+                <Input
+                  type="text"
+                  placeholder="Full Name"
+                  value={name}
+                  onChange={setName}
+                  required
+                  disabled={isSubmitting}
+                />
+                <Input
+                  type="tel"
+                  placeholder="Phone Number"
+                  value={phone}
+                  onChange={setPhone}
+                  required
+                  disabled={isSubmitting}
+                />
+              </>
+            )}
+
+            <Input
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={setEmail}
+              required
+              disabled={isSubmitting}
+            />
+
+            <Input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={setPassword}
+              required
+              disabled={isSubmitting}
+            />
+            {!meetsMinPasswordLength && password.length > 0 && (
+              <p style={{ color: "red", marginTop: "5px" }}>
+                Insufficient password (min 6 characters).
+              </p>
+            )}
+
+            {errorMessage && (
+              <p className="auth-error" style={{ color: "red" }}>
+                {errorMessage}
+              </p>
+            )}
+
+            <Button
+              variant="primary"
+              text={mode === "login" ? "Login" : "Register"}
+              onClick={() => {}}
+              disabled={isSubmitting}
+            />
+          </form>
+
+          <ModalError
+            open={modalVisible}
+            message={modalMessage}
+            onClose={() => setModalVisible(false)}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
