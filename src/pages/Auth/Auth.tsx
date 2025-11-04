@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Button from "../../components/ButtonCopy";
 import Input from "../../components/Input/Input";
+import ModalError from "../../components/ModalErrorAuth/ModalError";
 import "./Auth.css";
 
 import { auth } from "../../services/firebaseConfig";
@@ -20,6 +21,8 @@ const Auth: React.FC = () => {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const [mode, setMode] = useState<"login" | "signup">("login");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   // Form states
   const [name, setName] = useState("");
@@ -84,7 +87,18 @@ const Auth: React.FC = () => {
         navigate("/pet-type");
       } catch (error) {
         const err = error as FirebaseError;
-        setErrorMessage(err.message || "Error en login.");
+        if (
+          err.code === "auth/user-not-found" ||
+          err.code === "auth/wrong-password" ||
+          err.code === "auth/invalid-credential"
+        ) {
+          setModalMessage(
+            "Usuario y contraseña no coinciden. Vuelve a intentarlo."
+          );
+          setModalVisible(true);
+        } else {
+          setErrorMessage(err.message || "Error en login.");
+        }
         console.error(err);
       }
     } else {
@@ -209,6 +223,12 @@ const Auth: React.FC = () => {
             disabled={isSubmitting}
           />
         </form>
+
+        <ModalError
+          open={modalVisible}
+          message={modalMessage}
+          onClose={() => setModalVisible(false)}
+        />
       </div>
     </div>
   );
