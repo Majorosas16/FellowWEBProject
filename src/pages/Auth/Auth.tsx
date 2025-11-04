@@ -32,7 +32,7 @@ const Auth: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Validación de contraseña con Firebase
+  // Password validation state in Firebase
   const [meetsMinPasswordLength, setMeetsMinPasswordLength] = useState<
     boolean | undefined
   >(false);
@@ -44,7 +44,7 @@ const Auth: React.FC = () => {
     }
   }, [searchParams]);
 
-  // Validar contraseña cada vez que cambia
+  // Validate password whenever it changes
   useEffect(() => {
     if (password === "") {
       setMeetsMinPasswordLength(false);
