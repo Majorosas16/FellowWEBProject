@@ -144,8 +144,8 @@ const Auth: React.FC = () => {
         <LoadingScreen
           text={
             mode === "login"
-              ? "Iniciando sesión..."
-              : "Registrando y creando tu cuenta..."
+              ? "Logging in..."
+              : "Hold on! we are creating your account..."
           }
         />
       )}
