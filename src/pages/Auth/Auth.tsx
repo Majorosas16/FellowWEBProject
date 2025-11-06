@@ -6,7 +6,6 @@ import ModalError from "../../components/ModalErrorAuth/ModalError";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import "./Auth.css";
 
-// Importa tu tipo UserType
 import type { UserType } from "../../types/userType";
 
 import { auth } from "../../services/firebaseConfig";
@@ -117,15 +116,13 @@ const Auth: React.FC = () => {
         const userID = userCredential.user.uid;
         dispatch(setUser(userID));
 
-        // Define el usuario conforme a UserType (sin password para BD)
-        const newUser: Omit<UserType, "password"> = {
+        const newUser: UserType = {
           id: userID,
           name,
           phoneNumber: phone,
           email,
         };
 
-        // Guardar en Firestore los datos del registro (sin password)
         await setDoc(doc(db, "users", userID), newUser);
 
         navigate("/pet-type");

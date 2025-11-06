@@ -1,5 +1,4 @@
 import React from 'react'
-import BottomNavigation from '../../components/BottomNavigation/BottomNavigation'
 import HealthEventCard from '../../components/HealthEventCard/HealthEventCard'
 import MedicationCard from '../../components/MedicationCard/MedicationCard'
 import NotificationButton from '../../components/NotificationButton/NotificationButton'
@@ -97,7 +96,7 @@ const Dashboard: React.FC = () => {
         <NotificationButton />
       </div>
 
-      <BottomNavigation />
+
     </div>
   )
 }

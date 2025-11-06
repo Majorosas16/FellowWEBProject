@@ -1,6 +1,5 @@
 import React from "react";
 import PetCard from "../../components/PetCard/PetCard";
-import BottomNavigation from "../../components/BottomNavigation/BottomNavigation";
 import NotificationButton from "../../components/NotificationButton/NotificationButton";
 import "./PetsPage.css";
 
@@ -77,7 +76,6 @@ const PetsPage: React.FC = () => {
       </div>
 
       <NotificationButton />
-      <BottomNavigation />
     </>
   );
 };
