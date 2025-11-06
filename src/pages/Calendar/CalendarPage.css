@@ -6,14 +6,24 @@
 }
 
 .calendar-content {
-  width: 100%;
+  flex: 1;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: left;
   background: #fafafc;
-  /* Si quieres un padding, ajústalo aquí */
+  position: relative;
+}
+
+.calendar-column {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 950px; /* Ajusta según el layout deseado */
+  margin-left: 48px; /* Da espacio desde el borde izquierdo tras el aside */
+  margin-top: 40px;
 }
 
 /* --- Layout principal y fondo --- */
@@ -27,16 +37,13 @@
   justify-content: flex-start;
 }
 
-/* Ajusta solo la columna derecha en desktop */
 .calendar-container {
+  width: 530px;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  max-width: 700px;
-  margin: 0 auto;
-  padding-top: 38px;
-  width: 100%;
+  align-items: flex-start;
 }
 
 /* --- Header del calendario --- */
@@ -76,39 +83,38 @@
   font-size: 2.2rem;
 }
 
-/* --- Semana y grid --- */
 .weekdays {
-  display: flex;
-  justify-content: center;
-  gap: 37px;
-  font-size: 1.1rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, 56px);
+  justify-content: flex-start;
+  font-size: 1.07rem;
   color: #7159c7;
-  font-weight: 600;
-  border-bottom: 3px solid #7159c7;
-  padding-bottom: 4px;
-  margin-bottom: 22px;
-  width: 95%;
+  font-weight: 700;
+  border-bottom: 4px solid #7159c7;
+  padding-bottom: 5px;
+  margin-bottom: 17px;
+  letter-spacing: 2px;
+  gap: 16px;
 }
 
 .weekday {
-  width: 41px;
+  width: 56px;
   text-align: center;
-  letter-spacing: 1px;
 }
 
-/* --- Grid de días --- */
 .days-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px 17px;
-  justify-content: center;
-  margin-bottom: 32px;
-  width: 92%;
+  display: grid;
+  grid-template-columns: repeat(7, 56px);
+  gap: 18px 16px;
+  margin-bottom: 27px;
+  width: 100%;
+  justify-content: flex-start;
 }
 
 .day-cell {
-  width: 54px;
-  height: 54px;
+  width: 56px;
+  height: 56px;
   background: #e9e9ec;
   color: #23233b;
   font-size: 1.18rem;
@@ -146,7 +152,7 @@
   margin-top: 14px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
 }
 
 .appointments-header {
@@ -159,7 +165,7 @@
   color: #393980;
   font-size: 1.13rem;
   letter-spacing: 1px;
-  width: 270px;
+  width: 60%;
 }
 
 /* --- Appointments list horizontal --- */
@@ -208,10 +214,12 @@
 }
 
 .no-appointments {
-  text-align: center;
+  text-align: left;
+  align-items: left;
+  
   color: #b4b4b4;
   font-size: 1.03rem;
-  margin: 38px 0 0 0;
+  margin: 38px 0 0 22px;
 }
 
 /* --- Scrollbar y detalles extra --- */

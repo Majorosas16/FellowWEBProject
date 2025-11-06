@@ -65,6 +65,7 @@ const CalendarPage: React.FC = () => {
     <div className="calendar-layout">
       <LeftNavigation />
       <main className="calendar-content">
+        <div className="calendar-column">
         <div className="calendar-container">
           <Calendar
             onDateSelect={handleDateSelect}
@@ -99,7 +100,7 @@ const CalendarPage: React.FC = () => {
             )}
           </section>
         </div>
-        {/* Mantén el botón de notificaciones aquí o donde lo necesites */}
+        </div>
         <NotificationButton />
       </main>
     </div>
