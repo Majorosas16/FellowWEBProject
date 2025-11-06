@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import LeftNavigation from "../../components/LeftNavigation/LeftNavigation";
 import Calendar from "../../components/Calendar/Calendar";
 import NotificationButton from "../../components/NotificationButton/NotificationButton";
 import "./CalendarPage.css";
@@ -20,55 +21,31 @@ const CalendarPage: React.FC = () => {
   const [appointments] = useState<Appointment[]>([
     {
       id: 1,
-      date: "2025-01-24", // Fecha de ejemplo
+      date: "2025-01-24",
       time: "11:00",
       person: "Pepe",
-      description: "Vomited",
-      color: "#6366f1",
+      description: "Vomited yellow",
+      color: "#7159c7",
     },
     {
       id: 2,
       date: "2025-01-24",
-      time: "12:00",
+      time: "13:00",
       person: "Oli",
-      description: "jump from the third floor",
-      color: "#6366f1",
+      description: "Vomited yellow",
+      color: "#7159c7",
     },
     {
       id: 3,
       date: "2025-01-24",
-      time: "18:35",
-      person: "Pepe",
-      description: "got hurt",
-      color: "#6366f1",
-    },
-    {
-      id: 4,
-      date: "2025-01-24",
-      time: "20:00",
-      person: "Luna",
-      description: "take the Cortizol Med",
-      color: "#6366f1",
-    },
-    {
-      id: 5,
-      date: "2025-01-25", // Otro día
-      time: "09:00",
-      person: "Max",
-      description: "Checkup",
-      color: "#6366f1",
-    },
-    {
-      id: 6,
-      date: "2025-01-26",
-      time: "14:30",
-      person: "Bella",
-      description: "Vaccination",
-      color: "#6366f1",
+      time: "17:00",
+      person: "Kiwi",
+      description: "Vomited yellow",
+      color: "#7159c7",
     },
   ]);
 
-  // Función que se ejecuta cuando seleccionas una fecha
+  // Función para manejar la fecha seleccionada
   const handleDateSelect = (date: Date): void => {
     setSelectedDate(date);
   };
@@ -76,7 +53,6 @@ const CalendarPage: React.FC = () => {
   // Filtrar citas por fecha seleccionada
   const getAppointmentsForDate = (date: Date | null): Appointment[] => {
     if (!date) return [];
-
     const dateString = date.toISOString().split("T")[0]; // Formato YYYY-MM-DD
     return appointments.filter(
       (appointment) => appointment.date === dateString
@@ -86,57 +62,48 @@ const CalendarPage: React.FC = () => {
   const appointmentsToShow = getAppointmentsForDate(selectedDate);
 
   return (
-    <div className="calendar-page">
-      {/* Header con notch space para móvil */}
-      <div className="calendar-page-header">
-        <div className="status-bar-space"></div>
-      </div>
-
-      {/* Contenedor principal */}
-      <div className="calendar-container">
-        {/* Componente Calendar */}
-        <div className="calendar-section">
+    <div className="calendar-layout">
+      <LeftNavigation />
+      <main className="calendar-content">
+        <div className="calendar-container">
           <Calendar
             onDateSelect={handleDateSelect}
             selectedDate={selectedDate}
           />
-        </div>
-
-        {/* Lista de citas */}
-        <div className="appointments-section">
-          <div className="appointments-header">
-            <h3>Booked Appointment List</h3>
-          </div>
-
-          {appointmentsToShow.length > 0 ? (
-            <div className="appointments-list">
-              {appointmentsToShow.map((appointment: Appointment) => (
-                <div key={appointment.id} className="appointment-item">
-                  <span className="appointment-time">{appointment.time}</span>
-                  <div
-                    className="appointment-indicator"
-                    style={{ backgroundColor: appointment.color }}
-                  ></div>
-                  <span className="appointment-person">
-                    {appointment.person}:
-                  </span>
-                  <span className="appointment-description">
-                    {appointment.description}
-                  </span>
-                </div>
-              ))}
+          <section className="appointments-section">
+            <div className="appointments-header">
+              <h3>Booked Appointment List</h3>
             </div>
-          ) : (
-            <div className="no-appointments">
-              <p>No appointments scheduled for this date</p>
-            </div>
-          )}
+            {appointmentsToShow.length > 0 ? (
+              <div className="appointments-list">
+                {appointmentsToShow.map((appointment: Appointment) => (
+                  <div key={appointment.id} className="appointment-item">
+                    <span className="appointment-time">{appointment.time}</span>
+                    <div
+                      className="appointment-indicator"
+                      style={{ backgroundColor: appointment.color }}
+                    ></div>
+                    <span className="appointment-person">
+                      {appointment.person}:
+                    </span>
+                    <span className="appointment-description">
+                      {appointment.description}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="no-appointments">
+                <p>No appointments scheduled for this date</p>
+              </div>
+            )}
+          </section>
         </div>
-      </div>
-      
-      <NotificationButton />
+        {/* Mantén el botón de notificaciones aquí o donde lo necesites */}
+        <NotificationButton />
+      </main>
     </div>
   );
 };
 
-export default CalendarPage
+export default CalendarPage;

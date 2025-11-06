@@ -1,0 +1,155 @@
+.logo-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start; /* O center si prefieres centrado */
+  align-items: center;
+  margin-bottom: 30px;
+  margin-top: 8px;
+}
+
+.logo-fellow-img {
+  max-width: 150%;
+  height: auto;
+  display: block;
+  /* Ajusta el tamaño según lo necesites */
+}
+
+.pets-section{
+  margin-top: 30%;
+}
+
+.your-pets {
+  background-color: #23233b;
+  color: #fff;
+  width: 30%;
+  min-height: 100vh;
+  padding: 32px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pets-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 32px;
+  letter-spacing: 1px;
+}
+
+.pets-list {
+  flex-grow: 1;
+}
+
+.pet-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 14px;
+  transition: background 0.2s;
+  margin-bottom: 16px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.pet-item--highlight {
+  background: #faf6ff33;
+}
+
+.pet-item--hover {
+  background: #574d89;
+}
+
+.pet-image {
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 1rem;
+  border: 3px solid #fff;
+}
+
+.pet-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.pet-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pet-name {
+  font-weight: 600;
+  font-size: 1.02rem;
+}
+
+.pet-date {
+  font-size: 0.98rem;
+  color: #46e172;
+  font-weight: 600;
+  margin-left: 6px;
+}
+
+.pet-status {
+  color: #aaa;
+  font-size: 0.97rem;
+  margin-top: 2px;
+}
+
+.add-pet-container{
+  display: flex;
+  justify-content: right;
+}
+.add-pet-btn {
+  background: #574d89;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  padding: 12px 0;
+  width: 40%;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 2.5rem;
+  margin-bottom: 1.8rem;
+  transition: background 0.2s;
+}
+
+.add-pet-btn:hover {
+  background: #7864cb;
+}
+
+.profile-area {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  margin-top: auto;
+  padding-top: 24px;
+  border-top: 1px solid #382e55;
+}
+
+.profile-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eee;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-name {
+  font-weight: bold;
+  font-size: 1.04rem;
+}
+
+.profile-email {
+  color: #b4b4b4;
+  font-size: 0.92rem;
+}
+

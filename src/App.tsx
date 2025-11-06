@@ -16,6 +16,7 @@ import {
   GenericEvent,
   SuccessEvent,
   LayoutWithNavigation,
+  // LeftNavigation,
 } from "./pages";
 import { ProtectedRoutes } from "./components/ProtectedRoutes";
 import { auth } from "./services/firebaseConfig";
