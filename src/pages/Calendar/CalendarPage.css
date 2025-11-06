@@ -38,8 +38,7 @@
 }
 
 .calendar-container {
-  width: 530px;
-  margin: 0;
+  width: 510px;
   padding: 0;
   display: flex;
   flex-direction: column;
