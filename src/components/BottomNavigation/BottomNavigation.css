@@ -55,7 +55,7 @@
   transform: scale(1.1);
 }
 
-/* Tablet y desktop */
+/* Tablet: puede cambiar alineación, pero se sigue viendo la barra */
 @media (min-width: 768px) {
   .bottom-navigation {
     position: relative;
@@ -65,5 +65,12 @@
     border-radius: 20px;
     margin: 20px auto;
     max-width: 400px;
+  }
+}
+
+/* DESKTOP: ocultar absolutamente la barra */
+@media (min-width: 900px) {
+  .bottom-navigation {
+    display: none !important;
   }
 }

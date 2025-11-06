@@ -30,3 +30,16 @@ button, input, select, textarea {
 html {
   scroll-behavior: smooth;
 }
+
+/* Asegúrate de que BottomNavigation tiene esta clase en el elemento raíz */
+.bottom-navigation {
+  display: flex;
+  /* tu estilo original */
+}
+
+/* Oculta la barra en escritorio desde 900px o el breakpoint que decidas */
+@media (min-width: 900px) {
+  .bottom-navigation {
+    display: none !important;
+  }
+}
