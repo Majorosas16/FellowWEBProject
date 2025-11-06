@@ -1,16 +1,46 @@
-/* Dashboard page styles - Mobile first approach */
+.dashboard-layout {
+  display: flex;
+  width: 100vw;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+/* Sidebar solo en desktop/tablet */
+.your-pets {
+  /* El width puede ajustarse según tu diseño visual */
+  width: 310px;
+  min-width: 230px;
+  max-width: 340px;
+  height: 100vh;
+}
+
+/* Oculta el sidebar en mobile */
+@media (max-width: 800px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+  .your-pets {
+    display: none !important;
+  }
+  .dashboard-container {
+    margin-left: 0;
+    padding-left: 0;
+  }
+}
+
 .dashboard-container {
+  flex: 1;
   min-height: 100vh;
   background: #f8fafc;
   background-image: radial-gradient(circle, #e2e8f0 1px, transparent 1px);
   background-size: 20px 20px;
   padding: 20px;
-  padding-bottom: 90px; /* Space for bottom navigation */
+  padding-bottom: 90px; /* Espacio para navegación bottom en mobile */
   position: relative;
 }
 
 .dashboard-content {
-  max-width: 600px;
+  max-width: 650px;
   margin: 0 auto;
   padding-top: 20px;
 }
@@ -20,12 +50,10 @@
   margin-bottom: 32px;
 }
 
-.app-name {
-  font-size: 24px;
-  font-weight: 700;
-  color: #4B1CB3;
-  margin: 0 0 16px 0;
-  font-family: 'Arial', sans-serif;
+.home-logo {
+  max-width: 128px;
+  display: block;
+  margin: 0 auto 18px auto;
 }
 
 .dashboard-title {
@@ -61,37 +89,48 @@
 .scrollable-cards {
   display: flex;
   overflow-x: auto;
-  gap: 12px;
+  gap: 13px;
   padding-bottom: 8px;
   -webkit-overflow-scrolling: touch;
 }
-
 .scrollable-cards::-webkit-scrollbar {
   display: none;
 }
-
 .scrollable-cards {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-
-/* Tablet and desktop styles */
-@media (min-width: 768px) {
+/* Estilos tablet/desktop mejorados */
+@media (min-width: 900px) {
   .dashboard-content {
     padding-top: 40px;
+    max-width: 800px;
   }
-  
-  .app-name {
-    font-size: 32px;
-  }
-  
   .dashboard-title {
     font-size: 36px;
   }
-  
+  .section-title {
+    font-size: 21px;
+  }
   .dashboard-subtitle {
     font-size: 18px;
   }
-  
+}
+
+/* Responsive para mobile ultra */
+@media (max-width: 600px) {
+  .dashboard-content {
+    padding-top: 14px;
+    max-width: 97vw;
+  }
+  .dashboard-title {
+    font-size: 22px;
+  }
+  .dashboard-subtitle {
+    font-size: 15px;
+  }
+  .section-title {
+    font-size: 1.08rem;
+  }
 }
