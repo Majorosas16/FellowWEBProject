@@ -230,17 +230,13 @@
 }
 
 @media (max-width: 600px) {
-  .calendar-layout {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
+  .calendar-layout,
   .calendar-content,
   .calendar-column {
-    min-height: 100vh;
     width: 100vw;
-    margin: 0;
+    max-width: 100vw;
     padding: 0;
+    margin: 0 auto;
     align-items: center;
     background: #fafafc;
   }
@@ -249,89 +245,105 @@
     width: 100vw;
     max-width: 100vw;
     align-items: center;
-    padding: 0;
     margin: 0;
+    padding: 0;
   }
 
   .calendar-header {
-    width: 100%;
-    font-size: 1.22rem;
-    margin: 10px 0 10px 0;
+    width: 100vw;
+    margin: 0;
     justify-content: center;
   }
+
   .month-year {
     font-size: 1.38rem;
     letter-spacing: 2px;
   }
+
   .weekdays {
     width: 100vw;
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    font-size: 1.11rem;
+    grid-template-columns: repeat(7, 44px);
+    font-size: 1.14rem;
     font-weight: bold;
-    padding: 0 2vw 0.6em 2vw;
-    margin-bottom: 6px;
-    letter-spacing: 1.5px;
+    margin: 0 auto 7px auto;
     border-bottom: 3.5px solid #7159c7;
+    letter-spacing: 1.7px;
     gap: 0;
-  }
-  .weekday {
-    width: 42px;
-    min-width: 36px;
-    text-align: center;
-    font-size: 1.12rem;
-    font-weight: bold;
+    justify-content: center; 
+    background: transparent;
     padding: 0;
   }
-  .days-grid {
-    width: 100vw;
-    padding: 0 1vw;
-    display: grid;
-    grid-template-columns: repeat(7, 42px);
-    gap: 6px 0;
-    margin-bottom: 15px;
-    justify-content: center;
-  }
-  .day-cell,
-  .day-cell.empty {
-    width: 42px;
-    height: 42px;
+
+  .weekday {
+    width: 44px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
     font-size: 1.15rem;
-    border-radius: 11px;
     margin: 0;
   }
-  /* Citas */
+
+  .days-grid {
+    width: 100vw;
+    display: grid;
+    grid-template-columns: repeat(7, 44px);
+    gap: 15px 0;
+    margin: 0 auto 18px auto;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .day-cell, .day-cell.empty {
+    width: 44px;
+    height: 44px;
+    font-size: 1.15rem;
+    border-radius: 10px;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+  /* cita/reserva */
   .appointments-section {
-    width: 98vw;
+    width: 99vw;
     align-items: center;
     padding: 0;
     margin: 0 auto;
   }
   .appointments-header {
-    width: 98vw;
-    font-size: 1.08rem;
-    margin-bottom: 12px;
-    padding: 12px 0;
-    border-radius: 18px;
+    width: 97vw;
+    font-size: 1.11rem;
+    margin-bottom: 16px;
+    padding: 13px 0;
+    border-radius: 19px;
   }
   .appointments-list {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: flex-end;
-    gap: 8vw;
-    width: 100vw;
-    font-size: 0.94rem;
+    gap: 7vw;
+    width: 99vw;
+    font-size: 0.97rem;
   }
   .appointment-item {
-    min-width: 89px;
-    font-size: 1.01rem;
+    min-width: 85px;
+    font-size: 1.03rem;
   }
-  .appointment-time {
-    font-size: 1.08rem;
+}
+
+/* Ajuste aún más compacto para pantallas extra-angostas */
+@media (max-width: 400px) {
+  .weekdays, .days-grid {
+    grid-template-columns: repeat(7, 35px);
   }
-  .appointment-description {
-    font-size: 0.93rem;
+  .weekday, .day-cell, .day-cell.empty {
+    width: 35px;
+    height: 35px;
+    font-size: 0.97rem;
+    border-radius: 7px;
   }
 }
 

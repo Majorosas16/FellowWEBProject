@@ -77,6 +77,7 @@ const CalendarPage: React.FC = () => {
             </div>
             {appointmentsToShow.length > 0 ? (
               <div className="appointments-list">
+                
                 {appointmentsToShow.map((appointment: Appointment) => (
                   <div key={appointment.id} className="appointment-item">
                     <span className="appointment-time">{appointment.time}</span>
