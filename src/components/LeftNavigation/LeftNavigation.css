@@ -51,10 +51,6 @@
   cursor: pointer;
 }
 
-.pet-item--highlight {
-  background: #faf6ff33;
-}
-
 .pet-item--hover {
   background: #574d89;
 }
