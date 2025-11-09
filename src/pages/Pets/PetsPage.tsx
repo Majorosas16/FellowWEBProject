@@ -1,32 +1,50 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { collection, onSnapshot } from "firebase/firestore";
+import { auth, db } from "../../services/firebaseConfig";
+import { setPets } from "../../redux/slices/petsSlice";
+import type { RootState } from "../../redux/store";
+import type { DocumentData } from "firebase/firestore";
 import PetCard from "../../components/PetCard/PetCard";
 import NotificationButton from "../../components/NotificationButton/NotificationButton";
 import "./PetsPage.css";
 
 const PetsPage: React.FC = () => {
-  const pets = [
-    {
-      id: 1,
-      name: "Kiwi",
-      type: "cat",
-      age: "18 months",
-      vaccines: "3/5 vaccines",
-      medicines: "2 medicines",
-      image: "/images/kiwi.png",
-      color: "#EAD7FF",
-    },
-    {
-      id: 2,
-      name: "Caneli",
-      type: "dog",
-      age: "12 months",
-      vaccines: "2/5 vaccines",
-      medicines: "Without medication",
-      image: "/images/caneli.png",
-      color: "#FFE8B3",
-      alert: true,
-    },
-  ];
+  const dispatch = useDispatch();
+  const pets = useSelector((state: RootState) => state.pets.pets);
+
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (!user) {
+      console.warn("No user logged in");
+      return;
+    }
+
+    // Referencia a la subcolección de mascotas del usuario
+    const petsRef = collection(db, "users", user.uid, "pets");
+
+    // Listener en tiempo real a los datos de Firestore
+    const unsubscribe = onSnapshot(petsRef, (snapshot) => {
+      const petsData = snapshot.docs.map((doc) => {
+        const data = doc.data() as DocumentData;
+        return {
+          id: doc.id,
+          name: data.name || "",
+          type: data.type || "",
+          age: data.age || "",
+          image: data.image || "",
+          color: data.color || "",
+          vaccines: data.vaccines || "",
+          medicines: data.medicines || "",
+        };
+      });
+
+      dispatch(setPets(petsData));
+    });
+
+    // Limpieza del listener al desmontar el componente
+    return () => unsubscribe();
+  }, [dispatch]);
 
   return (
     <>
@@ -37,7 +55,7 @@ const PetsPage: React.FC = () => {
           </div>
 
           <div className="pets-sections">
-            {/* Add Pet Section */}
+            {/* Sección para añadir una nueva mascota */}
             <div className="section-add">
               <div className="add-pet-card">
                 <p className="add-pet-text">Let’s say hi to...</p>
@@ -56,20 +74,24 @@ const PetsPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Pet List Section */}
+            {/* Sección donde se renderizan las mascotas */}
             <div className="section-pets">
-              {pets.map((pet) => (
-                <div key={pet.id} className="section-pet-card">
-                  <PetCard
-                    name={pet.name}
-                    age={pet.age}
-                    vaccines={pet.vaccines}
-                    medicines={pet.medicines}
-                    image={pet.image}
-                    color={pet.color}
-                  />
-                </div>
-              ))}
+              {pets.length === 0 ? (
+                <p>No pets registered yet 🐾</p>
+              ) : (
+                pets.map((pet) => (
+                  <div key={pet.id} className="section-pet-card">
+                    <PetCard
+                      name={pet.name}
+                      age={pet.age || ""}
+                      vaccines={pet.vaccines || ""}
+                      medicines={pet.medicines || ""}
+                      image={pet.image || "/images/default-pet.png"}
+                      color={pet.color || "#FFE8B3"}
+                    />
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
