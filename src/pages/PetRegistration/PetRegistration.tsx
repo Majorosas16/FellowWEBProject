@@ -5,6 +5,8 @@ import Input from "../../components/Input/Input";
 import PetPhoto from "../../components/PetPhoto/PetPhoto";
 import "./PetRegistration.css";
 
+import { collection, addDoc } from "firebase/firestore";
+import { auth, db } from "../../services/firebaseConfig";
 /**
  * Pet registration page component
  * Handles pet information form with photo upload
@@ -42,7 +44,7 @@ const PetRegistration: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const petData = {
@@ -54,18 +56,36 @@ const PetRegistration: React.FC = () => {
       birthDate,
       weight,
       image: petImage,
+      createdAt: new Date(),
     };
 
-    console.log("Pet registration:", petData);
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        alert("Debes iniciar sesión para registrar una mascota.");
+        return;
+      }
 
-    // Navigate to success modal
-    navigate("/success", {
-      state: {
-        petName: name,
-        petImage: petImage,
-        petType: petType,
-      },
-    });
+      // Referencia a la subcolección "pets" del usuario autenticado
+      const petsRef = collection(db, "users", user.uid, "pets");
+
+      // Guarda la mascota como documento
+      await addDoc(petsRef, petData);
+
+      console.log("Mascota registrada correctamente:", petData);
+
+      // Redirigir al modal de éxito
+      navigate("/success", {
+        state: {
+          petName: name,
+          petImage: petImage,
+          petType: petType,
+        },
+      });
+    } catch (error) {
+      console.error("Error al registrar la mascota:", error);
+      alert("Ocurrió un error al guardar la mascota. Inténtalo nuevamente.");
+    }
   };
 
   const handleBackClick = () => {
