@@ -9,7 +9,7 @@ interface Pet {
   id?: string;
   name: string;
   image: string;
-  species?: string;
+  type?: string;
   createdAt: string;
 }
 
@@ -38,14 +38,20 @@ const PetSelection: React.FC = () => {
     navigate("/dashboard");
   };
 
-  return (
+  const handleBack = () => {
+    navigate(-1); // Navega a la última página visitada
+  };
+
+  const noPets = !pets || pets.length === 0;
+
+return (
     <div className="pet-selection-container">
       <div className="pet-selection-content">
         <div className="pet-selection-header">
           <h1 className="pet-selection-title">Who is the event for?</h1>
         </div>
         <div className="pet-selection-options">
-          {pets && pets.length > 0 ? (
+          {!noPets ? (
             pets.map((pet) => (
               <div
                 key={pet.id}
@@ -70,24 +76,32 @@ const PetSelection: React.FC = () => {
             ))
           ) : (
             <p className="no-pets-message">
-              No tienes mascotas aún. Agrega una primero.
+              No tienes mascotas para agregar eventos. ¡Registra una mascota primero!
             </p>
           )}
         </div>
         <div className="pet-selection-actions">
-          <button
-            className="continue-button"
-            onClick={handleContinue}
-            disabled={!selectedPet}
-          >
-            Continue
-          </button>
+          {noPets ? (
+            <button className="continue-button" onClick={handleBack}>
+              Volver
+            </button>
+          ) : (
+            <button
+              className="continue-button"
+              onClick={handleContinue}
+              disabled={!selectedPet}
+            >
+              Continue
+            </button>
+          )}
         </div>
-        <div className="cancel-link">
-          <button className="cancel-button" onClick={handleCancel}>
-            Cancel
-          </button>
-        </div>
+        {!noPets && (
+          <div className="cancel-link">
+            <button className="cancel-button" onClick={handleCancel}>
+              Cancel
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
