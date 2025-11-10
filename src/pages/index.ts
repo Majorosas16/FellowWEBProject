@@ -14,6 +14,8 @@ export { default as GenericEvent } from "./GenericEvent/GenericEvent";
 export { default as SuccessEvent } from "./SuccessEvent/SuccessEvent";
 export { default as LayoutWithNavigation } from "../components/LayoutWithNavigation/LayoutWithNavigation";
 export { default as PetsPage } from "./Pets/PetsPage";
+export { default as Notifications } from "./Notifications/Notifications";
+export { default as Settings } from "./Settings/Settings";
 export { default as LeftNavigation } from "../components/LeftNavigation/LeftNavigation";
 
 // Export types

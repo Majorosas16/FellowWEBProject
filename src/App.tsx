@@ -16,6 +16,8 @@ import {
   GenericEvent,
   SuccessEvent,
   LayoutWithNavigation,
+  Notifications,
+  Settings,
   // LeftNavigation,
 } from "./pages";
 import { ProtectedRoutes } from "./components/ProtectedRoutes";
@@ -151,6 +153,26 @@ function App() {
               <ProtectedRoutes>
                 <LayoutWithNavigation>
                   <PetsPage />
+                </LayoutWithNavigation>
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoutes>
+                <LayoutWithNavigation>
+                  <Notifications />
+                </LayoutWithNavigation>
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoutes>
+                <LayoutWithNavigation>
+                  <Settings />
                 </LayoutWithNavigation>
               </ProtectedRoutes>
             }
