@@ -152,7 +152,7 @@
 
 .profile-area {
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: flex-start;
   gap: 16px;
   cursor: pointer;
@@ -161,8 +161,8 @@
   border-top: 1px solid #382e55;
   border-radius: 20px;
   transition: background 0.2s;
-  min-height: 80px; 
-  padding-left: 16px;  
+  min-height: 80px;
+  padding-left: 16px;
   padding-bottom: 30px;
 }
 
@@ -176,13 +176,12 @@
   border-radius: 50%;
   object-fit: cover;
   background: #eee;
-  flex-shrink: 0;    /* Siempre del mismo tamaño */
+  flex-shrink: 0; /* Siempre del mismo tamaño */
 }
 
 .profile-info {
   display: flex;
   flex-direction: column;
-  justify-content: center;   /* Centra vertical el texto respecto al contenedor */
 }
 
 .profile-name {
