@@ -144,7 +144,7 @@ const Profile: React.FC = () => {
           />
 
           <div
-            style={{ position: "relative", width: "100%", display: "flex", justifyContent: "center" }}
+            style={{ position: "relative", width: "100%", display: "flex", justifyContent: "center"  }}
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
           >
