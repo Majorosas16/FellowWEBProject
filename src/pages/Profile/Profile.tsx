@@ -1,69 +1,69 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAuthUser } from '../../hook/useAuthUser'
-import { useDispatch } from 'react-redux'
-import { doc, updateDoc } from 'firebase/firestore'
-import { updatePassword } from 'firebase/auth'
-import { auth, db } from '../../services/firebaseConfig'
-import { setUserAdd } from '../../redux/slices/userSlice'
-import Input from '../../components/Input/Input'
-import ProfileEditPanel from '../../components/ProfileEditPanel/ProfileEditPanel'
-import NotificationButton from '../../components/NotificationButton/NotificationButton'
-import './Profile.css'
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthUser } from "../../hook/useAuthUser";
+import { useDispatch } from "react-redux";
+import { doc, updateDoc } from "firebase/firestore";
+import { signOut, updatePassword } from "firebase/auth";
+import { auth, db } from "../../services/firebaseConfig";
+import { setUserAdd } from "../../redux/slices/userSlice";
+import Input from "../../components/Input/Input";
+import ProfileEditPanel from "../../components/ProfileEditPanel/ProfileEditPanel";
+import NotificationButton from "../../components/NotificationButton/NotificationButton";
+import "./Profile.css";
 
 const Profile: React.FC = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const user = useAuthUser()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useAuthUser();
 
-  const [isEditing, setIsEditing] = useState(false)
-  const [isSaving, setIsSaving] = useState(false)
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [password, setPassword] = useState('')
-  const [profileImage, setProfileImage] = useState('')
-  const [showEmailTooltip, setShowEmailTooltip] = useState(false)
-  const fileInputRef = React.useRef<HTMLInputElement>(null)
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [profileImage, setProfileImage] = useState("");
+  const [showEmailTooltip, setShowEmailTooltip] = useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   // Initialize form with user data
   useEffect(() => {
     if (user) {
-      setName(user.name || '')
-      setEmail(user.email || '')
-      setPhoneNumber(user.phoneNumber || '')
+      setName(user.name || "");
+      setEmail(user.email || "");
+      setPhoneNumber(user.phoneNumber || "");
 
       // Load profile image from localStorage
-      const savedImage = localStorage.getItem(`profileImage_${user.id}`)
+      const savedImage = localStorage.getItem(`profileImage_${user.id}`);
       if (savedImage) {
-        setProfileImage(savedImage)
+        setProfileImage(savedImage);
       } else {
-        setProfileImage('/images/carolina.jpg') // Default profile image
+        setProfileImage("/images/carolina.jpg"); // Default profile image
       }
     }
-  }, [user])
+  }, [user]);
 
   const handleEditClick = () => {
-    setIsEditing(true)
-  }
+    setIsEditing(true);
+  };
 
   const handleSaveClick = async () => {
-    if (!user?.id) return
+    if (!user?.id) return;
 
-    setIsSaving(true)
+    setIsSaving(true);
     try {
-      const userRef = doc(db, 'users', user.id)
+      const userRef = doc(db, "users", user.id);
       const updateData: {
-        name: string
-        phoneNumber: string
-        email: string
+        name: string;
+        phoneNumber: string;
+        email: string;
       } = {
         name,
         phoneNumber,
         email,
-      }
+      };
 
-      await updateDoc(userRef, updateData)
+      await updateDoc(userRef, updateData);
 
       // Update Redux store
       dispatch(
@@ -73,85 +73,85 @@ const Profile: React.FC = () => {
           phoneNumber,
           email,
         })
-      )
+      );
 
       // Update password if provided
       if (password && password.length >= 6) {
-        const currentUser = auth.currentUser
+        const currentUser = auth.currentUser;
         if (currentUser) {
           try {
-            await updatePassword(currentUser, password)
+            await updatePassword(currentUser, password);
           } catch (error: unknown) {
-            console.error('Error updating password:', error)
+            console.error("Error updating password:", error);
             alert(
-              'Password update failed. Please sign out and sign in again, then try updating your password.'
-            )
+              "Password update failed. Please sign out and sign in again, then try updating your password."
+            );
           }
         }
       }
 
-      setIsEditing(false)
-      setPassword('')
+      setIsEditing(false);
+      setPassword("");
     } catch (error) {
-      console.error('Error updating profile:', error)
-      alert('Error updating profile. Please try again.')
+      console.error("Error updating profile:", error);
+      alert("Error updating profile. Please try again.");
     } finally {
-      setIsSaving(false)
+      setIsSaving(false);
     }
-  }
+  };
 
   const handleChangePicture = () => {
-    fileInputRef.current?.click()
-  }
+    fileInputRef.current?.click();
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (!file) return
+    const file = event.target.files?.[0];
+    if (!file) return;
 
     // Validate file type
-    if (!file.type.startsWith('image/')) {
-      alert('Please select an image file')
-      return
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file");
+      return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      alert('Image size should be less than 5MB')
-      return
+      alert("Image size should be less than 5MB");
+      return;
     }
 
     // Read file and convert to base64
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.onloadend = () => {
-      const base64String = reader.result as string
+      const base64String = reader.result as string;
       if (base64String && user?.id) {
         // Save to localStorage
-        localStorage.setItem(`profileImage_${user.id}`, base64String)
-        setProfileImage(base64String)
+        localStorage.setItem(`profileImage_${user.id}`, base64String);
+        setProfileImage(base64String);
       }
-    }
+    };
     reader.onerror = () => {
-      alert('Error reading image file')
-    }
-    reader.readAsDataURL(file)
+      alert("Error reading image file");
+    };
+    reader.readAsDataURL(file);
 
     // Reset input value to allow selecting the same file again
     if (fileInputRef.current) {
-      fileInputRef.current.value = ''
+      fileInputRef.current.value = "";
     }
-  }
+  };
 
   const handleAppointmentsClick = () => {
-    navigate('/calendar')
-  }
+    navigate("/calendar");
+  };
 
   const handleNotificationsClick = () => {
-    navigate('/notifications')
-  }
+    navigate("/notifications");
+  };
 
   const handleSettingsClick = () => {
-    navigate('/settings')
-  }
+    navigate("/settings");
+  };
 
   if (!user) {
     return (
@@ -160,8 +160,19 @@ const Profile: React.FC = () => {
           <p>Loading user data...</p>
         </div>
       </div>
-    )
+    );
   }
+
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        navigate("/"); // o "/login" si tienes una ruta de login específica
+      })
+      .catch((error) => {
+        console.error("Error signing out:", error);
+        alert("Error signing out. Please try again.");
+      });
+  };
 
   return (
     <>
@@ -170,7 +181,7 @@ const Profile: React.FC = () => {
         type="file"
         accept="image/*"
         onChange={handleFileChange}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
       />
       <div className="profile-layout">
         {/* Mobile View */}
@@ -184,8 +195,8 @@ const Profile: React.FC = () => {
               <div className="profile-picture-section">
                 <div className="profile-picture-container">
                   <img
-                    src={profileImage || '/images/carolina.jpg'}
-                    alt={user.name || 'User'}
+                    src={profileImage || "/images/carolina.jpg"}
+                    alt={user.name || "User"}
                     className="profile-picture"
                   />
                 </div>
@@ -364,6 +375,9 @@ const Profile: React.FC = () => {
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </button>
+              <button className="logout-btn" onClick={handleLogout}>
+                Log out
+              </button>
             </div>
           </div>
         </div>
@@ -371,7 +385,7 @@ const Profile: React.FC = () => {
 
       <NotificationButton />
     </>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;
