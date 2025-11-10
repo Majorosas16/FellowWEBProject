@@ -85,6 +85,36 @@ body {
   margin-bottom: 32px;
 }
 
+.email-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.email-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 8px;
+  background: #232c5f;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  white-space: nowrap;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.email-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 20px;
+  border: 6px solid transparent;
+  border-top-color: #232c5f;
+}
+
 .profile-actions {
   display: flex;
   gap: 12px;

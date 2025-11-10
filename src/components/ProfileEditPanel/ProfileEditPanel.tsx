@@ -21,6 +21,7 @@ const ProfileEditPanel: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [password, setPassword] = useState('')
   const [profileImage, setProfileImage] = useState('')
+  const [showEmailTooltip, setShowEmailTooltip] = useState(false)
   const fileInputRef = React.useRef<HTMLInputElement>(null)
 
   // Initialize form with user data
@@ -218,13 +219,24 @@ const ProfileEditPanel: React.FC = () => {
             onChange={setPassword}
             disabled={!isEditing}
           />
-          <Input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={setEmail}
-            disabled={!isEditing}
-          />
+          <div
+            className="email-input-wrapper"
+            onMouseEnter={() => setShowEmailTooltip(true)}
+            onMouseLeave={() => setShowEmailTooltip(false)}
+          >
+            <Input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={setEmail}
+              disabled={true}
+            />
+            {showEmailTooltip && (
+              <div className="email-tooltip">
+                No puedes editar el correo por seguridad.
+              </div>
+            )}
+          </div>
           <button
             className="btn-save-desktop"
             onClick={isEditing ? handleSaveClick : handleEditClick}

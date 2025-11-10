@@ -23,6 +23,7 @@ const Profile: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [password, setPassword] = useState('')
   const [profileImage, setProfileImage] = useState('')
+  const [showEmailTooltip, setShowEmailTooltip] = useState(false)
   const fileInputRef = React.useRef<HTMLInputElement>(null)
 
   // Initialize form with user data
@@ -206,14 +207,25 @@ const Profile: React.FC = () => {
                   onChange={setName}
                   disabled={!isEditing}
                 />
-                <Input
-                  type="email"
-                  label="Email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={setEmail}
-                  disabled={!isEditing}
-                />
+                <div
+                  className="email-input-wrapper"
+                  onMouseEnter={() => setShowEmailTooltip(true)}
+                  onMouseLeave={() => setShowEmailTooltip(false)}
+                >
+                  <Input
+                    type="email"
+                    label="Email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={setEmail}
+                    disabled={true}
+                  />
+                  {showEmailTooltip && (
+                    <div className="email-tooltip">
+                      No puedes editar el correo por seguridad.
+                    </div>
+                  )}
+                </div>
                 <Input
                   type="tel"
                   label="Phone Number"
