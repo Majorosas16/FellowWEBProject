@@ -8,13 +8,16 @@ import "./Dashboard.css";
 
 import type { RootState } from "../../redux/store";
 import { useFetchPets } from "../../hook/useFetchPets";
+import { useAuthUser } from "../../hook/useAuthUser";
 
 const Dashboard: React.FC = () => {
-  const userName = "Carolina";
   useFetchPets();
 
   const pets = useSelector((state: RootState) => state.pets.pets);
   console.log(pets);
+  const user = useAuthUser(); // Hook personalizado
+
+  console.log(user);
 
   // (Tus arrays actuales de eventos y medicamentos se conservan)
   const healthEvents = [
@@ -49,7 +52,7 @@ const Dashboard: React.FC = () => {
     },
   ];
 
-    // Ordena las mascotas por fecha creada (más recientes primero)
+  // Ordena las mascotas por fecha creada (más recientes primero)
   const sortedPets = [...pets].sort((a, b) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
@@ -65,7 +68,8 @@ const Dashboard: React.FC = () => {
               alt="Fellow Logo"
               className="home-logo"
             />
-            <h2 className="dashboard-title">Hi, {userName}</h2>
+            <h2 className="dashboard-title">Hi, {user?.name || "User"}</h2>
+
             <p className="dashboard-subtitle">How is your day?</p>
           </div>
 

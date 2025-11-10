@@ -16,10 +16,11 @@ import {
   validatePassword,
 } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, getDoc } from "firebase/firestore";
 
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/slices/authSlice";
+import { setUserAdd } from "../../redux/slices/userSlice";
 
 const Auth: React.FC = () => {
   const navigate = useNavigate();
@@ -34,7 +35,6 @@ const Auth: React.FC = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Password validation state in Firebase
@@ -68,14 +68,46 @@ const Auth: React.FC = () => {
 
   const isPasswordValid = meetsMinPasswordLength === true;
 
+  // Función para obtener mensajes de error amigables
+  const getFriendlyErrorMessage = (errorCode: string): string => {
+    const errorMessages: Record<string, string> = {
+      // Errores de Login
+      "auth/user-not-found": "We couldn't find an account with that email.",
+      "auth/wrong-password": "Oops! The password you entered is incorrect.",
+      "auth/invalid-credential": "Invalid email or password. Please try again.",
+      "auth/invalid-email": "Please enter a valid email address.",
+      "auth/user-disabled":
+        "This account has been disabled. Please contact support.",
+      "auth/too-many-requests": "Too many attempts. Please try again later.",
+
+      // Errores de Signup
+      "auth/email-already-in-use":
+        "This email is already registered. Try logging in instead!",
+      "auth/operation-not-allowed":
+        "Registration is currently unavailable. Please try again later.",
+      "auth/weak-password":
+        "Please choose a stronger password (at least 6 characters).",
+
+      // Errores generales
+      "auth/network-request-failed":
+        "Connection error. Please check your internet and try again.",
+      "auth/internal-error":
+        "Something went wrong on our end. Please try again.",
+    };
+
+    return (
+      errorMessages[errorCode] || "Something went wrong. Please try again."
+    );
+  };
+
   // Función que maneja el registro/login y está en el botón de enviar
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage("");
     setIsSubmitting(true);
 
     if (!isPasswordValid) {
-      setErrorMessage("Password must be at least 6 characters long.");
+      setModalMessage("Password must be at least 6 characters long.");
+      setModalVisible(true);
       setIsSubmitting(false);
       return;
     }
@@ -89,20 +121,26 @@ const Auth: React.FC = () => {
           password
         );
         const userID = userCredential.user.uid;
-        dispatch(setUser(userID));
-        navigate("/pet-type");
+        // Trae el usuario desde Firestore
+        const ref = doc(db, "users", userID);
+        const snap = await getDoc(ref);
+
+        if (snap.exists()) {
+          const userData = snap.data();
+          console.log("Cargando a Redux:", userData);
+          dispatch(setUserAdd(userData));
+          navigate("/pet-type");
+        } else {
+          setModalMessage(
+            "User not found in database. Please contact support."
+          );
+          setModalVisible(true);
+        }
       } catch (error) {
         const err = error as FirebaseError;
-        if (
-          err.code === "auth/user-not-found" ||
-          err.code === "auth/wrong-password" ||
-          err.code === "auth/invalid-credential"
-        ) {
-          setModalMessage("Ops! User and password don't match.");
-          setModalVisible(true);
-        } else {
-          setErrorMessage(err.message || "Login Error.");
-        }
+        const friendlyMessage = getFriendlyErrorMessage(err.code);
+        setModalMessage(friendlyMessage);
+        setModalVisible(true);
         console.error(err);
       }
     } else {
@@ -122,13 +160,17 @@ const Auth: React.FC = () => {
           phoneNumber: phone,
           email,
         };
-
         await setDoc(doc(db, "users", userID), newUser);
+
+        // Despacha los datos completos
+        dispatch(setUserAdd(newUser));
 
         navigate("/pet-type");
       } catch (error) {
         const err = error as FirebaseError;
-        setErrorMessage(err.message || "Registration Error.");
+        const friendlyMessage = getFriendlyErrorMessage(err.code);
+        setModalMessage(friendlyMessage);
+        setModalVisible(true);
         console.error(err);
       }
     }
@@ -147,7 +189,7 @@ const Auth: React.FC = () => {
           text={
             mode === "login"
               ? "Logging in..."
-              : "Hold on! we are creating your account..."
+              : "Hold on! We are creating your account..."
           }
         />
       )}
@@ -228,14 +270,8 @@ const Auth: React.FC = () => {
               disabled={isSubmitting}
             />
             {!meetsMinPasswordLength && password.length > 0 && (
-              <p style={{ color: "red", marginTop: "5px" }}>
+              <p style={{ color: "red", marginTop: "5px", fontSize: "14px" }}>
                 Insufficient password (min 6 characters).
-              </p>
-            )}
-
-            {errorMessage && (
-              <p className="auth-error" style={{ color: "red" }}>
-                {errorMessage}
               </p>
             )}
 
