@@ -9,7 +9,7 @@
 }
 
 .pet-selection-content {
-  max-width: 400px;
+  max-width: 700px; /* o incluso 800px, ajústalo según el tamaño de tus tarjetas */
   width: 100%;
   text-align: center;
 }
@@ -26,10 +26,29 @@
 }
 
 .pet-selection-options {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 40px;
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;      /* <<< SOLO SCROLL VERTICAL */
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: #8a91b6 #ececec;
+}
+
+
+/* Opcional: quita la scrollbar en Chrome */
+.pet-selection-options::-webkit-scrollbar {
+  width: 6px;
+  background: #ececec;
+}
+.pet-selection-options::-webkit-scrollbar-thumb {
+  background: #8a91b6;
+  border-radius: 4px;
 }
 
 .pet-option {

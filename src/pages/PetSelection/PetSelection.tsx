@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import type { RootState } from '../../redux/store'
+import { useFetchPets } from '../../hook/useFetchPets'
 import './PetSelection.css'
 
 interface Pet {
-  id: string
+  id?: string
   name: string
   image: string
-  type: 'cat' | 'dog'
+  species?: string
+  createdAt: string
 }
 
 /**
@@ -16,22 +20,10 @@ interface Pet {
 const PetSelection: React.FC = () => {
   const navigate = useNavigate()
   const [selectedPet, setSelectedPet] = useState<Pet | null>(null)
-
-  // Mock data - same pets from dashboard
-  const pets: Pet[] = [
-    {
-      id: '1',
-      name: 'Pepe',
-      image: '/images/cat-tabby.webp',
-      type: 'cat'
-    },
-    {
-      id: '2',
-      name: 'Caneli',
-      image: '/images/dog-golden-retriever.webp',
-      type: 'dog'
-    }
-  ]
+  
+  // Fetch pets from Redux
+  useFetchPets()
+  const pets = useSelector((state: RootState) => state.pets.pets)
 
   const handlePetSelect = (pet: Pet) => {
     setSelectedPet(pet)
@@ -53,26 +45,30 @@ const PetSelection: React.FC = () => {
         <div className="pet-selection-header">
           <h1 className="pet-selection-title">Who is the event for?</h1>
         </div>
-
         <div className="pet-selection-options">
-          {pets.map((pet) => (
-            <div
-              key={pet.id}
-              className={`pet-option ${selectedPet?.id === pet.id ? 'selected' : ''}`}
-              onClick={() => handlePetSelect(pet)}
-            >
-              <div className={`pet-option-image ${pet.type}-image`}>
-                <img
-                  src={pet.image}
-                  alt={pet.name}
-                  className="pet-selection-image"
-                />
+          {pets && pets.length > 0 ? (
+            pets.map((pet) => (
+              <div
+                key={pet.id}
+                className={`pet-option ${selectedPet?.id === pet.id ? 'selected' : ''}`}
+                onClick={() => handlePetSelect(pet)}
+              >
+                <div className={`pet-option-image ${pet.type === 'cat' ? 'cat-image' : 'dog-image'}`}>
+                  <img
+                    src={pet.image || '/images/placeholder.jpg'}
+                    alt={pet.name}
+                    className="pet-selection-image"
+                  />
+                </div>
+                <h3 className="pet-option-name">{pet.name}</h3>
               </div>
-              <h3 className="pet-option-name">{pet.name}</h3>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="no-pets-message">
+              No tienes mascotas aún. Agrega una primero.
+            </p>
+          )}
         </div>
-
         <div className="pet-selection-actions">
           <button
             className="continue-button"
@@ -82,7 +78,6 @@ const PetSelection: React.FC = () => {
             Continue
           </button>
         </div>
-
         <div className="cancel-link">
           <button className="cancel-button" onClick={handleCancel}>
             Cancel
