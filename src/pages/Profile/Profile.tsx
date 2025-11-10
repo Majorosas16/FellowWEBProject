@@ -1,24 +1,33 @@
-import ProfileCard from '../../components/ProfileCard/ProfileCard'
-import NotificationButton from '../../components/NotificationButton/NotificationButton'
+import React from "react";
+import LeftNavigation from "../../components/LeftNavigation/LeftNavigation";
+import ProfileCard from "../../components/ProfileCard/ProfileCard";
+import NotificationButton from "../../components/NotificationButton/NotificationButton";
+import { useSelector } from "react-redux";
+import { useAuthUser } from "../../hook/useAuthUser";
+import type { RootState } from "../../redux/store";
+// Si usas fetch de pets vía hook:
+import { useFetchPets } from "../../hook/useFetchPets"; 
 
 const Profile: React.FC = () => {
-  // For demo purposes, using a default username
-  // In a real app, this would come from user authentication
+  useFetchPets();
+  const pets = useSelector((state: RootState) => state.pets.pets);
+  const user = useAuthUser();
 
-  // Sample health events data
+  // Datos de usuario para ProfileCard desde base real
   const userProfile = {
-    userName: 'Carolina',
-    userImage: '/images/dog-golden-retriever.webp',
-    userMail: 'carolina@hotmail.com',
-  }
+    userName: user?.name || "User",
+    userImage: "/images/dog-golden-retriever.webp",
+    userMail: user?.email || "user@example.com",
+  };
+
   return (
-    <>
-      <div className="profile-container">
+    <div className="dashboard-layout">
+      <LeftNavigation pets={pets} />
+      <div className="dashboard-container">
         <div className="profile-content">
           <div className="profile-header">
-            <h1>Is this you ?</h1>
+            <h1>Is this you?</h1>
           </div>
-
           <div className="profile-sections">
             <div className="section">
               <div className="section-profile-card">
@@ -37,11 +46,10 @@ const Profile: React.FC = () => {
             </div>
           </div>
         </div>
+        <NotificationButton />
       </div>
+    </div>
+  );
+};
 
-      <NotificationButton />
-    </>
-  )
-}
-
-export default Profile
+export default Profile;

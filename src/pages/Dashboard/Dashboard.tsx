@@ -63,7 +63,7 @@ const Dashboard: React.FC = () => {
           <div className="dashboard-header">
             <div className="dashboard-header-text">
               <h2 className="dashboard-title">
-                Hi, {user?.name || "Carolina"}
+                Hi, {user?.name || "User"}
               </h2>
               <p className="dashboard-subtitle">How is your day?</p>
             </div>
