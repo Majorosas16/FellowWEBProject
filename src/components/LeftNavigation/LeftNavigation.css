@@ -37,10 +37,11 @@
 }
 
 .pets-list {
-  max-height: 320px; /* ↓ Ajusta este valor según tus necesidades de espacio */
+  max-height: 320px;
   overflow-y: auto;
   margin-bottom: 18px;
-  padding-right: 4px; /* Espacio para el scrollbar si aparece */
+  padding-right: 4px;
+  /* Elimina padding-left o cualquier valor que "encaje" el item dentro */
 }
 /* Opcional: scroll "moderno" */
 .pets-list::-webkit-scrollbar {
@@ -59,16 +60,25 @@
 .pet-item {
   display: flex;
   align-items: center;
+  width: 100%;
   padding: 12px;
   border-radius: 14px;
-  transition: background 0.2s;
   margin-bottom: 16px;
   background: transparent;
   cursor: pointer;
+  transition: background 0.2s;
+  box-sizing: border-box;
+  position: relative;
 }
 
 .pet-item--hover {
   background: #574d89;
+  /* Asegura que cubre toda la fila */
+}
+
+.pet-avatar-container {
+  flex-shrink: 0;
+  /* Puedes ajustar un margin-right si te parece visualmente mejor */
 }
 
 .pet-image {
@@ -78,6 +88,7 @@
   border-radius: 50%;
   margin-right: 1rem;
   border: 3px solid #fff;
+  background: #23233b; /* Si la imagen es PNG y tiene transparencia, esto ayuda */
 }
 
 .pet-info {
@@ -94,15 +105,13 @@
 .pet-name {
   font-weight: 600;
   font-size: 1.02rem;
-  color: #fff;     /* Verde igual que la fecha */
+  color: #ffffff !important; /* Verde vibrante y forzado */
   letter-spacing: 0.5px;
 }
 
 .pet-item--hover .pet-name {
-  color: #fff;
-  /* o el color que te guste para hover */
+  color: #fff !important;
 }
-
 
 .pet-date {
   font-size: 0.98rem;

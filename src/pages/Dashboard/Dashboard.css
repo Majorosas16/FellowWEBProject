@@ -1,3 +1,25 @@
+html, body {
+  height: 100%;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;   /* ← Esto asegura que no puedas hacer scroll en la página */
+}
+
+.dashboard-layout {
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;   /* ← Esto evita el scroll del app layout completo */
+}
+
+/* Si tienes algún otro contenedor maestro, igual: */
+#root, .App {
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+
 .dashboard-layout {
   display: flex;
   width: 100vw;
