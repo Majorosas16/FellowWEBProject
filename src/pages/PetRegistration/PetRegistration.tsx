@@ -1,22 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../../components/ButtonCopy";
 import Input from "../../components/Input/Input";
 import PetPhoto from "../../components/PetPhoto/PetPhoto";
 import "./PetRegistration.css";
 
-import { collection, addDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  Timestamp,
+  QueryDocumentSnapshot,
+  type DocumentData,
+} from "firebase/firestore";
 import { auth, db } from "../../services/firebaseConfig";
-/**
- * Pet registration page component
- * Handles pet information form with photo upload
- */
+import { addPet, setPets } from "../../redux/slices/petsSlice";
+import type { PetType } from "../../types/petsType";
+import type { RootState } from "../../redux/store";
+
 const PetRegistration: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [petType, setPetType] = useState<"cat" | "dog">("cat");
+  const dispatch = useDispatch();
+  const petsFromState = useSelector((state: RootState) => state.pets.pets);
 
-  // Form states
+  const [petType, setPetType] = useState<"cat" | "dog">("cat");
   const [petImage, setPetImage] = useState<string>("");
   const [name, setName] = useState("");
   const [breed, setBreed] = useState("");
@@ -25,12 +34,54 @@ const PetRegistration: React.FC = () => {
   const [birthDate, setBirthDate] = useState("");
   const [weight, setWeight] = useState("");
 
+  // Sincroniza todas las mascotas desde Firebase al montar el componente
+  useEffect(() => {
+    const fetchPets = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+      const petsRef = collection(db, "users", user.uid, "pets");
+      const snapshot = await getDocs(petsRef);
+
+      const petsList: PetType[] = snapshot.docs.map(
+        (doc: QueryDocumentSnapshot<DocumentData>) => {
+          const data = doc.data();
+          let createdAtStr = "";
+          if (data.createdAt instanceof Timestamp) {
+            createdAtStr = data.createdAt.toDate().toISOString();
+          } else if (typeof data.createdAt === "string") {
+            createdAtStr = data.createdAt;
+          }
+          return {
+            id: doc.id,
+            type: data.type,
+            name: data.name,
+            breed: data.breed,
+            gender: data.gender,
+            age: data.age,
+            birthDate: data.birthDate,
+            weight: data.weight,
+            image: data.image,
+            createdAt: createdAtStr,
+          };
+        }
+      );
+
+      dispatch(setPets(petsList));
+    };
+
+    fetchPets();
+  }, [dispatch]);
+
   useEffect(() => {
     const type = searchParams.get("type") as "cat" | "dog";
     if (type) {
       setPetType(type);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    console.log("Estado global mascotas:", petsFromState);
+  }, [petsFromState]);
 
   const handleImageChange = (file: File | null) => {
     if (file) {
@@ -47,7 +98,7 @@ const PetRegistration: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const petData = {
+    const petData: Omit<PetType, "id"> = {
       type: petType,
       name,
       breed,
@@ -56,7 +107,7 @@ const PetRegistration: React.FC = () => {
       birthDate,
       weight,
       image: petImage,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
 
     try {
@@ -66,15 +117,40 @@ const PetRegistration: React.FC = () => {
         return;
       }
 
-      // Referencia a la subcolección "pets" del usuario autenticado
       const petsRef = collection(db, "users", user.uid, "pets");
+      const docRef = await addDoc(petsRef, petData);
 
-      // Guarda la mascota como documento
-      await addDoc(petsRef, petData);
+      // Agrega al estado global Redux con el id generado por Firebase
+      const petWithId: PetType = { id: docRef.id, ...petData };
+      dispatch(addPet(petWithId));
 
-      console.log("Mascota registrada correctamente:", petData);
+      // Opcional: vuelve a sincronizar todas las mascotas después de agregar
+      const snapshot = await getDocs(petsRef);
+      const petsList: PetType[] = snapshot.docs.map(
+        (doc: QueryDocumentSnapshot<DocumentData>) => {
+          const data = doc.data();
+          let createdAtStr = "";
+          if (data.createdAt instanceof Timestamp) {
+            createdAtStr = data.createdAt.toDate().toISOString();
+          } else if (typeof data.createdAt === "string") {
+            createdAtStr = data.createdAt;
+          }
+          return {
+            id: doc.id,
+            type: data.type,
+            name: data.name,
+            breed: data.breed,
+            gender: data.gender,
+            age: data.age,
+            birthDate: data.birthDate,
+            weight: data.weight,
+            image: data.image,
+            createdAt: createdAtStr,
+          };
+        }
+      );
+      dispatch(setPets(petsList));
 
-      // Redirigir al modal de éxito
       navigate("/success", {
         state: {
           petName: name,

@@ -1,18 +1,19 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { PetType } from "../../types/petsType";
 
-interface Pet {
-  id: string;
-  name: string;
-  type: string;
-  age?: string;
-  image?: string;
-  color?: string;
-  vaccines?: string;
-  medicines?: string;
-}
+// interface Pet {
+//   id: string;
+//   name: string;
+//   type: string;
+//   age?: string;
+//   image?: string;
+//   color?: string;
+//   vaccines?: string;
+//   medicines?: string;
+// }
 
 interface PetsState {
-  pets: Pet[];
+  pets: PetType[];
 }
 
 const initialState: PetsState = {
@@ -23,10 +24,10 @@ const petsSlice = createSlice({
   name: "pets",
   initialState,
   reducers: {
-    setPets: (state, action: PayloadAction<Pet[]>) => {
+    setPets: (state, action: PayloadAction<PetType[]>) => {
       state.pets = action.payload;
     },
-    addPet: (state, action: PayloadAction<Pet>) => {
+    addPet: (state, action: PayloadAction<PetType>) => {
       state.pets.push(action.payload);
     },
     clearPets: (state) => {
