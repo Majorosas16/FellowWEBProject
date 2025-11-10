@@ -2,77 +2,66 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LeftNavigation.css';
 
-interface Pet {
-  id: string;
+interface LeftNavigationPet {
+  id?: string;
   name: string;
   image: string;
-  date: string;
-  status: string;
+  createdAt: string;
 }
 
-const petsData: Pet[] = [
-  {
-    id: '1',
-    name: 'Toby',
-    image: '/images/toby.jpg', // Ajusta estos paths según tu proyecto
-    date: '10/07/2025',
-    status: 'Vomited',
-  },
-  {
-    id: '2',
-    name: 'Luna',
-    image: '/images/luna.jpg',
-    date: '10/07/2025',
-    status: 'No updates',
-  },
-  {
-    id: '3',
-    name: 'Oli',
-    image: '/images/oli.jpg',
-    date: '10/07/2025',
-    status: 'Break the leg',
-  },
-];
+interface LeftNavigationProps {
+  pets: LeftNavigationPet[];
+}
 
-const LeftNavigation: React.FC = () => {
+const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
   const navigate = useNavigate();
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   return (
     <aside className="your-pets">
-
       <div className="pets-section">
-      <div className="logo-container">
-        <img src="../src/assets/LogoWEB.png" alt="Fellow Logo" className="logo-fellow-img" />
-      </div>
-      <h2 className="pets-title">Your pets ({petsData.length})</h2>
-      <div className="pets-list">
-        {petsData.map((pet) => (
-          <div
-            key={pet.id}
-            className={`pet-item${hoveredId === pet.id ? ' pet-item--hover' : ''}${pet.name === 'Oli' ? ' pet-item--highlight' : ''}`}
-            onMouseEnter={() => setHoveredId(pet.id)}
-            onMouseLeave={() => setHoveredId(null)}
-          >
-            <img src={pet.image} alt={pet.name} className="pet-image" />
-            <div className="pet-info">
-              <div className="pet-header">
-                <span className="pet-name">{pet.name}</span>
-                <span className="pet-date">{pet.date}</span>
+        <div className="logo-container">
+          <img src="../src/assets/LogoWEB.png" alt="Fellow Logo" className="logo-fellow-img" />
+        </div>
+        <h2 className="pets-title">Your pets ({pets.length})</h2>
+        <div className="pets-list">
+          {pets.map((pet) => (
+            <div
+              key={pet.id}
+              className={`pet-item${hoveredId === pet.id ? ' pet-item--hover' : ''}`}
+              onMouseEnter={() => setHoveredId(pet.id || "")}
+              onMouseLeave={() => setHoveredId(null)}
+            >
+              <img
+                src={pet.image || "/images/placeholder.jpg"}
+                alt={pet.name}
+                className="pet-image"
+              />
+              <div className="pet-info">
+                <div className="pet-header">
+                  <span className="pet-name">{pet.name}</span>
+                  <span className="pet-date">
+                    {pet.createdAt
+                      ? new Date(pet.createdAt).toLocaleDateString()
+                      : ""}
+                  </span>
+                </div>
+                <span className="pet-status">
+                  No updates
+                </span>
               </div>
-              <span className="pet-status">{pet.status}</span>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-      </div>
-
       <div className="add-pet-container">
-      <button className="add-pet-btn" onClick={() => navigate('/add-pet')}>
-        Add a pet +
-      </button>
+        <button
+          className="add-pet-btn"
+          onClick={() => navigate('/add-pet')}
+        >
+          Add a pet +
+        </button>
       </div>
-
       <div className="profile-area" onClick={() => navigate('/profile')}>
         <img
           src="/images/carolina.jpg"
@@ -89,4 +78,3 @@ const LeftNavigation: React.FC = () => {
 };
 
 export default LeftNavigation;
-

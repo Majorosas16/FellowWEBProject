@@ -14,7 +14,7 @@
   /* Ajusta el tamaño según lo necesites */
 }
 
-.pets-section{
+.pets-section {
   margin-top: 30%;
 }
 
@@ -37,7 +37,23 @@
 }
 
 .pets-list {
-  flex-grow: 1;
+  max-height: 320px; /* ↓ Ajusta este valor según tus necesidades de espacio */
+  overflow-y: auto;
+  margin-bottom: 18px;
+  padding-right: 4px; /* Espacio para el scrollbar si aparece */
+}
+/* Opcional: scroll "moderno" */
+.pets-list::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+.pets-list::-webkit-scrollbar-thumb {
+  background: #ececec;
+  border-radius: 4px;
+}
+.pets-list {
+  scrollbar-color: #ececec transparent;
+  scrollbar-width: thin;
 }
 
 .pet-item {
@@ -93,7 +109,7 @@
   margin-top: 2px;
 }
 
-.add-pet-container{
+.add-pet-container {
   display: flex;
   justify-content: right;
 }
@@ -148,4 +164,3 @@
   color: #b4b4b4;
   font-size: 0.92rem;
 }
-
