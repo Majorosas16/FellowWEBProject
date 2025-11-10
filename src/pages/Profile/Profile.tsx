@@ -26,6 +26,9 @@ const Profile: React.FC = () => {
     password: "", // SIEMPRE vacío al entrar
   });
 
+  // Estado para mostrar el tooltip
+  const [showTooltip, setShowTooltip] = useState(false);
+
   // Maneja cambios en los inputs
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -38,38 +41,51 @@ const Profile: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    dispatch(updateUserProfile(formData));
-
     try {
-      const userId = auth.currentUser?.uid;
-      if (!userId) throw new Error("No authenticated user");
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error("No authenticated user");
 
-      // Update Firestore profile fields
-      const userRef = doc(db, "users", userId);
-      await updateDoc(userRef, {
-        name: formData.name,
-        phoneNumber: formData.phoneNumber,
-        email: formData.email,
-      });
-
-      // Update password in Firebase Authentication if new password is entered
-      if (formData.password.length >= 6 && auth.currentUser) {
+      // Actualizar password en Firebase Authentication si se ingresó uno nuevo
+      if (formData.password.length >= 6) {
         try {
-          await updatePassword(auth.currentUser, formData.password);
+          await updatePassword(currentUser, formData.password);
         } catch (error) {
-          // Si requiere re-auth, se lo muestras aquí
-          console.error("Error updating password:", error);
-          alert("You need to re-login before changing your password.");
-          return;
+          if (error instanceof Error && "code" in error) {
+            const firebaseError = error as { code: string };
+            if (firebaseError.code === "auth/requires-recent-login") {
+              alert("You need to re-login before changing your password.");
+              return;
+            }
+          }
+          throw error;
         }
       }
 
-      // Si está vacío o menor a 6 caracteres no hace nada, manteniendo la contraseña anterior
+      // Actualizar Firestore (nombre, teléfono)
+      const userRef = doc(db, "users", currentUser.uid);
+      await updateDoc(userRef, {
+        name: formData.name,
+        phoneNumber: formData.phoneNumber,
+      });
+
+      // Actualizar Redux
+      dispatch(
+        updateUserProfile({
+          name: formData.name,
+          phoneNumber: formData.phoneNumber,
+          email: user?.email, // email no cambia
+        })
+      );
 
       alert("Profile updated successfully!");
+
+      // Limpiar el campo de password después de actualizar
+      setFormData((prev) => ({ ...prev, password: "" }));
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert("Error updating profile. Please try again.");
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error occurred";
+      alert(`Error updating profile: ${errorMessage}`);
     }
   };
 
@@ -127,23 +143,49 @@ const Profile: React.FC = () => {
             onChange={handleInputChange}
           />
 
+          <div
+            style={{ position: "relative", width: "100%", display: "flex", justifyContent: "center" }}
+            onMouseEnter={() => setShowTooltip(true)}
+            onMouseLeave={() => setShowTooltip(false)}
+          >
+            <input
+              type="email"
+              name="email"
+              className="profile-input"
+              placeholder="Email"
+              value={formData.email}
+              disabled
+              style={{ backgroundColor: "#f3f3f3", cursor: "not-allowed" }}
+            />
+            {showTooltip && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  left: 0,
+                  background: "#232c5f",
+                  color: "#fff",
+                  padding: "5px 10px",
+                  borderRadius: "4px",
+                  fontSize: "0.9em",
+                  zIndex: 10,
+                  marginTop: "2px",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                No puedes editar el correo por seguridad.
+              </div>
+            )}
+          </div>
+
           <input
             name="password"
             className="profile-input"
             placeholder="New password (leave blank to keep current)"
             value={formData.password}
-            type="text" // usa "password" si quieres puntos
+            type="password"
             onChange={handleInputChange}
             onFocus={handlePasswordFocus}
-          />
-
-          <input
-            type="email"
-            name="email"
-            className="profile-input"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleInputChange}
           />
 
           <button className="profile-save-btn" type="submit">

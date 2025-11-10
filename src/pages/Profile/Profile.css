@@ -216,6 +216,21 @@
   background: #d12d57;
 }
 
+.input-tooltip {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #232c5f;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  z-index: 10;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+
 
 /* Responsive */
 @media (max-width: 780px) {
