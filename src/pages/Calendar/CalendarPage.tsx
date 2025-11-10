@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import LeftNavigation from "../../components/LeftNavigation/LeftNavigation";
 import Calendar from "../../components/Calendar/Calendar";
 import NotificationButton from "../../components/NotificationButton/NotificationButton";
+import { useFetchPets } from "../../hook/useFetchPets";
+import type { RootState } from "../../redux/store";
 import "./CalendarPage.css";
 
 // Definición de tipos
@@ -15,6 +18,10 @@ interface Appointment {
 }
 
 const CalendarPage: React.FC = () => {
+  // Fetch de mascotas
+  useFetchPets();
+  const pets = useSelector((state: RootState) => state.pets.pets);
+
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
   // Datos de ejemplo para las citas
@@ -61,46 +68,50 @@ const CalendarPage: React.FC = () => {
 
   const appointmentsToShow = getAppointmentsForDate(selectedDate);
 
+  // Ordena las mascotas por fecha creada (más recientes primero)
+  const sortedPets = [...pets].sort((a, b) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
+
   return (
     <div className="calendar-layout">
-      <LeftNavigation />
+      <LeftNavigation pets={sortedPets} />
       <main className="calendar-content">
         <div className="calendar-column">
-        <div className="calendar-container">
-          <Calendar
-            onDateSelect={handleDateSelect}
-            selectedDate={selectedDate}
-          />
-          <section className="appointments-section">
-            <div className="appointments-header">
-              <h3>Booked Appointment List</h3>
-            </div>
-            {appointmentsToShow.length > 0 ? (
-              <div className="appointments-list">
-                
-                {appointmentsToShow.map((appointment: Appointment) => (
-                  <div key={appointment.id} className="appointment-item">
-                    <span className="appointment-time">{appointment.time}</span>
-                    <div
-                      className="appointment-indicator"
-                      style={{ backgroundColor: appointment.color }}
-                    ></div>
-                    <span className="appointment-person">
-                      {appointment.person}:
-                    </span>
-                    <span className="appointment-description">
-                      {appointment.description}
-                    </span>
-                  </div>
-                ))}
+          <div className="calendar-container">
+            <Calendar
+              onDateSelect={handleDateSelect}
+              selectedDate={selectedDate}
+            />
+            <section className="appointments-section">
+              <div className="appointments-header">
+                <h3>Booked Appointment List</h3>
               </div>
-            ) : (
-              <div className="no-appointments">
-                <p>No appointments scheduled for this date</p>
-              </div>
-            )}
-          </section>
-        </div>
+              {appointmentsToShow.length > 0 ? (
+                <div className="appointments-list">
+                  {appointmentsToShow.map((appointment: Appointment) => (
+                    <div key={appointment.id} className="appointment-item">
+                      <span className="appointment-time">{appointment.time}</span>
+                      <div
+                        className="appointment-indicator"
+                        style={{ backgroundColor: appointment.color }}
+                      ></div>
+                      <span className="appointment-person">
+                        {appointment.person}:
+                      </span>
+                      <span className="appointment-description">
+                        {appointment.description}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-appointments">
+                  <p>No appointments scheduled for this date</p>
+                </div>
+              )}
+            </section>
+          </div>
         </div>
         <NotificationButton />
       </main>
