@@ -26,8 +26,8 @@
 }
 
 .pet-selection-options {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  justify-content: center;
   gap: 24px;
   margin-bottom: 40px;
   max-height: 320px;
