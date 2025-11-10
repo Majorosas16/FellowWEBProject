@@ -5,21 +5,20 @@ import HealthEventCard from "../../components/HealthEventCard/HealthEventCard";
 import MedicationCard from "../../components/MedicationCard/MedicationCard";
 import NotificationButton from "../../components/NotificationButton/NotificationButton";
 import "./Dashboard.css";
-
 import type { RootState } from "../../redux/store";
 import { useFetchPets } from "../../hook/useFetchPets";
 import { useAuthUser } from "../../hook/useAuthUser";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard: React.FC = () => {
   useFetchPets();
-
   const pets = useSelector((state: RootState) => state.pets.pets);
   console.log(pets);
-  const user = useAuthUser(); // Hook personalizado
-
+  const user = useAuthUser();
   console.log(user);
 
-  // (Tus arrays actuales de eventos y medicamentos se conservan)
+  const navigate = useNavigate();
+
   const healthEvents = [
     {
       petName: "Pepe",
@@ -52,7 +51,6 @@ const Dashboard: React.FC = () => {
     },
   ];
 
-  // Ordena las mascotas por fecha creada (más recientes primero)
   const sortedPets = [...pets].sort((a, b) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
@@ -63,16 +61,19 @@ const Dashboard: React.FC = () => {
       <div className="dashboard-container">
         <div className="dashboard-content">
           <div className="dashboard-header">
+            <div className="dashboard-header-text">
+              <h2 className="dashboard-title">
+                Hi, {user?.name || "Carolina"}
+              </h2>
+              <p className="dashboard-subtitle">How is your day?</p>
+            </div>
             <img
-              src="/images/Logo-2.png"
-              alt="Fellow Logo"
-              className="home-logo"
+              src="/images/Calendar.png"
+              alt="Calendar"
+              className="calendar-icon"
+              onClick={() => navigate("/calendar")}
             />
-            <h2 className="dashboard-title">Hi, {user?.name || "User"}</h2>
-
-            <p className="dashboard-subtitle">How is your day?</p>
           </div>
-
           <div className="dashboard-sections">
             <div className="section">
               <h3 className="section-title">Health events</h3>
@@ -104,7 +105,6 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
           </div>
-
           <NotificationButton />
         </div>
       </div>

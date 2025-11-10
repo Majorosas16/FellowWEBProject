@@ -3,33 +3,26 @@ html, body {
   width: 100vw;
   margin: 0;
   padding: 0;
-  overflow: hidden;   /* ← Esto asegura que no puedas hacer scroll en la página */
+  overflow: hidden;
 }
 
 .dashboard-layout {
+  display: flex;
+  width: 100vw;
   height: 100vh;
   min-height: 100vh;
   max-height: 100vh;
-  overflow: hidden;   /* ← Esto evita el scroll del app layout completo */
+  overflow: hidden;
+  background: #ffffff;
 }
 
-/* Si tienes algún otro contenedor maestro, igual: */
 #root, .App {
   height: 100vh !important;
   overflow: hidden !important;
 }
 
-
-.dashboard-layout {
-  display: flex;
-  width: 100vw;
-  min-height: 100vh;
-  background: #f8fafc;
-}
-
 /* Sidebar solo en desktop/tablet */
 .your-pets {
-  /* El width puede ajustarse según tu diseño visual */
   width: 310px;
   min-width: 230px;
   max-width: 340px;
@@ -52,107 +45,177 @@ html, body {
 
 .dashboard-container {
   flex: 1;
-  min-height: 100vh;
-  background: #f8fafc;
-  background-image: radial-gradient(circle, #e2e8f0 1px, transparent 1px);
-  background-size: 20px 20px;
-  padding: 20px;
-  padding-bottom: 90px; /* Espacio para navegación bottom en mobile */
+  height: 100vh;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 32px 48px;
+  padding-bottom: 90px;
   position: relative;
 }
 
 .dashboard-content {
-  max-width: 650px;
-  margin: 0 auto;
-  padding-top: 20px;
+  max-width: 900px;
+  margin: 0;
 }
 
 .dashboard-header {
-  text-align: center;
-  margin-bottom: 32px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.dashboard-header-text {
+  flex: 1;
 }
 
 .home-logo {
-  max-width: 128px;
-  display: block;
-  margin: 0 auto 18px auto;
+  display: none;
 }
 
 .dashboard-title {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
-  color: #1a202c;
-  margin: 0 0 8px 0;
+  color: #0f172a;
+  margin: 0 0 4px 0;
 }
 
 .dashboard-subtitle {
   font-size: 16px;
   color: #64748b;
   margin: 0;
+  font-weight: 400;
+}
+
+.calendar-icon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.calendar-icon:hover {
+  opacity: 0.7;
 }
 
 .dashboard-sections {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 40px;
 }
 
 .section {
-  margin-bottom: 24px;
+  margin-bottom: 0;
 }
 
 .section-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #4B1CB3;
-  margin: 0 0 16px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 20px 0;
 }
 
 .scrollable-cards {
   display: flex;
   overflow-x: auto;
-  gap: 13px;
+  gap: 16px;
   padding-bottom: 8px;
   -webkit-overflow-scrolling: touch;
+  margin: 0;
 }
+
 .scrollable-cards::-webkit-scrollbar {
-  display: none;
+  height: 6px;
 }
-.scrollable-cards {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+.scrollable-cards::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.scrollable-cards::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.scrollable-cards::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 /* Estilos tablet/desktop mejorados */
 @media (min-width: 900px) {
-  .dashboard-content {
-    padding-top: 40px;
-    max-width: 800px;
+  .dashboard-container {
+    padding: 48px 64px;
   }
+  
+  .dashboard-content {
+    max-width: 1000px;
+  }
+  
   .dashboard-title {
     font-size: 36px;
   }
+  
   .section-title {
-    font-size: 21px;
+    font-size: 22px;
   }
+  
   .dashboard-subtitle {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 
-/* Responsive para mobile ultra */
-@media (max-width: 600px) {
+/* Responsive para mobile */
+@media (max-width: 800px) {
+  .dashboard-container {
+    padding: 24px 20px;
+  }
+  
   .dashboard-content {
-    padding-top: 14px;
-    max-width: 97vw;
+    max-width: 100%;
   }
+  
   .dashboard-title {
-    font-size: 22px;
+    font-size: 28px;
   }
+  
   .dashboard-subtitle {
     font-size: 15px;
   }
+  
   .section-title {
-    font-size: 1.08rem;
+    font-size: 18px;
+  }
+  
+  .dashboard-sections {
+    gap: 32px;
+  }
+  
+  .calendar-icon {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-container {
+    padding: 20px 16px;
+  }
+  
+  .dashboard-title {
+    font-size: 24px;
+  }
+  
+  .dashboard-subtitle {
+    font-size: 14px;
+  }
+  
+  .section-title {
+    font-size: 16px;
+  }
+  
+  .calendar-icon {
+    width: 32px;
+    height: 32px;
   }
 }

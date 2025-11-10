@@ -8,10 +8,12 @@
 }
 
 .logo-fellow-img {
-  max-width: 150%;
-  height: auto;
-  display: block;
-  /* Ajusta el tamaño según lo necesites */
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.logo-fellow-img:hover {
+  opacity: 0.8;
 }
 
 .pets-section {

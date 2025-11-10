@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthUser } from "../../hook/useAuthUser";
+import LogoFellow from "../../assets/LogoWEB.png"; // Ajusta la ruta según tu estructura
 import "./LeftNavigation.css";
 
 interface LeftNavigationPet {
@@ -17,8 +18,6 @@ interface LeftNavigationProps {
 const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
   const navigate = useNavigate();
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  
-  // Obtener el usuario usando el hook personalizado
   const user = useAuthUser();
 
   return (
@@ -26,9 +25,11 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
       <div className="pets-section">
         <div className="logo-container">
           <img
-            src="../src/assets/LogoWEB.png"
+            src={LogoFellow}
             alt="Fellow Logo"
             className="logo-fellow-img"
+            onClick={() => navigate('/dashboard')}
+            style={{ cursor: 'pointer' }}
           />
         </div>
         <h2 className="pets-title">
@@ -75,7 +76,7 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
         </div>
       </div>
       <div className="add-pet-container">
-        <button className="add-pet-btn" onClick={() => navigate("/add-pet")}>
+        <button className="add-pet-btn" onClick={() => navigate("/pet-type")}>
           Add a pet +
         </button>
       </div>
