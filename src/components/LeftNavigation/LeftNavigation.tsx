@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthUser } from "../../hook/useAuthUser";
 import "./LeftNavigation.css";
 
 interface LeftNavigationPet {
@@ -16,6 +17,9 @@ interface LeftNavigationProps {
 const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
   const navigate = useNavigate();
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  
+  // Obtener el usuario usando el hook personalizado
+  const user = useAuthUser();
 
   return (
     <aside className="your-pets">
@@ -78,12 +82,12 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
       <div className="profile-area" onClick={() => navigate("/profile")}>
         <img
           src="/images/carolina.jpg"
-          alt="Carolina"
+          alt={user?.name || "User"}
           className="profile-avatar"
         />
         <div className="profile-info">
-          <span className="profile-name">Carolina</span>
-          <span className="profile-email">Carolina145lopezg@gmail.com</span>
+          <span className="profile-name">{user?.name || "User"}</span>
+          <span className="profile-email">{user?.email || "user@example.com"}</span>
         </div>
       </div>
     </aside>
