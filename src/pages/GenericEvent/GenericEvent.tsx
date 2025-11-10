@@ -1,44 +1,68 @@
-import React, { useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import './GenericEvent.css'
+import React, { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { createUserEvent } from "../../services/createUserEvent";
+import "./GenericEvent.css";
 
 /**
  * GenericEvent page component
  * Form for creating generic events
  */
 const GenericEvent: React.FC = () => {
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
   const [formData, setFormData] = useState({
-    eventTitle: '',
-    eventDate: '',
-    eventTime: '',
-    eventDescription: ''
-  })
+    eventTitle: "",
+    eventDate: "",
+    eventTime: "",
+    eventDescription: "",
+  });
 
-  const petId = searchParams.get('petId')
-  const petName = searchParams.get('petName')
+  const petId = searchParams.get("petId");
+  const petName = searchParams.get("petName");
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (petId && petName) {
-      // Here you would typically save the generic event
-      console.log('Generic event data:', { petId, petName, ...formData })
-      navigate(`/success-event?petId=${petId}&petName=${petName}&eventType=generic`)
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!petId || !petName) {
+      alert("Missing pet information");
+      return;
     }
-  }
+
+    try {
+      // 🔥 Guarda el evento genérico en Firebase
+      await createUserEvent({
+        petId,
+        type: "event",
+        title: formData.eventTitle,
+        description: formData.eventDescription,
+        date: formData.eventDate,
+        time: formData.eventTime,
+      });
+
+      // Navega a la pantalla de éxito
+      navigate(
+        `/success-event?petId=${petId}&petName=${petName}&eventType=generic`
+      );
+    } catch (error) {
+      console.error("Error creating event:", error);
+      alert("There was a problem saving your event. Please try again.");
+    }
+  };
 
   const handleCancel = () => {
-    navigate('/dashboard')
-  }
+    navigate("/dashboard");
+  };
 
   return (
     <div className="generic-event-container">
@@ -124,7 +148,7 @@ const GenericEvent: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default GenericEvent
+export default GenericEvent;

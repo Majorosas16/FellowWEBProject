@@ -1,39 +1,64 @@
-import React, { useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import './MedicineEvent.css'
+import React, { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { createUserEvent } from "../../services/createUserEvent";
+import "./MedicineEvent.css";
 
 const MedicineEvent: React.FC = () => {
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
   const [formData, setFormData] = useState({
-    medicine: '',
-    medicineDate: '',
-    medicineDescription: ''
-  })
+    medicine: "",
+    medicineDate: "",
+    medicineDescription: "",
+  });
 
-  const petId = searchParams.get('petId')
-  const petName = searchParams.get('petName')
+  const petId = searchParams.get("petId");
+  const petName = searchParams.get("petName");
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (petId && petName) {
-      // Here you would typically save the medicine event
-      console.log('Medicine event data:', { petId, petName, ...formData })
-      navigate(`/success-event?petId=${petId}&petName=${petName}&eventType=medicine`)
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!petId || !petName) {
+      alert("Missing pet information");
+      return;
     }
-  }
+
+    try {
+      // 🔥 Guarda el evento de medicina en Firebase
+      await createUserEvent({
+        petId,
+        type: "medicine",
+        title: formData.medicine,
+        description: formData.medicineDescription,
+        date: formData.medicineDate,
+      });
+
+      // Navega a la pantalla de éxito
+      navigate(
+        `/success-event?petId=${petId}&petName=${petName}&eventType=medicine`
+      );
+    } catch (error) {
+      console.error("Error creating medicine event:", error);
+      alert(
+        "There was a problem saving your medicine event. Please try again."
+      );
+    }
+  };
 
   const handleCancel = () => {
-    navigate('/dashboard')
-  }
+    navigate("/dashboard");
+  };
 
   return (
     <div className="medicine-event-container">
@@ -111,7 +136,7 @@ const MedicineEvent: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MedicineEvent
+export default MedicineEvent;
