@@ -128,7 +128,7 @@ const Auth: React.FC = () => {
         if (snap.exists()) {
           const userData = snap.data();
           console.log("Cargando a Redux:", userData);
-          dispatch(setUserAdd(userData));
+          dispatch(setUserAdd(userData as UserType));
           navigate("/pet-type");
         } else {
           setModalMessage(
