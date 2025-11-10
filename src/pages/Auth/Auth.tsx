@@ -73,7 +73,7 @@ const Auth: React.FC = () => {
     const errorMessages: Record<string, string> = {
       // Errores de Login
       "auth/user-not-found": "We couldn't find an account with that email.",
-      "auth/wrong-password": "Oops! The password you entered is incorrect.",
+      "auth/wrong-password": "Oops! The password is incorrect.",
       "auth/invalid-credential": "Invalid email or password. Please try again.",
       "auth/invalid-email": "Please enter a valid email address.",
       "auth/user-disabled":
