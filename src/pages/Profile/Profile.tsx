@@ -9,7 +9,7 @@ import { db } from "../../services/firebaseConfig";
 import { doc, updateDoc } from "firebase/firestore";
 import { auth } from "../../services/firebaseConfig";
 import { updatePassword } from "firebase/auth";
-// import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
+import { signOut } from "firebase/auth";
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
@@ -77,6 +77,17 @@ const Profile: React.FC = () => {
     if (formData.password === "********") {
       setFormData((prev) => ({ ...prev, password: "" }));
     }
+  };
+
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        navigate("/"); // o "/login" si tienes una ruta de login específica
+      })
+      .catch((error) => {
+        console.error("Error signing out:", error);
+        alert("Error signing out. Please try again.");
+      });
   };
 
   return (
@@ -163,6 +174,9 @@ const Profile: React.FC = () => {
             <span className="profile-action-arrow">{"\u203A"}</span>
           </div>
         </div>
+        <button className="logout-btn" onClick={handleLogout}>
+          Log out
+        </button>
       </main>
     </div>
   );
