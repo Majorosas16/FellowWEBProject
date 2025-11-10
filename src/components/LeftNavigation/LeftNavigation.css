@@ -21,7 +21,7 @@
 .your-pets {
   background-color: #23233b;
   color: #fff;
-  width: 50%;
+  width: 70%;
   min-height: 100vh;
   padding: 32px 24px 24px 24px;
   display: flex;
@@ -94,7 +94,15 @@
 .pet-name {
   font-weight: 600;
   font-size: 1.02rem;
+  color: #fff;     /* Verde igual que la fecha */
+  letter-spacing: 0.5px;
 }
+
+.pet-item--hover .pet-name {
+  color: #fff;
+  /* o el color que te guste para hover */
+}
+
 
 .pet-date {
   font-size: 0.98rem;
