@@ -273,6 +273,11 @@ const Profile: React.FC = () => {
               </div>
             </div>
           </div>
+          <div className="logout-container-mobile">
+            <button className="logout-btn" onClick={handleLogout}>
+              Log out
+            </button>
+          </div>
         </div>
 
         {/* Desktop View */}

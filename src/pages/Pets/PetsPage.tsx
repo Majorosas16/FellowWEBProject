@@ -8,10 +8,13 @@ import type { DocumentData } from "firebase/firestore";
 import PetCard from "../../components/PetCard/PetCard";
 import NotificationButton from "../../components/NotificationButton/NotificationButton";
 import "./PetsPage.css";
+import { useNavigate } from "react-router-dom";
+
 
 const PetsPage: React.FC = () => {
   const dispatch = useDispatch();
   const pets = useSelector((state: RootState) => state.pets.pets);
+    const navigate = useNavigate();
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -60,11 +63,13 @@ const PetsPage: React.FC = () => {
               <div className="add-pet-card">
                 <p className="add-pet-text">Let’s say hi to...</p>
                 <div className="add-pet-icons">
+                  <button onClick={() => navigate("/pet-type")}>
                   <img
                     src="/images/add-pet-plus.png"
                     alt="add"
                     className="add-pet-plus"
                   />
+                  </button>
                   <img
                     src="/images/add-pet-silhouettes.png"
                     alt="pets"

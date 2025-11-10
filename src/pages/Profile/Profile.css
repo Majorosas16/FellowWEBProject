@@ -159,6 +159,25 @@ body {
   cursor: not-allowed;
 }
 
+/* =============================
+   Logout button - Mobile styles
+   ============================= */
+.logout-container-mobile {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+@media (max-width: 899px) {
+  .logout-btn {
+    width: 100%;
+    max-width: 250px;
+    padding: 14px 0;
+    font-size: 1rem;
+    border-radius: 14px;
+  }
+}
+
 /* ============================================
    DESKTOP VIEW
    ============================================ */
