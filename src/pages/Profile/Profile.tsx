@@ -8,6 +8,8 @@ import "./Profile.css";
 import { db } from "../../services/firebaseConfig";
 import { doc, updateDoc } from "firebase/firestore";
 import { auth } from "../../services/firebaseConfig";
+import { updatePassword } from "firebase/auth";
+// import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ const Profile: React.FC = () => {
     name: user?.name || "",
     phoneNumber: user?.phoneNumber || "",
     email: user?.email || "",
+    password: "", // SIEMPRE vacío al entrar
   });
 
   // Maneja cambios en los inputs
@@ -32,30 +35,47 @@ const Profile: React.FC = () => {
     }));
   };
 
-  // Maneja el envío del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Actualiza en Redux primero
     dispatch(updateUserProfile(formData));
 
-    // Actualiza en Firebase
     try {
       const userId = auth.currentUser?.uid;
       if (!userId) throw new Error("No authenticated user");
 
+      // Update Firestore profile fields
       const userRef = doc(db, "users", userId);
       await updateDoc(userRef, {
         name: formData.name,
         phoneNumber: formData.phoneNumber,
         email: formData.email,
-        // No modifiques la password aquí, normalmente
       });
+
+      // Update password in Firebase Authentication if new password is entered
+      if (formData.password.length >= 6 && auth.currentUser) {
+        try {
+          await updatePassword(auth.currentUser, formData.password);
+        } catch (error) {
+          // Si requiere re-auth, se lo muestras aquí
+          console.error("Error updating password:", error);
+          alert("You need to re-login before changing your password.");
+          return;
+        }
+      }
+
+      // Si está vacío o menor a 6 caracteres no hace nada, manteniendo la contraseña anterior
 
       alert("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating profile:", error);
       alert("Error updating profile. Please try again.");
+    }
+  };
+
+  const handlePasswordFocus = () => {
+    if (formData.password === "********") {
+      setFormData((prev) => ({ ...prev, password: "" }));
     }
   };
 
@@ -97,11 +117,13 @@ const Profile: React.FC = () => {
           />
 
           <input
-            type="password"
+            name="password"
             className="profile-input"
-            placeholder="********"
-            value="********"
-            readOnly
+            placeholder="New password (leave blank to keep current)"
+            value={formData.password}
+            type="text" // usa "password" si quieres puntos
+            onChange={handleInputChange}
+            onFocus={handlePasswordFocus}
           />
 
           <input
