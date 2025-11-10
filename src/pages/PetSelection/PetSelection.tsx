@@ -35,11 +35,11 @@ const PetSelection: React.FC = () => {
   };
 
   const handleCancel = () => {
-    navigate("/dashboard");
+    navigate(-1);
   };
 
   const handleBack = () => {
-    navigate(-1); // Navega a la última página visitada
+    navigate(-1);
   };
 
   const noPets = !pets || pets.length === 0;
