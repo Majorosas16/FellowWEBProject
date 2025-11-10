@@ -4,13 +4,13 @@ import LeftNavigation from "../../components/LeftNavigation/LeftNavigation";
 import Calendar from "../../components/Calendar/Calendar";
 import NotificationButton from "../../components/NotificationButton/NotificationButton";
 import { useFetchPets } from "../../hook/useFetchPets";
+import { useFetchEvents } from "../../hook/useFetchEvents";
 import type { RootState } from "../../redux/store";
 import "./CalendarPage.css";
 
-// Definición de tipos
 interface Appointment {
-  id: number;
-  date: string; // formato YYYY-MM-DD
+  id: string;
+  date: string;
   time: string;
   person: string;
   description: string;
@@ -18,60 +18,44 @@ interface Appointment {
 }
 
 const CalendarPage: React.FC = () => {
-  // Fetch de mascotas
   useFetchPets();
+  useFetchEvents(); // 👈 Nuevo hook para escuchar eventos en tiempo real
+
   const pets = useSelector((state: RootState) => state.pets.pets);
+  const events = useSelector((state: RootState) => state.events.events);
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
-  // Datos de ejemplo para las citas
-  const [appointments] = useState<Appointment[]>([
-    {
-      id: 1,
-      date: "2025-01-24",
-      time: "11:00",
-      person: "Pepe",
-      description: "Vomited yellow",
-      color: "#7159c7",
-    },
-    {
-      id: 2,
-      date: "2025-01-24",
-      time: "13:00",
-      person: "Oli",
-      description: "Vomited yellow",
-      color: "#7159c7",
-    },
-    {
-      id: 3,
-      date: "2025-01-24",
-      time: "17:00",
-      person: "Kiwi",
-      description: "Vomited yellow",
-      color: "#7159c7",
-    },
-  ]);
-
-  // Función para manejar la fecha seleccionada
   const handleDateSelect = (date: Date): void => {
     setSelectedDate(date);
   };
 
-  // Filtrar citas por fecha seleccionada
+  // 🎨 Convertir los eventos a formato visual de calendario
+  const formattedAppointments: Appointment[] = events.map((event) => {
+    const pet = pets.find((p) => p.id === event.petId);
+    const color = event.type === "medicine" ? "#ffb347" : "#7159c7"; // color distinto por tipo
+
+    return {
+      id: event.id,
+      date: event.date,
+      time: event.time || "00:00",
+      person: pet?.name || "Unknown Pet",
+      description: event.description,
+      color,
+    };
+  });
+
   const getAppointmentsForDate = (date: Date | null): Appointment[] => {
     if (!date) return [];
-    const dateString = date.toISOString().split("T")[0]; // Formato YYYY-MM-DD
-    return appointments.filter(
-      (appointment) => appointment.date === dateString
-    );
+    const dateString = date.toISOString().split("T")[0];
+    return formattedAppointments.filter((a) => a.date === dateString);
   };
 
   const appointmentsToShow = getAppointmentsForDate(selectedDate);
 
-  // Ordena las mascotas por fecha creada (más recientes primero)
-  const sortedPets = [...pets].sort((a, b) => {
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-  });
+  const sortedPets = [...pets].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 
   return (
     <div className="calendar-layout">
@@ -89,9 +73,11 @@ const CalendarPage: React.FC = () => {
               </div>
               {appointmentsToShow.length > 0 ? (
                 <div className="appointments-list">
-                  {appointmentsToShow.map((appointment: Appointment) => (
+                  {appointmentsToShow.map((appointment) => (
                     <div key={appointment.id} className="appointment-item">
-                      <span className="appointment-time">{appointment.time}</span>
+                      <span className="appointment-time">
+                        {appointment.time}
+                      </span>
                       <div
                         className="appointment-indicator"
                         style={{ backgroundColor: appointment.color }}
