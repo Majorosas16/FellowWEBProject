@@ -78,19 +78,23 @@
 }
 
 .pet-avatar-container {
-  flex-shrink: 0;
-  /* Puedes ajustar un margin-right si te parece visualmente mejor */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
-.pet-image {
-  width: 54px;
-  height: 54px;
+
+.your-pets .pet-image {
+  width: 100% !important;    /* o 36px según prefieras */
   object-fit: cover;
   border-radius: 50%;
-  margin-right: 1rem;
-  border: 3px solid #fff;
-  background: #23233b; /* Si la imagen es PNG y tiene transparencia, esto ayuda */
+  margin-right: 0.7rem;
+  border: 2px solid #fff;
+  background: #23233b;
 }
+
+
+
 
 .pet-info {
   display: flex;

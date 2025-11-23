@@ -9,6 +9,7 @@ interface LeftNavigationPet {
   name: string;
   image: string;
   createdAt: string;
+  type: string;
 }
 
 interface LeftNavigationProps {
@@ -20,6 +21,11 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const user = useAuthUser();
 
+  const DEFAULT_IMAGES = {
+    cat: "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-pet%2Fcat.png?alt=media&token=6ee9b4ac-cf43-46b2-ac9e-6ed0d6ed2041",
+    dog: "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-pet%2Fdog.png?alt=media&token=ab846319-ee77-4dc0-98f4-7d2ac52af91a",
+  };
+
   return (
     <aside className="your-pets">
       <div className="pets-section">
@@ -28,8 +34,8 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
             src={LogoFellow}
             alt="Fellow Logo"
             className="logo-fellow-img"
-            onClick={() => navigate('/dashboard')}
-            style={{ cursor: 'pointer' }}
+            onClick={() => navigate("/dashboard")}
+            style={{ cursor: "pointer" }}
           />
         </div>
         <h2 className="pets-title">
@@ -50,7 +56,13 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
               >
                 <div className="pet-avatar-container">
                   <img
-                    src={pet.image || "/images/placeholder.jpg"}
+                    src={
+                      pet.image
+                        ? pet.image
+                        : pet.type === "dog"
+                        ? DEFAULT_IMAGES.dog
+                        : DEFAULT_IMAGES.cat
+                    }
                     alt={pet.name}
                     className="pet-image"
                   />
@@ -88,7 +100,9 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
         />
         <div className="profile-info">
           <span className="profile-name">{user?.name || "User"}</span>
-          <span className="profile-email">{user?.email || "user@example.com"}</span>
+          <span className="profile-email">
+            {user?.email || "user@example.com"}
+          </span>
         </div>
       </div>
     </aside>

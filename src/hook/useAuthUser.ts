@@ -21,8 +21,15 @@ export const useAuthUser = () => {
             const userSnap = await getDoc(userRef);
 
             if (userSnap.exists()) {
-              console.log("Usuario cargado:", userSnap.data());
-              dispatch(setUserAdd(userSnap.data()));
+              const data = userSnap.data();
+              const userTypeObj = {
+                id: firebaseUser.uid,
+                name: data.name ?? "",
+                phoneNumber: data.phoneNumber ?? "",
+                email: data.email ?? "",
+              };
+              console.log("Usuario cargado:", userTypeObj);
+              dispatch(setUserAdd(userTypeObj));
             }
           } catch (error) {
             console.error("Error al cargar usuario:", error);

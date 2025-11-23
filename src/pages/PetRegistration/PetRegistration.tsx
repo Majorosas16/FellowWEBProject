@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "../../components/ButtonCopy";
 import Input from "../../components/Input/Input";
 import PetPhoto from "../../components/PetPhoto/PetPhoto";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../../services/firebaseConfig";
 import "./PetRegistration.css";
 
 import {
@@ -33,6 +35,11 @@ const PetRegistration: React.FC = () => {
   const [age, setAge] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [weight, setWeight] = useState("");
+
+  const DEFAULT_IMAGES = {
+    cat: "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-pet%2Fcat.png?alt=media&token=6ee9b4ac-cf43-46b2-ac9e-6ed0d6ed2041",
+    dog: "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-pet%2Fdog.png?alt=media&token=ab846319-ee77-4dc0-98f4-7d2ac52af91a",
+  };
 
   // Sincroniza todas las mascotas desde Firebase al montar el componente
   useEffect(() => {
@@ -83,13 +90,27 @@ const PetRegistration: React.FC = () => {
     console.log("Estado global mascotas:", petsFromState);
   }, [petsFromState]);
 
-  const handleImageChange = (file: File | null) => {
+  const handleImageChange = async (file: File | null) => {
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setPetImage(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+      try {
+        // Crear referencia en Storage
+        const storageRef = ref(
+          storage,
+          `pets/${auth.currentUser?.uid}/${file.name}`
+        );
+
+        // Subir archivo
+        const snapshot = await uploadBytes(storageRef, file);
+
+        // Obtener URL de descarga
+        const downloadURL = await getDownloadURL(snapshot.ref);
+
+        setPetImage(downloadURL); // Guardar la URL para mostrar la imagen
+      } catch (error) {
+        console.error("Error subiendo la imagen:", error);
+        alert("No se pudo subir la imagen. Inténtalo nuevamente.");
+        setPetImage("");
+      }
     } else {
       setPetImage("");
     }
@@ -106,7 +127,7 @@ const PetRegistration: React.FC = () => {
       age,
       birthDate,
       weight,
-      image: petImage,
+      image: petImage || DEFAULT_IMAGES[petType], // Si petImage está vacío, pone la imagen por tipo
       createdAt: new Date().toISOString(),
     };
 
@@ -179,7 +200,10 @@ const PetRegistration: React.FC = () => {
         </div>
 
         <form className="pet-registration-form" onSubmit={handleSubmit}>
-          <PetPhoto imageUrl={petImage} onImageChange={handleImageChange} />
+          <PetPhoto
+            imageUrl={petImage || DEFAULT_IMAGES[petType]}
+            onImageChange={handleImageChange}
+          />
 
           <Input
             type="text"
