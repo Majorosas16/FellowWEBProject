@@ -83,18 +83,16 @@
   justify-content: flex-start;
 }
 
-
 .your-pets .pet-image {
-  width: 100% !important;    /* o 36px según prefieras */
+  width: 40px !important; /* Puedes ajustar: 36px, 44px... */
+  height: 40px !important;
   object-fit: cover;
   border-radius: 50%;
   margin-right: 0.7rem;
   border: 2px solid #fff;
   background: #23233b;
+  display: block;
 }
-
-
-
 
 .pet-info {
   display: flex;
