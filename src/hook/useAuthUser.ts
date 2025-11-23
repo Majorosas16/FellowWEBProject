@@ -13,36 +13,32 @@ export const useAuthUser = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        // Usuario autenticado
-        if (!user) {
-          // Solo carga si no hay usuario en Redux
-          try {
-            const userRef = doc(db, "users", firebaseUser.uid);
-            const userSnap = await getDoc(userRef);
+        try {
+          const userRef = doc(db, "users", firebaseUser.uid);
+          const userSnap = await getDoc(userRef);
 
-            if (userSnap.exists()) {
-              const data = userSnap.data();
-              const userTypeObj = {
-                id: firebaseUser.uid,
-                name: data.name ?? "",
-                phoneNumber: data.phoneNumber ?? "",
-                email: data.email ?? "",
-              };
-              console.log("Usuario cargado:", userTypeObj);
-              dispatch(setUserAdd(userTypeObj));
-            }
-          } catch (error) {
-            console.error("Error al cargar usuario:", error);
+          if (userSnap.exists()) {
+            const data = userSnap.data();
+            const userTypeObj = {
+              id: firebaseUser.uid,
+              name: data.name ?? "",
+              phoneNumber: data.phoneNumber ?? "",
+              email: data.email ?? "",
+              profileImage: data.profileImage ?? "",
+            };
+            dispatch(setUserAdd(userTypeObj));
+            console.log("Usuario cargado:", userTypeObj);
           }
+        } catch (error) {
+          console.error("Error al cargar usuario:", error);
         }
       } else {
-        // Usuario no autenticado
         dispatch(clearUser());
       }
     });
 
     return () => unsubscribe();
-  }, [dispatch, user]);
+  }, [dispatch]);
 
   return user;
 };

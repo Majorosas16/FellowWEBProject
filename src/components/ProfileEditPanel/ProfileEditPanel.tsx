@@ -10,6 +10,7 @@ import Input from "../Input/Input";
 import "./ProfileEditPanel.css";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../services/firebaseConfig";
+import LoadingScreen from "../LoadingScreen/LoadingScreen";
 
 const ProfileEditPanel: React.FC = () => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const ProfileEditPanel: React.FC = () => {
   const [profileImage, setProfileImage] = useState("");
   const [showEmailTooltip, setShowEmailTooltip] = useState(false);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [isImageLoading, setIsImageLoading] = useState(false);
 
   const DEFAULT_IMAGES = {
     cat: "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-pet%2Fcat.png?alt=media&token=6ee9b4ac-cf43-46b2-ac9e-6ed0d6ed2041",
@@ -35,14 +37,18 @@ const ProfileEditPanel: React.FC = () => {
 
   // Initialize form with user data
   useEffect(() => {
-    if (user) {
-      setName(user.name || "");
-      setEmail(user.email || "");
-      setPhoneNumber(user.phoneNumber || "");
-      setProfileImage(DEFAULT_IMAGES.profile); // Siempre inicia con Storage default
-      // Si en el futuro el usuario tiene profileImage guardado en Firestore, úsalo aquí
-      // setProfileImage(user.profileImage || DEFAULT_IMAGES.profile);
+    async function loadProfileImage() {
+      setIsImageLoading(true);
+      if (user) {
+        setName(user.name || "");
+        setEmail(user.email || "");
+        setPhoneNumber(user.phoneNumber || "");
+        // Si tienes la propiedad profileImage de Firestore, úsala:
+        setProfileImage(DEFAULT_IMAGES.profile);
+      }
+      setIsImageLoading(false);
     }
+    loadProfileImage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
@@ -119,7 +125,6 @@ const ProfileEditPanel: React.FC = () => {
     const file = event.target.files?.[0];
     if (!file || !user?.id) return;
 
-    // Validaciones
     if (!file.type.startsWith("image/")) {
       alert("Please select an image file");
       return;
@@ -129,23 +134,15 @@ const ProfileEditPanel: React.FC = () => {
       return;
     }
 
-    if (!user) {
-      return (
-        <div className="profile-edit-panel">
-          <p>Loading user data...</p>
-        </div>
-      );
-    }
+    setIsImageLoading(true);
 
     try {
-      // Subir a Storage
       const storageRef = ref(storage, `profile-user/${user.id}`);
       const snapshot = await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(snapshot.ref);
 
       setProfileImage(downloadURL);
 
-      // Actualizar Firestore con la URL nueva
       const userRef = doc(db, "users", user.id);
       await updateDoc(userRef, { profileImage: downloadURL });
     } catch (error) {
@@ -153,7 +150,8 @@ const ProfileEditPanel: React.FC = () => {
       console.error(error);
     }
 
-    // Reset input para permitir subir la misma foto de nuevo si quiere
+    setIsImageLoading(false);
+
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -191,12 +189,26 @@ const ProfileEditPanel: React.FC = () => {
           onClick={handleChangePicture}
           type="button"
         >
-          <img
-            src={profileImage || DEFAULT_IMAGES.profile}
-            alt={user?.name || "User"}
-            className="profile-picture-desktop"
-          />
+          {isImageLoading ? (
+            <div
+              style={{
+                height: "100px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <LoadingScreen text="Cargando foto..." />
+            </div>
+          ) : (
+            <img
+              src={profileImage || DEFAULT_IMAGES.profile}
+              alt={user?.name || "User"}
+              className="profile-picture-desktop"
+            />
+          )}
         </button>
+
         <h2 className="profile-name-desktop">{user?.name || "User"}</h2>
         <p className="profile-email-desktop">{user?.email || ""}</p>
       </div>
