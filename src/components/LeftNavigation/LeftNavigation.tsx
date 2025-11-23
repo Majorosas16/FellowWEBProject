@@ -24,6 +24,8 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
   const DEFAULT_IMAGES = {
     cat: "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-pet%2Fcat.png?alt=media&token=6ee9b4ac-cf43-46b2-ac9e-6ed0d6ed2041",
     dog: "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-pet%2Fdog.png?alt=media&token=ab846319-ee77-4dc0-98f4-7d2ac52af91a",
+    profile:
+      "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-user%2Fprofile-default.png?alt=media&token=27c7b2ea-4efc-4475-93da-f07a1bb8fa4f",
   };
 
   return (
@@ -94,7 +96,7 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
       </div>
       <div className="profile-area" onClick={() => navigate("/profile")}>
         <img
-          src="/images/carolina.jpg"
+          src={DEFAULT_IMAGES.profile}
           alt={user?.name || "User"}
           className="profile-avatar"
         />
