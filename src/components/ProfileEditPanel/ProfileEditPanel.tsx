@@ -1,71 +1,76 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAuthUser } from '../../hook/useAuthUser'
-import { useDispatch } from 'react-redux'
-import { doc, updateDoc } from 'firebase/firestore'
-import { updatePassword } from 'firebase/auth'
-import { auth, db } from '../../services/firebaseConfig'
-import { setUserAdd } from '../../redux/slices/userSlice'
-import Input from '../Input/Input'
-import './ProfileEditPanel.css'
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthUser } from "../../hook/useAuthUser";
+import { useDispatch } from "react-redux";
+import { doc, updateDoc } from "firebase/firestore";
+import { updatePassword } from "firebase/auth";
+import { auth, db } from "../../services/firebaseConfig";
+import { setUserAdd } from "../../redux/slices/userSlice";
+import Input from "../Input/Input";
+import "./ProfileEditPanel.css";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../../services/firebaseConfig";
 
 const ProfileEditPanel: React.FC = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const user = useAuthUser()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useAuthUser();
 
-  const [isEditing, setIsEditing] = useState(false)
-  const [isSaving, setIsSaving] = useState(false)
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [password, setPassword] = useState('')
-  const [profileImage, setProfileImage] = useState('')
-  const [showEmailTooltip, setShowEmailTooltip] = useState(false)
-  const fileInputRef = React.useRef<HTMLInputElement>(null)
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [profileImage, setProfileImage] = useState("");
+  const [showEmailTooltip, setShowEmailTooltip] = useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const DEFAULT_IMAGES = {
+    cat: "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-pet%2Fcat.png?alt=media&token=6ee9b4ac-cf43-46b2-ac9e-6ed0d6ed2041",
+    dog: "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-pet%2Fdog.png?alt=media&token=ab846319-ee77-4dc0-98f4-7d2ac52af91a",
+    profile:
+      "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-user%2Fprofile-default.png?alt=media&token=27c7b2ea-4efc-4475-93da-f07a1bb8fa4f",
+  };
 
   // Initialize form with user data
   useEffect(() => {
     if (user) {
-      setName(user.name || '')
-      setEmail(user.email || '')
-      setPhoneNumber(user.phoneNumber || '')
-
-      // Load profile image from localStorage
-      const savedImage = localStorage.getItem(`profileImage_${user.id}`)
-      if (savedImage) {
-        setProfileImage(savedImage)
-      } else {
-        setProfileImage('/images/carolina.jpg') // Default profile image
-      }
+      setName(user.name || "");
+      setEmail(user.email || "");
+      setPhoneNumber(user.phoneNumber || "");
+      setProfileImage(DEFAULT_IMAGES.profile); // Siempre inicia con Storage default
+      // Si en el futuro el usuario tiene profileImage guardado en Firestore, úsalo aquí
+      // setProfileImage(user.profileImage || DEFAULT_IMAGES.profile);
     }
-  }, [user])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const handleBackClick = () => {
-    navigate(-1)
-  }
+    navigate(-1);
+  };
 
   const handleEditClick = () => {
-    setIsEditing(true)
-  }
+    setIsEditing(true);
+  };
 
   const handleSaveClick = async () => {
-    if (!user?.id) return
+    if (!user?.id) return;
 
-    setIsSaving(true)
+    setIsSaving(true);
     try {
-      const userRef = doc(db, 'users', user.id)
+      const userRef = doc(db, "users", user.id);
       const updateData: {
-        name: string
-        phoneNumber: string
-        email: string
+        name: string;
+        phoneNumber: string;
+        email: string;
       } = {
         name,
         phoneNumber,
         email,
-      }
+      };
 
-      await updateDoc(userRef, updateData)
+      await updateDoc(userRef, updateData);
 
       // Update Redux store
       dispatch(
@@ -75,83 +80,84 @@ const ProfileEditPanel: React.FC = () => {
           phoneNumber,
           email,
         })
-      )
+      );
 
       // Update password if provided
       if (password && password.length >= 6) {
-        const currentUser = auth.currentUser
+        const currentUser = auth.currentUser;
         if (currentUser) {
           try {
-            await updatePassword(currentUser, password)
+            await updatePassword(currentUser, password);
           } catch (error: unknown) {
-            console.error('Error updating password:', error)
+            console.error("Error updating password:", error);
             // Password update might fail if user hasn't signed in recently
             // This is a Firebase security requirement
             alert(
-              'Password update failed. Please sign out and sign in again, then try updating your password.'
-            )
+              "Password update failed. Please sign out and sign in again, then try updating your password."
+            );
           }
         }
       }
 
-      setIsEditing(false)
-      setPassword('')
+      setIsEditing(false);
+      setPassword("");
     } catch (error) {
-      console.error('Error updating profile:', error)
-      alert('Error updating profile. Please try again.')
+      console.error("Error updating profile:", error);
+      alert("Error updating profile. Please try again.");
     } finally {
-      setIsSaving(false)
+      setIsSaving(false);
     }
-  }
+  };
 
   const handleChangePicture = () => {
-    fileInputRef.current?.click()
-  }
+    fileInputRef.current?.click();
+  };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (!file) return
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file || !user?.id) return;
 
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      alert('Please select an image file')
-      return
+    // Validaciones
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file");
+      return;
     }
-
-    // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      alert('Image size should be less than 5MB')
-      return
+      alert("Image size should be less than 5MB");
+      return;
     }
 
-    // Read file and convert to base64
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      const base64String = reader.result as string
-      if (base64String && user?.id) {
-        // Save to localStorage
-        localStorage.setItem(`profileImage_${user.id}`, base64String)
-        setProfileImage(base64String)
-      }
+    if (!user) {
+      return (
+        <div className="profile-edit-panel">
+          <p>Loading user data...</p>
+        </div>
+      );
     }
-    reader.onerror = () => {
-      alert('Error reading image file')
-    }
-    reader.readAsDataURL(file)
 
-    // Reset input value to allow selecting the same file again
+    try {
+      // Subir a Storage
+      const storageRef = ref(storage, `profile-user/${user.id}`);
+      const snapshot = await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(snapshot.ref);
+
+      setProfileImage(downloadURL);
+
+      // Actualizar Firestore con la URL nueva
+      const userRef = doc(db, "users", user.id);
+      await updateDoc(userRef, { profileImage: downloadURL });
+    } catch (error) {
+      alert("Error uploading image");
+      console.error(error);
+    }
+
+    // Reset input para permitir subir la misma foto de nuevo si quiere
     if (fileInputRef.current) {
-      fileInputRef.current.value = ''
+      fileInputRef.current.value = "";
     }
-  }
-
-  if (!user) {
-    return (
-      <div className="profile-edit-panel">
-        <p>Loading user data...</p>
-      </div>
-    )
-  }
+  };
 
   return (
     <div className="profile-edit-panel">
@@ -160,7 +166,7 @@ const ProfileEditPanel: React.FC = () => {
         type="file"
         accept="image/*"
         onChange={handleFileChange}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
       />
       <button
         className="back-button-desktop"
@@ -186,13 +192,13 @@ const ProfileEditPanel: React.FC = () => {
           type="button"
         >
           <img
-            src={profileImage || '/images/carolina.jpg'}
-            alt={user.name || 'User'}
+            src={profileImage || DEFAULT_IMAGES.profile}
+            alt={user?.name || "User"}
             className="profile-picture-desktop"
           />
         </button>
-        <h2 className="profile-name-desktop">{user.name || 'User'}</h2>
-        <p className="profile-email-desktop">{user.email || ''}</p>
+        <h2 className="profile-name-desktop">{user?.name || "User"}</h2>
+        <p className="profile-email-desktop">{user?.email || ""}</p>
       </div>
 
       <div className="edit-profile-section">
@@ -243,14 +249,12 @@ const ProfileEditPanel: React.FC = () => {
             disabled={isSaving}
             type="button"
           >
-            {isEditing ? 'Save' : 'Edit'}
+            {isEditing ? "Save" : "Edit"}
           </button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProfileEditPanel
-
-
+export default ProfileEditPanel;

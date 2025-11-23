@@ -10,6 +10,8 @@ import Input from "../../components/Input/Input";
 import ProfileEditPanel from "../../components/ProfileEditPanel/ProfileEditPanel";
 import NotificationButton from "../../components/NotificationButton/NotificationButton";
 import "./Profile.css";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../../services/firebaseConfig";
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
@@ -25,6 +27,13 @@ const Profile: React.FC = () => {
   const [profileImage, setProfileImage] = useState("");
   const [showEmailTooltip, setShowEmailTooltip] = useState(false);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const DEFAULT_IMAGES = {
+    cat: "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-pet%2Fcat.png?alt=media&token=6ee9b4ac-cf43-46b2-ac9e-6ed0d6ed2041",
+    dog: "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-pet%2Fdog.png?alt=media&token=ab846319-ee77-4dc0-98f4-7d2ac52af91a",
+    profile:
+      "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-user%2Fprofile-default.png?alt=media&token=27c7b2ea-4efc-4475-93da-f07a1bb8fa4f",
+  };
 
   // Initialize form with user data
   useEffect(() => {
@@ -104,42 +113,46 @@ const Profile: React.FC = () => {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
-    if (!file) return;
+    if (!file || !user?.id) return;
 
-    // Validate file type
     if (!file.type.startsWith("image/")) {
       alert("Please select an image file");
       return;
     }
-
-    // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       alert("Image size should be less than 5MB");
       return;
     }
 
-    // Read file and convert to base64
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64String = reader.result as string;
-      if (base64String && user?.id) {
-        // Save to localStorage
-        localStorage.setItem(`profileImage_${user.id}`, base64String);
-        setProfileImage(base64String);
-      }
-    };
-    reader.onerror = () => {
-      alert("Error reading image file");
-    };
-    reader.readAsDataURL(file);
+    try {
+      const storageRef = ref(storage, `profile-user/${user.id}`);
+      const snapshot = await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(snapshot.ref);
 
-    // Reset input value to allow selecting the same file again
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      setProfileImage(downloadURL);
+
+      // Aquí actualiza Firestore con la URL para futuras cargas
+      const userRef = doc(db, "users", user.id);
+      await updateDoc(userRef, { profileImage: downloadURL });
+    } catch (error) {
+      alert("Error uploading image");
+      console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      setName(user.name || "");
+      setEmail(user.email || "");
+      setPhoneNumber(user.phoneNumber || "");
+      setProfileImage(DEFAULT_IMAGES.profile); // Siempre inicia con la default
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const handleAppointmentsClick = () => {
     navigate("/calendar");
@@ -195,7 +208,7 @@ const Profile: React.FC = () => {
               <div className="profile-picture-section">
                 <div className="profile-picture-container">
                   <img
-                    src={profileImage || "/images/carolina.jpg"}
+                    src={profileImage}
                     alt={user.name || "User"}
                     className="profile-picture"
                   />
