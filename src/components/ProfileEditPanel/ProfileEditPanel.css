@@ -2,12 +2,14 @@
 
 .profile-edit-panel {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: #23233b;
   padding: 40px;
   position: relative;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .back-button-desktop {
@@ -31,12 +33,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 48px;
+  margin-bottom: 32px;
+  flex-shrink: 0;
 }
 
 .profile-picture-container-desktop {
-  width: 140px;
-  height: 140px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   overflow: hidden;
   background: #ffe57f;
@@ -44,10 +47,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   padding: 0;
+  flex-shrink: 0;
 }
 
 .profile-picture-container-desktop:hover {
@@ -62,15 +66,15 @@
 }
 
 .profile-name-desktop {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
   color: white;
-  margin: 0 0 8px 0;
+  margin: 0 0 6px 0;
   font-family: "Poppins", sans-serif;
 }
 
 .profile-email-desktop {
-  font-size: 16px;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.8);
   margin: 0;
   font-family: "Poppins", sans-serif;
@@ -78,29 +82,44 @@
 
 .edit-profile-section {
   flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .edit-profile-title {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #ffe57f !important;
-  margin: 0 0 24px 0;
+  margin: 0 0 16px 0;
   font-family: "Poppins", sans-serif;
   letter-spacing: 0.1px;
+  flex-shrink: 0;
+}
+
+.edit-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .edit-profile-form .input-container {
   margin: 0 !important;
+  width: 100%;
 }
+
 .edit-profile-form input,
 .edit-profile-form .input-field {
   background: #fff;
-  border-radius: 24px;
-  width: 190%;
-  border: none;
-  padding: 16px 24px;
-  font-size: 20px;
-  color: #ac96ec; /* lila claro, ajústalo si tu design system tiene otro */
+  border-radius: 20px;
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 16px;
+  color: #6a3ffc;
   font-family: 'Poppins', sans-serif;
   letter-spacing: .5px;
   font-weight: 500;
@@ -108,35 +127,38 @@
   outline: none;
   border: 2px solid transparent;
   transition: border 0.2s;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .edit-profile-form input:focus {
-  border: 2px solid #6a3ffc; /* resalta en violeta al focus */
+  border: 2px solid #6a3ffc;
 }
 
 .edit-profile-form input:disabled {
-  /* Para email */
-  background: #eee;
-  color: #ccaefc;
+  background: #e2e8f0;
+  color: #475569;
+  cursor: not-allowed;
 }
 
 
 .btn-save-desktop {
   width: 100%;
-  padding: 16px 24px;
+  padding: 14px 24px;
   border: none;
-  border-radius: 24px;
+  border-radius: 20px;
   background: #6a3ffc;
   color: white;
   font-family: 'Poppins', sans-serif;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   cursor: pointer;
-  margin-top: 32px;
+  margin-top: auto;
   transition: background 0.2s;
-  min-height: 50px;
+  min-height: 48px;
   box-shadow: 0 2px 8px rgba(76,44,191,0.04);
   letter-spacing: 1px;
+  flex-shrink: 0;
 }
 
 .btn-save-desktop:hover:not(:disabled) {
