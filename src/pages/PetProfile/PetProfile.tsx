@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthUser } from "../../hook/useAuthUser";
 import { useDispatch, useSelector } from "react-redux";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { ref as storageRef, deleteObject } from "firebase/storage";
 import { db, storage } from "../../services/firebaseConfig";
 import { editPet } from "../../redux/slices/petsSlice";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -11,6 +12,7 @@ import PetEditPanel from "../../components/PetEditPanel/PetEditPanel";
 import NotificationButton from "../../components/NotificationButton/NotificationButton";
 import type { PetType } from "../../types/petsType";
 import type { RootState } from "../../redux/store";
+import { deletePet } from "../../redux/slices/petsSlice";
 import "./PetProfile.css";
 
 const DEFAULT_PET_IMG =
@@ -30,7 +32,10 @@ const PetProfile: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(false);
-  
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
@@ -103,7 +108,13 @@ const PetProfile: React.FC = () => {
     if (!file || !petId || !user?.id) return;
 
     // Validar tipo de archivo
-    const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"];
+    const validTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+    ];
     if (!validTypes.includes(file.type)) {
       alert("Please upload a valid image file (JPG, PNG, GIF, or WebP)");
       return;
@@ -148,7 +159,43 @@ const PetProfile: React.FC = () => {
 
   const handleMedicalRecordsClick = () => navigate(`/medical-records/${petId}`);
   const handleVaccinationsClick = () => navigate(`/vaccinations/${petId}`);
-  const handleBackToDashboard = () => navigate("/dashboard");
+  const handleDeletePet = async () => {
+    if (!petId || !petFromRedux || !user?.id) return;
+
+    setIsDeleting(true);
+    try {
+      // 1. Eliminar imagen de Storage si existe y no es la imagen por defecto
+      if (petFromRedux.image && petFromRedux.image !== DEFAULT_PET_IMG) {
+        try {
+          const imageRef = storageRef(storage, `pets/${petId}`);
+          await deleteObject(imageRef);
+        } catch (error) {
+          console.warn("Error deleting image from storage:", error);
+          // Continuar aunque falle la eliminación de la imagen
+        }
+      }
+
+      // 2. Eliminar documento de Firestore
+      const petRef = doc(db, "users", user.id, "pets", petId);
+      await deleteDoc(petRef);
+
+      // 3. Eliminar del estado Redux
+      dispatch(deletePet(petId));
+
+      // 4. Mostrar mensaje y redirigir
+      alert("Pet deleted successfully!");
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Error deleting pet:", error);
+      alert("Error deleting pet. Please try again.");
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteModal(false);
+    }
+  };
+
+  const handleDeleteClick = () => setShowDeleteModal(true);
+  const handleCancelDelete = () => setShowDeleteModal(false);
 
   if (!pets || pets.length === 0) {
     return (
@@ -165,7 +212,7 @@ const PetProfile: React.FC = () => {
       <div className="pet-profile-container">
         <div className="pet-profile-content">
           <p>Pet not found</p>
-          <button onClick={handleBackToDashboard}>Return to Dashboard</button>
+          <button onClick={()=>navigate("/dashboard")}>Return to Dashboard</button>
         </div>
       </div>
     );
@@ -186,7 +233,7 @@ const PetProfile: React.FC = () => {
           <div className="pet-profile-container">
             <div className="pet-profile-content">
               <div className="pet-profile-header">
-                <button className="back-button" onClick={handleBackToDashboard}>
+                <button className="back-button" onClick={()=> navigate(-1)}>
                   <svg
                     width="24"
                     height="24"
@@ -290,8 +337,12 @@ const PetProfile: React.FC = () => {
             </div>
           </div>
           <div className="back-dashboard-mobile">
-            <button className="back-dashboard-btn" onClick={handleBackToDashboard}>
-              Back to Dashboard
+            <button
+              className="delete-pet-btn"
+              onClick={handleDeleteClick}
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Deleting..." : "Delete Pet"}
             </button>
           </div>
         </div>
@@ -307,7 +358,9 @@ const PetProfile: React.FC = () => {
               <div className="pet-stats">
                 <div className="stat-item">
                   <span className="stat-label">Type:</span>
-                  <span className="stat-value">{petFromRedux.type || "N/A"}</span>
+                  <span className="stat-value">
+                    {petFromRedux.type || "N/A"}
+                  </span>
                 </div>
                 <div className="stat-item">
                   <span className="stat-label">Age:</span>
@@ -386,9 +439,45 @@ const PetProfile: React.FC = () => {
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </button>
-              <button className="back-dashboard-btn" onClick={handleBackToDashboard}>
-                Back to Dashboard
+              <button
+                className="delete-pet-btn"
+                onClick={handleDeleteClick}
+                disabled={isDeleting}
+                type="button"
+              >
+                {isDeleting ? "Deleting..." : "Delete Pet"}
               </button>
+
+              {showDeleteModal && (
+                <div className="modal-overlay" onClick={handleCancelDelete}>
+                  <div
+                    className="modal-content"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <h2>Delete Pet</h2>
+                    <p>
+                      Are you sure you want to delete {petFromRedux.name}? This
+                      action cannot be undone.
+                    </p>
+                    <div className="modal-actions">
+                      <button
+                        className="btn-cancel"
+                        onClick={handleCancelDelete}
+                        disabled={isDeleting}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="btn-delete"
+                        onClick={handleDeletePet}
+                        disabled={isDeleting}
+                      >
+                        {isDeleting ? "Deleting..." : "Delete"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -38,8 +38,11 @@ const petsSlice = createSlice({
         pet.id === action.payload.id ? { ...pet, ...action.payload } : pet
       );
     },
+    deletePet: (state, action: PayloadAction<string>) => {
+      state.pets = state.pets.filter((pet) => pet.id !== action.payload);
+    },
   },
 });
 
-export const { setPets, addPet, clearPets, editPet } = petsSlice.actions;
+export const { setPets, addPet, clearPets, editPet, deletePet } = petsSlice.actions;
 export default petsSlice.reducer;
