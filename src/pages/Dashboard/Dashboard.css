@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   height: 100%;
   width: 100vw;
   margin: 0;
@@ -16,7 +17,8 @@ html, body {
   background: #ffffff;
 }
 
-#root, .App {
+#root,
+.App {
   height: 100vh !important;
   overflow: hidden !important;
 }
@@ -47,7 +49,7 @@ html, body {
   flex: 1;
   height: 100vh;
   overflow-y: auto;
-  background: #ffffff;
+  background: #fffdf8;
   padding: 32px 48px;
   padding-bottom: 90px;
   position: relative;
@@ -147,19 +149,19 @@ html, body {
   .dashboard-container {
     padding: 48px 64px;
   }
-  
+
   .dashboard-content {
     max-width: 1000px;
   }
-  
+
   .dashboard-title {
     font-size: 36px;
   }
-  
+
   .section-title {
     font-size: 22px;
   }
-  
+
   .dashboard-subtitle {
     font-size: 16px;
   }
@@ -170,27 +172,27 @@ html, body {
   .dashboard-container {
     padding: 24px 20px;
   }
-  
+
   .dashboard-content {
     max-width: 100%;
   }
-  
+
   .dashboard-title {
     font-size: 28px;
   }
-  
+
   .dashboard-subtitle {
     font-size: 15px;
   }
-  
+
   .section-title {
     font-size: 18px;
   }
-  
+
   .dashboard-sections {
     gap: 32px;
   }
-  
+
   .calendar-icon {
     width: 36px;
     height: 36px;
@@ -201,19 +203,19 @@ html, body {
   .dashboard-container {
     padding: 20px 16px;
   }
-  
+
   .dashboard-title {
     font-size: 24px;
   }
-  
+
   .dashboard-subtitle {
     font-size: 14px;
   }
-  
+
   .section-title {
     font-size: 16px;
   }
-  
+
   .calendar-icon {
     width: 32px;
     height: 32px;

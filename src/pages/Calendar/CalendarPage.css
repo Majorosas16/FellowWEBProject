@@ -2,7 +2,7 @@
   display: flex;
   width: 100vw;
   min-height: 100vh;
-  background: #fafafc;
+  background: #FFFDF8;
 }
 
 .calendar-content {
@@ -11,7 +11,7 @@
   display: flex;
   flex-direction: column;
   align-items: left;
-  background: #fafafc;
+  background: #FFFDF8;
   position: relative;
 }
 
@@ -28,7 +28,7 @@
 
 /* --- Layout principal y fondo --- */
 .calendar-page {
-  background: #fafafc;
+  background: #FFFDF8;
   min-height: 100vh;
   width: 100vw;
   display: flex;
@@ -238,7 +238,7 @@
     padding: 0;
     margin: 0 auto;
     align-items: center;
-    background: #fafafc;
+    background: #FFFDF8;
   }
 
   .calendar-container {

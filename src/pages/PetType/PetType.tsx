@@ -29,15 +29,11 @@ const PetType: React.FC = () => {
     }
   };
 
-  const handleBackClick = () => {
-    navigate("/auth");
-  };
-
   return (
     <div className="pet-type-container">
       <div className="pet-type-content">
         <div className="pet-type-header">
-          <button className="back-button" onClick={handleBackClick}>
+          <button className="back-button" onClick={()=> navigate(-1)}>
             ← Back
           </button>
           <h1 className="pet-type-title">Register your pet!</h1>
