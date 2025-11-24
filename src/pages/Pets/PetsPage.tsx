@@ -10,11 +10,10 @@ import NotificationButton from "../../components/NotificationButton/Notification
 import "./PetsPage.css";
 import { useNavigate } from "react-router-dom";
 
-
 const PetsPage: React.FC = () => {
   const dispatch = useDispatch();
   const pets = useSelector((state: RootState) => state.pets.pets);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -23,10 +22,8 @@ const PetsPage: React.FC = () => {
       return;
     }
 
-    // Referencia a la subcolección de mascotas del usuario
     const petsRef = collection(db, "users", user.uid, "pets");
 
-    // Listener en tiempo real a los datos de Firestore
     const unsubscribe = onSnapshot(petsRef, (snapshot) => {
       const petsData = snapshot.docs.map((doc) => {
         const data = doc.data() as DocumentData;
@@ -39,13 +36,16 @@ const PetsPage: React.FC = () => {
           color: data.color || "",
           vaccines: data.vaccines || "",
           medicines: data.medicines || "",
+          breed: data.breed || "",
+          gender: data.gender || "",
+          birthDate: data.birthDate || "",
+          weight: data.weight || "",
+          createdAt: data.createdAt || new Date().toISOString(),
         };
       });
-
       dispatch(setPets(petsData));
     });
 
-    // Limpieza del listener al desmontar el componente
     return () => unsubscribe();
   }, [dispatch]);
 
@@ -56,19 +56,17 @@ const PetsPage: React.FC = () => {
           <div className="pets-header">
             <h1>Your pets are so cute!</h1>
           </div>
-
           <div className="pets-sections">
-            {/* Sección para añadir una nueva mascota */}
             <div className="section-add">
               <div className="add-pet-card">
-                <p className="add-pet-text">Let’s say hi to...</p>
+                <p className="add-pet-text">Let's say hi to...</p>
                 <div className="add-pet-icons">
                   <button onClick={() => navigate("/pet-type")}>
-                  <img
-                    src="/images/add-pet-plus.png"
-                    alt="add"
-                    className="add-pet-plus"
-                  />
+                    <img
+                      src="/images/add-pet-plus.png"
+                      alt="add"
+                      className="add-pet-plus"
+                    />
                   </button>
                   <img
                     src="/images/add-pet-silhouettes.png"
@@ -78,14 +76,17 @@ const PetsPage: React.FC = () => {
                 </div>
               </div>
             </div>
-
-            {/* Sección donde se renderizan las mascotas */}
             <div className="section-pets">
               {pets.length === 0 ? (
                 <p>No pets registered yet 🐾</p>
               ) : (
                 pets.map((pet) => (
-                  <div key={pet.id} className="section-pet-card">
+                  <div
+                    key={pet.id}
+                    className="section-pet-card"
+                    onClick={() => navigate(`/edit-pet/${pet.id}`)}
+                    style={{ cursor: "pointer" }}
+                  >
                     <PetCard
                       name={pet.name}
                       age={pet.age || ""}
@@ -101,7 +102,6 @@ const PetsPage: React.FC = () => {
           </div>
         </div>
       </div>
-
       <NotificationButton />
     </>
   );

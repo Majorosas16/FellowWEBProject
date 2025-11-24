@@ -9,4 +9,7 @@ export interface PetType {
   weight: string;
   image: string;
   createdAt: string;
+  vaccines?: string;
+  medicines?: string;
+  color?: string;
 }

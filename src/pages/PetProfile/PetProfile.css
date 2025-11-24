@@ -3,6 +3,10 @@
   width: 100%;
   min-height: 100vh;
   background: #fffdf8;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  /* No agregues overflow-y aquí para no bloquear scroll */
 }
 
 /* ===== MOBILE VIEW ===== */
@@ -22,6 +26,7 @@
 .pet-profile-content {
   max-width: 500px;
   margin: 0 auto;
+    overflow: scroll;
 }
 
 .pet-profile-header {
@@ -197,6 +202,12 @@
 
 /* ===== DESKTOP VIEW ===== */
 @media (min-width: 768px) {
+  .pet-profile-layout {
+    flex-direction: row;
+    align-items: stretch;
+    height: 100vh; /* Fuerza que ocupe toda la ventana */
+  }
+
   .pet-profile-mobile {
     display: none;
   }
@@ -204,8 +215,12 @@
   .pet-profile-desktop {
     display: flex;
     min-height: 100vh;
+    width: 100%;
     padding: 40px;
     gap: 32px;
+    /* Estas líneas aseguran que flexbox permita estiramiento */
+    flex: 1 1 0;
+    overflow: hidden;
   }
 
   .pet-profile-left-panel {
