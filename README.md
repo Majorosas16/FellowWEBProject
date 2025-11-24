@@ -43,8 +43,9 @@ Fellow is a digital platform designed to simplify pet care by centralizing your 
 
 ## Project Structure
 
+undefined
+
 FELLOWWEBPROJECT/
-│
 ├── node_modules/
 ├── public/
 ├── src/
@@ -71,6 +72,8 @@ FELLOWWEBPROJECT/
 ├── tsconfig.json
 ├── tsconfig.node.json
 ├── vite.config.ts
+
+undefined
 
 All logic is organized into modules for maintainability. API interaction and business logic are located in `redux/` and `services/`.
 
