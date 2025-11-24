@@ -1,8 +1,0 @@
-/* Success page styles - Mobile first approach */
-.success-page {
-  min-height: 100vh;
-  background: #f8fafc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
