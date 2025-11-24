@@ -212,7 +212,9 @@ const PetProfile: React.FC = () => {
       <div className="pet-profile-container">
         <div className="pet-profile-content">
           <p>Pet not found</p>
-          <button onClick={()=>navigate("/dashboard")}>Return to Dashboard</button>
+          <button onClick={() => navigate("/dashboard")}>
+            Return to Dashboard
+          </button>
         </div>
       </div>
     );
@@ -233,7 +235,7 @@ const PetProfile: React.FC = () => {
           <div className="pet-profile-container">
             <div className="pet-profile-content">
               <div className="pet-profile-header">
-                <button className="back-button" onClick={()=> navigate(-1)}>
+                <button className="back-button" onClick={() => navigate(-1)}>
                   <svg
                     width="24"
                     height="24"
@@ -447,41 +449,37 @@ const PetProfile: React.FC = () => {
               >
                 {isDeleting ? "Deleting..." : "Delete Pet"}
               </button>
-
-              {showDeleteModal && (
-                <div className="modal-overlay" onClick={handleCancelDelete}>
-                  <div
-                    className="modal-content"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <h2>Delete Pet</h2>
-                    <p>
-                      Are you sure you want to delete {petFromRedux.name}? This
-                      action cannot be undone.
-                    </p>
-                    <div className="modal-actions">
-                      <button
-                        className="btn-cancel"
-                        onClick={handleCancelDelete}
-                        disabled={isDeleting}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        className="btn-delete"
-                        onClick={handleDeletePet}
-                        disabled={isDeleting}
-                      >
-                        {isDeleting ? "Deleting..." : "Delete"}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
       </div>
+      {showDeleteModal && (
+        <div className="modal-overlay" onClick={handleCancelDelete}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2>Delete Pet</h2>
+            <p>
+              Are you sure you want to delete {petFromRedux.name}? This action
+              cannot be undone.
+            </p>
+            <div className="modal-actions">
+              <button
+                className="btn-cancel"
+                onClick={handleCancelDelete}
+                disabled={isDeleting}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn-delete"
+                onClick={handleDeletePet}
+                disabled={isDeleting}
+              >
+                {isDeleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <NotificationButton />
     </>
   );
