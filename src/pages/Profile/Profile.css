@@ -24,8 +24,8 @@ body {
 
 .profile-container {
   min-height: 100vh;
-  background: #f8fafc;
-  background-image: radial-gradient(circle, #e2e8f0 1px, transparent 1px);
+  background: #FFFDF8;
+  background-image: radial-gradient(circle, #FFFDF8 1px, transparent 1px);
   background-size: 20px 20px;
   padding: 20px;
   padding-bottom: 90px;
@@ -40,7 +40,7 @@ body {
 .profile-header h1 {
   font-size: 24px;
   font-weight: 700;
-  color: #1a202c;
+  color: #2c2c1a;
   margin: 0 0 32px 0;
   font-family: 'Poppins', sans-serif;
 }
@@ -351,7 +351,7 @@ body {
   /* Right Panel - Light Theme */
   .profile-right-panel {
     flex: 1;
-    background: #f8fafc;
+    background: #FFFDF8;
     background-image: radial-gradient(circle, #e2e8f0 1px, transparent 1px);
     background-size: 20px 20px;
     padding: 40px;
