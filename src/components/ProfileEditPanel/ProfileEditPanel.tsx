@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthUser } from "../../hook/useAuthUser";
 import { useDispatch } from "react-redux";
@@ -12,6 +12,11 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../services/firebaseConfig";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 
+const DEFAULT_IMAGES = {
+  profile:
+    "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-user%2Fprofile-default.png?alt=media&token=27c7b2ea-4efc-4475-93da-f07a1bb8fa4f",
+};
+
 const ProfileEditPanel: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,62 +28,33 @@ const ProfileEditPanel: React.FC = () => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
-  const [profileImage, setProfileImage] = useState("");
   const [showEmailTooltip, setShowEmailTooltip] = useState(false);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [isImageLoading, setIsImageLoading] = useState(false);
 
-  const DEFAULT_IMAGES = {
-    cat: "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-pet%2Fcat.png?alt=media&token=6ee9b4ac-cf43-46b2-ac9e-6ed0d6ed2041",
-    dog: "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-pet%2Fdog.png?alt=media&token=ab846319-ee77-4dc0-98f4-7d2ac52af91a",
-    profile:
-      "https://firebasestorage.googleapis.com/v0/b/fellow-774ff.firebasestorage.app/o/images%2Fprofile-user%2Fprofile-default.png?alt=media&token=27c7b2ea-4efc-4475-93da-f07a1bb8fa4f",
-  };
-
-  // Initialize form with user data
-  useEffect(() => {
-    async function loadProfileImage() {
-      setIsImageLoading(true);
-      if (user) {
-        setName(user.name || "");
-        setEmail(user.email || "");
-        setPhoneNumber(user.phoneNumber || "");
-        // Si tienes la propiedad profileImage de Firestore, úsala:
-        setProfileImage(DEFAULT_IMAGES.profile);
-      }
-      setIsImageLoading(false);
+  // Initialize form fields (no image here, UI reads it directly from user)
+  React.useEffect(() => {
+    if (user) {
+      setName(user.name || "");
+      setEmail(user.email || "");
+      setPhoneNumber(user.phoneNumber || "");
     }
-    loadProfileImage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  const handleBackClick = () => {
-    navigate(-1);
-  };
+  const handleBackClick = () => navigate(-1);
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
+  const handleEditClick = () => setIsEditing(true);
 
   const handleSaveClick = async () => {
     if (!user?.id) return;
-
     setIsSaving(true);
     try {
       const userRef = doc(db, "users", user.id);
-      const updateData: {
-        name: string;
-        phoneNumber: string;
-        email: string;
-      } = {
+      await updateDoc(userRef, {
         name,
         phoneNumber,
         email,
-      };
-
-      await updateDoc(userRef, updateData);
-
-      // Update Redux store
+      });
       dispatch(
         setUserAdd({
           ...user,
@@ -94,10 +70,8 @@ const ProfileEditPanel: React.FC = () => {
         if (currentUser) {
           try {
             await updatePassword(currentUser, password);
-          } catch (error: unknown) {
-            console.error("Error updating password:", error);
-            // Password update might fail if user hasn't signed in recently
-            // This is a Firebase security requirement
+          } catch (error) {
+            console.error(error);
             alert(
               "Password update failed. Please sign out and sign in again, then try updating your password."
             );
@@ -108,7 +82,7 @@ const ProfileEditPanel: React.FC = () => {
       setIsEditing(false);
       setPassword("");
     } catch (error) {
-      console.error("Error updating profile:", error);
+      console.error(error);
       alert("Error updating profile. Please try again.");
     } finally {
       setIsSaving(false);
@@ -137,14 +111,22 @@ const ProfileEditPanel: React.FC = () => {
     setIsImageLoading(true);
 
     try {
+      // Subir a Storage
       const storageRef = ref(storage, `profile-user/${user.id}`);
       const snapshot = await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(snapshot.ref);
 
-      setProfileImage(downloadURL);
-
+      // Actualiza Firestore (persistente)
       const userRef = doc(db, "users", user.id);
       await updateDoc(userRef, { profileImage: downloadURL });
+
+      // Actualiza estado global
+      dispatch(
+        setUserAdd({
+          ...user,
+          profileImage: downloadURL,
+        })
+      );
     } catch (error) {
       alert("Error uploading image");
       console.error(error);
@@ -157,6 +139,14 @@ const ProfileEditPanel: React.FC = () => {
     }
   };
 
+  if (!user) {
+    return (
+      <div className="profile-edit-panel">
+        <p>Loading user data...</p>
+      </div>
+    );
+  }
+  // Render UI, image always reads from global user
   return (
     <div className="profile-edit-panel">
       <input
@@ -202,7 +192,7 @@ const ProfileEditPanel: React.FC = () => {
             </div>
           ) : (
             <img
-              src={profileImage || DEFAULT_IMAGES.profile}
+              src={user.profileImage || DEFAULT_IMAGES.profile}
               alt={user?.name || "User"}
               className="profile-picture-desktop"
             />
