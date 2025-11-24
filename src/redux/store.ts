@@ -3,6 +3,7 @@ import authSlice from "./slices/authSlice";
 import petsReducer from "./slices/petsSlice";
 import userSlice from "./slices/userSlice";
 import eventsReducer from "./slices/eventsSlice";
+import medicineDailyReducer from "./slices/medicineDailySlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     pets: petsReducer,
     userAdd: userSlice,
     events: eventsReducer,
+    medicineDaily: medicineDailyReducer,
   },
 });
 

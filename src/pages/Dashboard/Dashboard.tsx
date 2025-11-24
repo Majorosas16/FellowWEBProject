@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import LeftNavigation from "../../components/LeftNavigation/LeftNavigation";
 import HealthEventCard from "../../components/HealthEventCard/HealthEventCard";
 import MedicationCard from "../../components/MedicationCard/MedicationCard";
@@ -10,6 +10,8 @@ import { useFetchPets } from "../../hook/useFetchPets";
 import { useFetchEvents } from "../../hook/useFetchEvents";
 import { useAuthUser } from "../../hook/useAuthUser";
 import { useNavigate } from "react-router-dom";
+import { setDailyStatus } from "../../redux/slices/medicineDailySlice";
+import { getToday } from "../../services/dataService";
 
 const Dashboard: React.FC = () => {
   // Fetch de mascotas y eventos
@@ -18,8 +20,11 @@ const Dashboard: React.FC = () => {
 
   const pets = useSelector((state: RootState) => state.pets.pets);
   const events = useSelector((state: RootState) => state.events.events);
+  const daily = useSelector((state: RootState) => state.medicineDaily.records);
+  const today = getToday();
   const user = useAuthUser();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Ordenar mascotas por fecha creada (más recientes primero)
   const sortedPets = [...pets].sort((a, b) => {
@@ -43,7 +48,6 @@ const Dashboard: React.FC = () => {
 
       <div className="dashboard-container">
         <div className="dashboard-content">
-          {/* HEADER */}
           <div className="dashboard-header">
             <div className="dashboard-header-text">
               <h2 className="dashboard-title">Hi, {user?.name || "User"}</h2>
@@ -57,7 +61,6 @@ const Dashboard: React.FC = () => {
             />
           </div>
 
-          {/* SECCIONES */}
           <div className="dashboard-sections">
             {/* --- HEALTH EVENTS --- */}
             <div className="section">
@@ -95,6 +98,9 @@ const Dashboard: React.FC = () => {
                 {medications.length > 0 ? (
                   medications.map((med) => {
                     const pet = pets.find((p) => p.id === med.petId);
+                    const dailyStatus = daily.find(
+                      (d) => d.medicineId === med.id && d.date === today
+                    );
                     return (
                       <MedicationCard
                         key={med.id}
@@ -102,9 +108,32 @@ const Dashboard: React.FC = () => {
                         petImage={pet?.image || "/images/pet-placeholder.png"}
                         medication={med.description}
                         onSkip={() =>
-                          console.log("Skipped medication:", med.id)
+                          dispatch(
+                            setDailyStatus({
+                              medicineId: med.id,
+                              date: today,
+                              status: "skip",
+                              medication: med.description,
+                            })
+                          )
                         }
-                        onTaken={() => console.log("Medication taken:", med.id)}
+                        onTaken={() =>
+                          dispatch(
+                            setDailyStatus({
+                              medicineId: med.id,
+                              date: today,
+                              status: "taken",
+                              medication: med.description,
+                            })
+                          )
+                        }
+                        className={
+                          dailyStatus?.status === "taken"
+                            ? "taken-active"
+                            : dailyStatus?.status === "skip"
+                            ? "skip-active"
+                            : ""
+                        }
                       />
                     );
                   })
