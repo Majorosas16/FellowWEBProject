@@ -54,11 +54,10 @@ const PetEditPanel = () => {
       setImageUrl(petFromRedux.image || DEFAULT_PET_IMG);
     } else if (petId && pets && pets.length > 0) {
       // Si no se encuentra la mascota y ya cargaron las mascotas
-      console.error("Pet not found with ID:", petId);
-      // Opcional: redirigir al dashboard
-      // navigate("/dashboard");
+        console.error("Pet not found with ID:", petId);
+        navigate("/dashboard");
     }
-  }, [petFromRedux, petId, pets]);
+  }, [petFromRedux, petId, pets, navigate]);
 
   const handleBackClick = () => navigate(-1);
 
@@ -111,28 +110,59 @@ const PetEditPanel = () => {
     const file = event.target.files?.[0];
     if (!file || !petId || !user?.id) return;
 
+    // Validar tipo de archivo
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      alert("Please upload a valid image file (JPG, PNG, GIF, or WebP)");
+      return;
+    }
+
+    // Validar tamaño (máximo 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB en bytes
+    if (file.size > maxSize) {
+      alert("Image size must be less than 5MB");
+      return;
+    }
+
     setIsImageLoading(true);
     try {
-      const storageRef = ref(storage, `profile-pet/${petId}`);
+      // Subir a Storage en la carpeta pets/{petId}
+      const fileExtension = file.name.split('.').pop();
+      const storageRef = ref(
+        storage, 
+        `pets/${petId}.${fileExtension}`
+      );
+      
+      // Subir archivo a Firebase Storage
       const snapshot = await uploadBytes(storageRef, file);
+      
+      // Obtener la URL de descarga
       const downloadURL = await getDownloadURL(snapshot.ref);
 
+      // Actualizar el estado local inmediatamente
       setImageUrl(downloadURL);
 
       // Actualizar en Firestore con la ruta correcta
       const petRef = doc(db, "users", user.id, "pets", petId);
       await updateDoc(petRef, { image: downloadURL });
 
-      // Actualizar en Redux si quieres que el cambio sea inmediato
+      // Actualizar en Redux para mantener sincronizado el estado global
       if (pet) {
-        dispatch(editPet({ ...pet, image: downloadURL }));
+        const updatedPet = { ...pet, image: downloadURL };
+        dispatch(editPet(updatedPet));
       }
+
+      alert("Image uploaded successfully!");
     } catch (error) {
-      console.error(error);
-      alert("Error uploading image");
+      console.error("Error uploading image:", error);
+      alert("Error uploading image. Please try again.");
+      // Revertir cambios visuales si falla
+      setImageUrl(pet?.image || DEFAULT_PET_IMG);
+    } finally {
+      setIsImageLoading(false);
+      // Limpiar el input para permitir subir la misma imagen de nuevo
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
-    setIsImageLoading(false);
-    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   // Mostrar loading mientras se carga
