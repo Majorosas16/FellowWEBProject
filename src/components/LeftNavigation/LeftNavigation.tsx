@@ -53,6 +53,7 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
                 className={`pet-item${
                   hoveredId === pet.id ? " pet-item--hover" : ""
                 }`}
+                onClick={() => navigate(`/edit-pet/${pet.id}`)} // << Aquí
                 onMouseEnter={() => setHoveredId(pet.id || "")}
                 onMouseLeave={() => setHoveredId(null)}
               >
@@ -95,11 +96,11 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
         </button>
       </div>
       <div className="profile-area" onClick={() => navigate("/profile")}>
-<img
-  src={user?.profileImage || DEFAULT_IMAGES.profile}
-  alt={user?.name || "User"}
-  className="profile-avatar"
-/>
+        <img
+          src={user?.profileImage || DEFAULT_IMAGES.profile}
+          alt={user?.name || "User"}
+          className="profile-avatar"
+        />
 
         <div className="profile-info">
           <span className="profile-name">{user?.name || "User"}</span>

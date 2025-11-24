@@ -18,6 +18,7 @@ import {
   LayoutWithNavigation,
   Notifications,
   Settings,
+  PetEditPanel,
   // LeftNavigation,
 } from "./pages";
 import { ProtectedRoutes } from "./components/ProtectedRoutes";
@@ -27,6 +28,7 @@ import { useDispatch } from "react-redux";
 import { clearUser, setUser } from "./redux/slices/authSlice";
 import { useEffect } from "react";
 import { useEventsListener } from "./hook/useEventsListener";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -175,6 +177,17 @@ function App() {
               <ProtectedRoutes>
                 <LayoutWithNavigation>
                   <Settings />
+                </LayoutWithNavigation>
+              </ProtectedRoutes>
+            }
+          />
+
+          <Route
+            path="/edit-pet/:petId"
+            element={
+              <ProtectedRoutes>
+                <LayoutWithNavigation>
+                  <PetEditPanel />
                 </LayoutWithNavigation>
               </ProtectedRoutes>
             }

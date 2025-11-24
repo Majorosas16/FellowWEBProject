@@ -33,8 +33,13 @@ const petsSlice = createSlice({
     clearPets: (state) => {
       state.pets = [];
     },
+    editPet: (state, action: PayloadAction<PetType>) => {
+      state.pets = state.pets.map((pet) =>
+        pet.id === action.payload.id ? { ...pet, ...action.payload } : pet
+      );
+    },
   },
 });
 
-export const { setPets, addPet, clearPets } = petsSlice.actions;
+export const { setPets, addPet, clearPets, editPet } = petsSlice.actions;
 export default petsSlice.reducer;
