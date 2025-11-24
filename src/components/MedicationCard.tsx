@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "./ButtonCopy";
 import "./MedicationCard.css";
 
 export interface MedicationCardProps {
