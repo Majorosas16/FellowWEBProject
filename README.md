@@ -52,7 +52,17 @@ Fellow is a digital platform designed to simplify pet care by centralizing your 
     │   ├── hook/
     │   ├── pages/
     │   ├── redux/
+    │   │   ├── slices/
+    │   │   │   ├── authSlice.ts
+    │   │   │   ├── eventsSlice.ts
+    │   │   │   ├── medicineDailySlice.ts
+    │   │   │   ├── petsSlice.ts
+    │   │   │   └── userSlice.ts
+    │   │   └── store.ts
     │   ├── services/
+    │   │   ├── createUserEvent.ts
+    │   │   ├── dataService.ts
+    │   │   └── firebaseConfig.ts
     │   ├── types/
     │   ├── App.css
     │   ├── App.tsx
