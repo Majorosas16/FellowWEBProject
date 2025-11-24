@@ -43,37 +43,34 @@ Fellow is a digital platform designed to simplify pet care by centralizing your 
 
 ## Project Structure
 
-undefined
+    FELLOWWEBPROJECT/
+    ├── node_modules/
+    ├── public/
+    ├── src/
+    │   ├── assets/
+    │   ├── components/
+    │   ├── hook/
+    │   ├── pages/
+    │   ├── redux/
+    │   ├── services/
+    │   ├── types/
+    │   ├── App.css
+    │   ├── App.tsx
+    │   ├── index.css
+    │   ├── main.tsx
+    │   └── vite-env.d.ts
+    ├── .env
+    ├── .gitignore
+    ├── eslint.config.js
+    ├── index.html
+    ├── package-lock.json
+    ├── package.json
+    ├── README.md
+    ├── tsconfig.app.json
+    ├── tsconfig.json
+    ├── tsconfig.node.json
+    └── vite.config.ts
 
-FELLOWWEBPROJECT/
-├── node_modules/
-├── public/
-├── src/
-│ ├── assets/
-│ ├── components/
-│ ├── hook/
-│ ├── pages/
-│ ├── redux/
-│ ├── services/
-│ ├── types/
-│ ├── App.css
-│ ├── App.tsx
-│ ├── index.css
-│ ├── main.tsx
-│ ├── vite-env.d.ts
-├── .env
-├── .gitignore
-├── eslint.config.js
-├── index.html
-├── package-lock.json
-├── package.json
-├── README.md
-├── tsconfig.app.json
-├── tsconfig.json
-├── tsconfig.node.json
-├── vite.config.ts
-
-undefined
 
 All logic is organized into modules for maintainability. API interaction and business logic are located in `redux/` and `services/`.
 
