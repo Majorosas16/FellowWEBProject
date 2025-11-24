@@ -28,11 +28,13 @@ import { useDispatch } from "react-redux";
 import { clearUser, setUser } from "./redux/slices/authSlice";
 import { useEffect } from "react";
 import { useEventsListener } from "./hook/useEventsListener";
+import { useEventNotifications } from "./hook/useEventNotifications";
 
 
 function App() {
   const dispatch = useDispatch();
   useEventsListener();
+  useEventNotifications();
 
   // Mantiene el usuario en el Redux y la base de datos cuando inicia/cierra sesión
   useEffect(() => {

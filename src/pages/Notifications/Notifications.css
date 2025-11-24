@@ -322,6 +322,18 @@ body {
   }
 }
 
+.no-notifications {
+  text-align: center;
+  padding: 60px 20px;
+  color: #64748b;
+  font-family: 'Poppins', sans-serif;
+}
+
+.no-notifications p {
+  font-size: 16px;
+  margin: 0;
+}
+
 /* Mobile adjustments */
 @media (max-width: 600px) {
   .notifications-container {
