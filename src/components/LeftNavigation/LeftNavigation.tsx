@@ -85,7 +85,7 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
             ))
           ) : (
             <p className="no-pets-message">
-              Espera, tus mascotas ya aparecerán.
+              Wait, your pets will appear soon.
             </p>
           )}
         </div>

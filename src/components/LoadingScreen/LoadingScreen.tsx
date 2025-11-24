@@ -8,7 +8,7 @@ interface LoadingScreenProps {
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ text }) => (
   <div className="loading-overlay">
     <div className="loading-spinner"></div>
-    <p className="loading-text">{text || "Cargando..."}</p>
+    <p className="loading-text">{text || "Loading..."}</p>
   </div>
 );
 

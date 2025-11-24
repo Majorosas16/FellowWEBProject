@@ -13,7 +13,7 @@ import {
 
 import { es } from "date-fns/locale";
 
-// 🔥 IMPORTACIÓN NUEVA: records diarios desde Redux
+// records diarios desde Redux
 import { useSelector } from "react-redux";
 import type { RootState } from "../../redux/store";
 
@@ -29,7 +29,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect, selectedDate }) => {
   // Estado interno para manejar el mes actual visible
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  // 🔥 NUEVO: obtener estados diarios (taken/skip) desde Redux
+  // obtener estados diarios (taken/skip) desde Redux
   const dailyRecords = useSelector(
     (state: RootState) => state.medicineDaily.records
   );
@@ -109,7 +109,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect, selectedDate }) => {
           // Número del día
           const dayNumber: string = format(day, "d");
 
-          // 🔥 NUEVO: formato estándar (yyyy-MM-dd) para comparar con Redux
+          // formato estándar (yyyy-MM-dd) para comparar con Redux
           const dateString: string = format(day, "yyyy-MM-dd");
 
           // Saber si es el día actual
@@ -120,12 +120,12 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect, selectedDate }) => {
             ? isSameDay(day, selectedDate)
             : false;
 
-          // 🔥 NUEVO: buscar registros de ese día guardados en Redux
+          // buscar registros de ese día guardados en Redux
           const medsForThisDay = dailyRecords.filter(
             (r) => r.date === dateString
           );
 
-          // 🔥 NUEVO: icono visual que se mostrará debajo del número del día
+          // icono visual que se mostrará debajo del número del día
           let statusIcon: string | null = null;
 
           if (medsForThisDay.length > 0) {

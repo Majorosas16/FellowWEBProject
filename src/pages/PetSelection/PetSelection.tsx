@@ -76,14 +76,14 @@ return (
             ))
           ) : (
             <p className="no-pets-message">
-              No tienes mascotas para agregar eventos. ¡Registra una mascota primero!
+              You don't have any pets to add events to. Register a pet first!
             </p>
           )}
         </div>
         <div className="pet-selection-actions">
           {noPets ? (
             <button className="continue-button" onClick={handleBack}>
-              Volver
+              Back
             </button>
           ) : (
             <button

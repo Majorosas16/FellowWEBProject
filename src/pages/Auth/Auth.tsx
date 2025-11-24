@@ -127,7 +127,7 @@ const Auth: React.FC = () => {
 
         if (snap.exists()) {
           const userData = snap.data();
-          console.log("Cargando a Redux:", userData);
+          console.log("Loading to Redux:", userData);
           dispatch(setUserAdd(userData as UserType));
           navigate("/pet-type");
         } else {
@@ -184,15 +184,6 @@ const Auth: React.FC = () => {
 
   return (
     <>
-      {isSubmitting && (
-        <LoadingScreen
-          text={
-            mode === "login"
-              ? "Logging in..."
-              : "Hold on! We are creating your account..."
-          }
-        />
-      )}
       <div className="auth-container">
         <div className="auth-content">
           <div className="auth-logo">
@@ -289,6 +280,15 @@ const Auth: React.FC = () => {
             onClose={() => setModalVisible(false)}
           />
         </div>
+        {isSubmitting && (
+          <LoadingScreen
+            text={
+              mode === "login"
+                ? "Logging in..."
+                : "Hold on! We are creating your account..."
+            }
+          />
+        )}
       </div>
     </>
   );

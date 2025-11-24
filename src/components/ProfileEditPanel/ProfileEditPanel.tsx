@@ -241,7 +241,7 @@ const ProfileEditPanel: React.FC = () => {
             />
             {showEmailTooltip && (
               <div className="email-tooltip">
-                No puedes editar el correo por seguridad.
+                You cannot edit the email for security reasons.
               </div>
             )}
           </div>
@@ -266,7 +266,7 @@ const ProfileEditPanel: React.FC = () => {
                 borderRadius: "24px",
               }}
             >
-              <LoadingScreen text="Guardando cambios..." />
+              <LoadingScreen text="Saving changes..." />
             </div>
           )}
         </div>

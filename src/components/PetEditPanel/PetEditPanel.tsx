@@ -231,7 +231,7 @@ const PetEditPanel = () => {
           type="button"
         >
           {isImageLoading ? (
-            <LoadingScreen text="Cargando foto..." />
+            <LoadingScreen text="Loading photo..." />
           ) : (
             <img
               src={imageUrl || DEFAULT_PET_IMG}
@@ -252,7 +252,7 @@ const PetEditPanel = () => {
         <div className="pet-edit-form">
           <Input
             type="text"
-            placeholder="Nombre"
+            placeholder="Name"
             value={name}
             onChange={setName}
             disabled={!isEditing}
@@ -260,14 +260,14 @@ const PetEditPanel = () => {
           <div className="pet-edit-row">
             <Input
               type="text"
-              placeholder="Sexo"
+              placeholder="Gender"
               value={gender}
               onChange={setGender}
               disabled={!isEditing}
             />
             <Input
               type="text"
-              placeholder="Edad"
+              placeholder="Age"
               value={age}
               onChange={setAge}
               disabled={!isEditing}
@@ -276,14 +276,14 @@ const PetEditPanel = () => {
           <div className="pet-edit-row">
             <Input
               type="date"
-              placeholder="Fecha Nac."
+              placeholder="birth date"
               value={birthDate}
               onChange={setBirthDate}
               disabled={!isEditing}
             />
             <Input
               type="text"
-              placeholder="Raza"
+              placeholder="Race"
               value={breed}
               onChange={setBreed}
               disabled={!isEditing}
@@ -310,7 +310,7 @@ const PetEditPanel = () => {
                 borderRadius: "24px",
               }}
             >
-              <LoadingScreen text="Guardando cambios..." />
+              <LoadingScreen text="Saving changes..." />
             </div>
           )}
         </div>

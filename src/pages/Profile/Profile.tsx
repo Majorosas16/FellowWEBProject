@@ -205,7 +205,7 @@ const Profile: React.FC = () => {
                   />
                   {showEmailTooltip && (
                     <div className="email-tooltip">
-                      No puedes editar el correo por seguridad.
+                      You cannot edit the email for security reasons.
                     </div>
                   )}
                 </div>
