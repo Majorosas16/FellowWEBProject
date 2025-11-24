@@ -18,7 +18,7 @@ import {
   LayoutWithNavigation,
   Notifications,
   Settings,
-  PetEditPanel,
+  PetProfile,
   // LeftNavigation,
 } from "./pages";
 import { ProtectedRoutes } from "./components/ProtectedRoutes";
@@ -187,7 +187,7 @@ function App() {
             element={
               <ProtectedRoutes>
                 <LayoutWithNavigation>
-                  <PetEditPanel />
+                  <PetProfile />
                 </LayoutWithNavigation>
               </ProtectedRoutes>
             }

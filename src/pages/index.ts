@@ -17,7 +17,7 @@ export { default as PetsPage } from "./Pets/PetsPage";
 export { default as Notifications } from "./Notifications/Notifications";
 export { default as Settings } from "./Settings/Settings";
 export { default as LeftNavigation } from "../components/LeftNavigation/LeftNavigation";
-export { default as PetEditPanel } from "../components/PetEditPanel/PetEditPanel";
+export { default as PetProfile } from "../pages/PetProfile/PetProfile";
 
 // Export types
 export type { PetType } from "./PetType/PetType";

@@ -9,7 +9,7 @@ import { editPet } from "../../redux/slices/petsSlice";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import type { PetType } from "../../types/petsType";
 import { useAuthUser } from "../../hook/useAuthUser";
-import "../ProfileEditPanel/ProfileEditPanel.css";
+import "./PetEditPanel.css";
 import type { RootState } from "../../redux/store";
 
 const DEFAULT_PET_IMG =
@@ -20,13 +20,13 @@ const PetEditPanel = () => {
   const navigate = useNavigate();
   const { petId } = useParams();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  
+
   // Obtener el usuario autenticado
   const user = useAuthUser();
 
   // Obtener las mascotas desde Redux
   const pets = useSelector((state: RootState) => state.pets.pets);
-  
+
   // Buscar la mascota específica por ID
   const petFromRedux = pets?.find((p: PetType) => p.id === petId);
 
@@ -54,8 +54,8 @@ const PetEditPanel = () => {
       setImageUrl(petFromRedux.image || DEFAULT_PET_IMG);
     } else if (petId && pets && pets.length > 0) {
       // Si no se encuentra la mascota y ya cargaron las mascotas
-        console.error("Pet not found with ID:", petId);
-        navigate("/dashboard");
+      console.error("Pet not found with ID:", petId);
+      navigate("/dashboard");
     }
   }, [petFromRedux, petId, pets, navigate]);
 
@@ -91,7 +91,7 @@ const PetEditPanel = () => {
 
       // Actualizar en Redux
       dispatch(editPet(newPetData));
-      
+
       setIsEditing(false);
       alert("Pet data updated successfully!");
     } catch (error) {
@@ -111,7 +111,13 @@ const PetEditPanel = () => {
     if (!file || !petId || !user?.id) return;
 
     // Validar tipo de archivo
-    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    const validTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+    ];
     if (!validTypes.includes(file.type)) {
       alert("Please upload a valid image file (JPG, PNG, GIF, or WebP)");
       return;
@@ -127,15 +133,12 @@ const PetEditPanel = () => {
     setIsImageLoading(true);
     try {
       // Subir a Storage en la carpeta pets/{petId}
-      const fileExtension = file.name.split('.').pop();
-      const storageRef = ref(
-        storage, 
-        `pets/${petId}.${fileExtension}`
-      );
-      
+      const fileExtension = file.name.split(".").pop();
+      const storageRef = ref(storage, `pets/${petId}.${fileExtension}`);
+
       // Subir archivo a Firebase Storage
       const snapshot = await uploadBytes(storageRef, file);
-      
+
       // Obtener la URL de descarga
       const downloadURL = await getDownloadURL(snapshot.ref);
 
@@ -223,7 +226,7 @@ const PetEditPanel = () => {
 
       <div className="profile-info-section">
         <button
-          className="profile-picture-container-desktop"
+          className="pet-edit-profile-pic-container"
           onClick={handleChangePicture}
           type="button"
         >
@@ -233,7 +236,7 @@ const PetEditPanel = () => {
             <img
               src={imageUrl || DEFAULT_PET_IMG}
               alt={name}
-              className="profile-picture-desktop"
+              className="pet-edit-profile-pic"
             />
           )}
         </button>
@@ -244,55 +247,53 @@ const PetEditPanel = () => {
 
       <div className="edit-profile-section">
         <h3 className="edit-profile-title" style={{ color: "#ffe57f" }}>
-          Edit
+          Edit Pet
         </h3>
-        <div className="edit-profile-form" style={{ position: "relative" }}>
+        <div className="pet-edit-form">
           <Input
             type="text"
-            placeholder="Name"
+            placeholder="Nombre"
             value={name}
             onChange={setName}
             disabled={!isEditing}
           />
-
-          <div style={{ display: "flex", gap: 12 }}>
+          <div className="pet-edit-row">
             <Input
               type="text"
-              placeholder="Male"
+              placeholder="Sexo"
               value={gender}
               onChange={setGender}
               disabled={!isEditing}
             />
             <Input
               type="text"
-              placeholder="18 Months"
+              placeholder="Edad"
               value={age}
               onChange={setAge}
               disabled={!isEditing}
             />
           </div>
-          <div style={{ display: "flex", gap: 12 }}>
+          <div className="pet-edit-row">
             <Input
-              type="text"
-              placeholder="05/04/2024"
+              type="date"
+              placeholder="Fecha Nac."
               value={birthDate}
               onChange={setBirthDate}
               disabled={!isEditing}
             />
             <Input
               type="text"
-              placeholder="Shih Tzu"
+              placeholder="Raza"
               value={breed}
               onChange={setBreed}
               disabled={!isEditing}
             />
           </div>
           <button
-            className="btn-save-desktop"
+            className="btn-save-pet"
             onClick={isEditing ? handleSaveClick : handleEditClick}
             disabled={isSaving}
             type="button"
-            style={{ marginTop: 30 }}
           >
             {isEditing ? "Save" : "Edit"}
           </button>
@@ -305,7 +306,7 @@ const PetEditPanel = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 zIndex: 20,
-                background: "rgba(35,35,59,0.77)",
+                background: "rgba(35,35,59,0.67)",
                 borderRadius: "24px",
               }}
             >

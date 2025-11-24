@@ -39,7 +39,6 @@ const Profile: React.FC = () => {
       setName(user.name || "");
       setEmail(user.email || "");
       setPhoneNumber(user.phoneNumber || "");
-      // No necesitas profileImage local, siempre usa user.profileImage
     }
   }, [user]);
 
