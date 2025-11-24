@@ -146,7 +146,7 @@ const ProfileEditPanel: React.FC = () => {
       </div>
     );
   }
-  // Render UI, image always reads from global user
+
   return (
     <div className="profile-edit-panel">
       <input
@@ -253,6 +253,22 @@ const ProfileEditPanel: React.FC = () => {
           >
             {isEditing ? "Save" : "Edit"}
           </button>
+          {isSaving && (
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 20,
+                background: "rgba(35,35,59,0.77)",
+                borderRadius: "24px",
+              }}
+            >
+              <LoadingScreen text="Guardando cambios..." />
+            </div>
+          )}
         </div>
       </div>
     </div>
