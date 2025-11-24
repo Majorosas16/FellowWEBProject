@@ -124,6 +124,7 @@ body {
   padding-bottom: 8px;
   -webkit-overflow-scrolling: touch;
   margin: 0;
+  color: #0f172a;
 }
 
 .scrollable-cards::-webkit-scrollbar {

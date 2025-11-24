@@ -1,6 +1,6 @@
 /* HealthEventCard component styles - Mobile first approach */
 .health-event-card {
-  background: white;
+  background: rgb(45, 30, 115);
   border-radius: 16px;
   padding: 16px;
   display: flex;
@@ -37,7 +37,7 @@
 .pet-name {
   font-size: 16px;
   font-weight: 600;
-  color: #1a202c;
+  color: #1a202c ;
   margin: 0 0 4px 0;
 }
 
