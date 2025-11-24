@@ -1,0 +1,153 @@
+.pet-edit-panel {
+  background: #23233b;
+  padding: 42px 16px 24px 16px;
+  border-radius: 32px;
+  max-width: 380px;
+  min-width: 290px;
+  width: 100%;
+  min-height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.profile-info-section,
+.edit-profile-section {
+  width: 100%;
+}
+
+/* Form scroll if needed */
+.edit-profile-form,
+.pet-edit-form {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: relative;
+}
+
+.pet-edit-form .loader,
+.pet-edit-form .loading-spinner {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+
+.pet-edit-row {
+  display: flex;
+  flex-direction: row;
+  gap: 14px;
+  width: 100%;
+}
+
+.pet-edit-row > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Inputs alineados y tamaño ajustado */
+.pet-edit-form input,
+.pet-edit-row input {
+  background: #f5f6fb;
+  border: none;
+  border-radius: 24px;
+  padding: 15px 18px;
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  color: #ac96ec;
+  font-weight: 500;
+  outline: none;
+  border: 2px solid transparent;
+  width: 100%;
+  box-shadow: none;
+  margin-bottom: 0;
+}
+
+.pet-edit-form input:focus,
+.pet-edit-row input:focus {
+  border: 2px solid #6a3ffc;
+  background: #fff;
+}
+
+.pet-edit-form input:disabled,
+.pet-edit-row input:disabled {
+  background: #f1f5f9;
+  color: #aaaad4;
+  cursor: not-allowed;
+}
+
+/* Foto y boton */
+.pet-edit-profile-pic-container {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #ffe57f;
+  border: 3px solid #6a3ffc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pet-edit-profile-pic-container:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 14px 0 #6a3ffc24;
+}
+.pet-edit-profile-pic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.btn-save-pet {
+  width: 100%;
+  padding: 15px 0;
+  border: none;
+  border-radius: 18px;
+  background: #6a3ffc;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 18px;
+  min-height: 46px;
+  box-shadow: 0 2px 8px rgba(76, 44, 191, 0.04);
+  letter-spacing: 0.1em;
+  transition: background 0.2s;
+}
+.btn-save-pet:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.btn-save-pet:hover:not(:disabled) {
+  background: #4c2cbf;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .pet-edit-panel {
+    max-width: 100vw;
+    border-radius: 0;
+    min-width: 100vw;
+    padding: 24px 8px 16px 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .pet-edit-panel {
+    padding: 16px 2px 8px 2px;
+  }
+  .pet-edit-profile-pic-container {
+    width: 78px;
+    height: 78px;
+  }
+}

@@ -1,0 +1,197 @@
+.logo-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start; /* O center si prefieres centrado */
+  align-items: center;
+  margin-bottom: 30px;
+  margin-top: 8px;
+}
+
+.logo-fellow-img {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.logo-fellow-img:hover {
+  opacity: 0.8;
+}
+
+.pets-section {
+  margin-top: 30%;
+}
+
+.your-pets {
+  background-color: #23233b;
+  color: #fff;
+  width: 70%;
+  min-height: 100vh;
+  padding: 32px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pets-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 32px;
+  letter-spacing: 1px;
+}
+
+.pets-list {
+  max-height: 320px;
+  overflow-y: auto;
+  margin-bottom: 18px;
+  padding-right: 4px;
+  /* Elimina padding-left o cualquier valor que "encaje" el item dentro */
+}
+/* Opcional: scroll "moderno" */
+.pets-list::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+.pets-list::-webkit-scrollbar-thumb {
+  background: #ececec;
+  border-radius: 4px;
+}
+.pets-list {
+  scrollbar-color: #ececec transparent;
+  scrollbar-width: thin;
+}
+
+.pet-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  margin-bottom: 16px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.pet-item--hover {
+  background: #574d89;
+}
+
+.pet-avatar-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.your-pets .pet-image {
+  width: 40px !important; /* Puedes ajustar: 36px, 44px... */
+  height: 40px !important;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 0.7rem;
+  border: 2px solid #fff;
+  background: #23233b;
+  display: block;
+}
+
+.pet-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.pet-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pet-name {
+  font-weight: 600;
+  font-size: 1.02rem;
+  color: #ffffff !important;
+  letter-spacing: 0.5px;
+}
+
+.pet-item--hover .pet-name {
+  color: #fff !important;
+}
+
+.pet-date {
+  font-size: 0.98rem;
+  color: #46e172;
+  font-weight: 600;
+  margin-left: 6px;
+}
+
+.pet-status {
+  color: #aaa;
+  font-size: 0.97rem;
+  margin-top: 2px;
+}
+
+.add-pet-container {
+  display: flex;
+  justify-content: right;
+}
+.add-pet-btn {
+  background: #574d89;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  padding: 12px 0;
+  width: 40%;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 2.5rem;
+  margin-bottom: 1.8rem;
+  transition: background 0.2s;
+}
+
+.add-pet-btn:hover {
+  background: #7864cb;
+}
+
+.profile-area {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  cursor: pointer;
+  margin-top: auto;
+  padding-top: 24px;
+  border-top: 1px solid #382e55;
+  border-radius: 20px;
+  transition: background 0.2s;
+  min-height: 80px;
+  padding-left: 16px;
+  padding-bottom: 30px;
+}
+
+.profile-area:hover {
+  background: #574d89;
+}
+
+.profile-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eee;
+  flex-shrink: 0; /* Siempre del mismo tamaño */
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-name {
+  font-weight: bold;
+  font-size: 1.04rem;
+}
+
+.profile-email {
+  color: #b4b4b4;
+  font-size: 0.92rem;
+}

@@ -1,0 +1,155 @@
+.pet-selection-container {
+  min-height: 100vh;
+  background: #1a202c;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hazlo más ancho para cuadrícula */
+.pet-selection-content {
+  max-width: 700px; /* O incrementa si tus tarjetas requieren más */
+  width: 100%;
+  text-align: center;
+}
+
+.pet-selection-header {
+  margin-bottom: 32px;
+}
+
+.pet-selection-title {
+  color: white;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.pet-selection-options {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 40px;
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;        /* solo scroll vertical */
+  padding-right: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #8a91b6 #ececec;
+}
+
+.pet-option {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+  min-width: 0;             /* Para evitar cortes en grid */
+}
+
+.pet-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.pet-option.selected {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.13);
+}
+
+.pet-option-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.cat-image {
+  background: #667eea;
+}
+.dog-image {
+  background: #fbbf24;
+}
+
+.pet-selection-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.pet-option-name {
+  color: #667eea;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Mensaje destacado para listado vacío */
+.no-pets-message {
+  grid-column: 1/-1;
+  background: #667eea;
+  color: white;
+  font-weight: bold;
+  border-radius: 12px;
+  padding: 16px 12px;
+  text-align: center;
+  margin: 16px 0;
+}
+
+.pet-selection-actions {
+  margin-bottom: 24px;
+}
+
+.continue-button,
+.cancel-button {
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 6px;
+  transition: all 0.2s;
+}
+
+.continue-button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.cancel-link {
+  text-align: center;
+}
+
+.cancel-button {
+  background: none;
+  color: #667eea;
+  text-decoration: underline;
+  margin: 0;
+  padding: 8px;
+  width: auto;
+}
+
+.cancel-button:hover,
+.continue-button:hover:not(:disabled) {
+  background: #5a67d8;
+  color: #fff;
+}
+
+/* Responsive: una columna en móviles */
+@media (max-width: 600px) {
+  .pet-selection-content {
+    max-width: 97vw;
+  }
+  .pet-selection-options {
+    grid-template-columns: 1fr;
+  }
+}
