@@ -95,11 +95,12 @@ const LeftNavigation: React.FC<LeftNavigationProps> = ({ pets }) => {
         </button>
       </div>
       <div className="profile-area" onClick={() => navigate("/profile")}>
-        <img
-          src={DEFAULT_IMAGES.profile}
-          alt={user?.name || "User"}
-          className="profile-avatar"
-        />
+<img
+  src={user?.profileImage || DEFAULT_IMAGES.profile}
+  alt={user?.name || "User"}
+  className="profile-avatar"
+/>
+
         <div className="profile-info">
           <span className="profile-name">{user?.name || "User"}</span>
           <span className="profile-email">
