@@ -89,15 +89,53 @@ body {
   font-weight: 400;
 }
 
-.calendar-icon {
-  width: 40px;
-  height: 40px;
+.calendar-icon-button {
+  background: none;
+  border: none;
+  padding: 0;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: opacity 0.2s;
 }
 
-.calendar-icon:hover {
+.calendar-icon-button:hover {
   opacity: 0.7;
+}
+
+.calendar-icon {
+  width: 40px;
+  height: 40px;
+  display: block;
+}
+
+.notifications-icon-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s, transform 0.2s;
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.notifications-icon-button:hover {
+  opacity: 0.7;
+  transform: scale(1.05);
+}
+
+.notifications-icon-button:active {
+  transform: scale(0.95);
+}
+
+.bell-icon {
+  width: 100%;
+  height: 100%;
 }
 
 .dashboard-sections {
@@ -194,7 +232,7 @@ body {
     gap: 32px;
   }
 
-  .calendar-icon {
+  .notifications-icon-button {
     width: 36px;
     height: 36px;
   }
@@ -217,7 +255,7 @@ body {
     font-size: 16px;
   }
 
-  .calendar-icon {
+  .notifications-icon-button {
     width: 32px;
     height: 32px;
   }
